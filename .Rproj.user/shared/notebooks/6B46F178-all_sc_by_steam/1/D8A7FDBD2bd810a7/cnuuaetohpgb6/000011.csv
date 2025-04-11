@@ -1,0 +1,36 @@
+"0","se <- readRDS(""data/rds_files/se_allen_brain_atlas_random_250_subclass_label.rds"")"
+"0","se"
+"2","Loading required package: SeuratObject
+"
+"2","Loading required package: sp
+"
+"2","Loading required package: SeuratObject
+"
+"2","Loading required package: sp
+"
+"2","‘SeuratObject’ was built under R 4.4.0 but the current version is 4.4.3; it is recomended that you reinstall ‘SeuratObject’ as the ABI for R may have changed
+"
+"2","‘SeuratObject’ was built with package ‘Matrix’ 1.7.0 but the current version is 1.7.2; it is recomended that you reinstall ‘SeuratObject’ as the ABI for ‘Matrix’ may have
+changed
+"
+"2","
+Attaching package: ‘SeuratObject’
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, t
+
+"
+"2","Error: package or namespace load failed for ‘sp’ in attachNamespace(ns, pos = pos, deps, exclude, include.only):
+ namespace is already attached
+"
+"2","Failed with error:  "
+"2",""
+"2","‘package ‘sp’ could not be loaded’"
+"2",""
+"2","
+"
+"2","Error in .requirePackage(package) : 
+  unable to find required package ‘SeuratObject’
+"
