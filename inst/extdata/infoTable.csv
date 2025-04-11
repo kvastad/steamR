@@ -1,0 +1,2 @@
+samples;spotfiles;imgs;json
+inst/extdata/V1_Adult_Mouse_Brain_filtered_feature_bc_matrix.h5;inst/extdata/tissue_positions_list.csv;inst/extdata/tissue_hires_image.png;inst/extdata/scalefactors_json.json

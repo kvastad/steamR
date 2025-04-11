@@ -1,0 +1,335 @@
+---
+title: "all_st_by_steam"
+author: "Rasool Saghaleyni"
+date: "2025-04-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load libraries:
+```{r, message=FALSE}
+library(STutility)
+library(dplyr)
+library(RColorBrewer)
+library(scales)
+library(reshape2)
+library(corrplot)
+library(lawstat)
+library(MASS)
+library(viridis)
+```
+
+Load ST data:
+```{r}
+
+infoTable <- read.csv("Data_brain_example/spatial_data/infoTable.csv", sep = ";")
+
+se <- InputFromTable(infotable = infoTable, 
+                      minUMICountsPerGene = 100, 
+                      minSpotsPerGene = 5,
+                      minUMICountsPerSpot = 500,
+                      platform =  "Visium")
+se <- LoadImages(se, time.resolve = FALSE)
+#calculate mitochondrial and ribosomal percentages
+se$percent.mito <- calculate_gene_percentage(se, "^mt-")
+se$percent.ribo <- calculate_gene_percentage(se, "^Rpl|^Rps")
+#normalize it
+options(future.globals.maxSize = 4 * 1024^3)
+se <- SCTransform(se,return.only.var.genes = T)
+# add seurat cluster
+seurat_clusters <- read.csv(file = "Data_brain_example/spatial_structures/seurat_clusters.csv", sep = ";")
+rownames(seurat_clusters) <- seurat_clusters$Barcode
+seurat_clusters$Barcode <- NULL
+se$seurat_clusters <- seurat_clusters
+se$seurat_clusters_plot <- as.factor(se$seurat_clusters)
+```
+
+Find spatial structures and their top marker genes:
+Steps corresponding to `spatial_structure` notebook
+
+```{r}
+library(Seurat)
+library(dplyr)
+```
+
+```{r}
+clusterMarkers <- findClusterMarkers(se, nfactors = 40, dims = c(1:22, 24:32, 34:39), M = 10)
+se <- clusterMarkers$updated_se
+all_gene_sets_structure_markers <- clusterMarkers$marker_genes
+```
+
+loading OpenTargets gene sets:
+Steps corresponding to `OpenTargets_gene_sets` notebook
+it should be a function later
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+OpenTargets.path <- "Data_brain_example/OpenTargets/brain_mouse_10X/MONDO_0004975-associated-diseases_alzheimer_disease_v23.06.tsv"
+df <- read.table(paste(OpenTargets.path, sep= "/"),
+                     sep= "\t",
+                     header=TRUE,
+                     quote = "")
+column.names <- c("Gene_symbol","Overall_assoc.score","Genetic_assoc.","Somatic_mutation","Drugs","Pathways_system_biology","Text_mining","RNA_expression","Animal_models","Target_name")
+df[df == "No data"] <- NA
+names(df) <- column.names
+
+mouse_genes = "Data_brain_example/OpenTargets_gene_sets/mouse_human_genes_feb_23.tsv"
+conversion.table <- read.table(mouse_genes, sep = "\t", header = TRUE)
+
+df$Gene_symbol <- conversion.table[match(df$Gene_symbol,conversion.table$hgnc_symbol),]$mgi_symbol
+
+name = basename(OpenTargets.path)
+disease.name <- sub(".*diseases_","", name)
+disease.name <- gsub(".tsv", "", disease.name)
+df <- df %>% distinct()
+#Clean out genes not present in the Seurat object AND removes duplicates
+df <- df %>%
+  dplyr::select(Gene_symbol, Overall_assoc.score, Genetic_assoc., Drugs, Animal_models) %>%
+  distinct() %>%
+  filter(!is.na(Gene_symbol) & Gene_symbol %in% rownames(se)) %>%
+  group_by(Gene_symbol) %>%
+  slice(which.max(Overall_assoc.score)) %>%
+  ungroup()
+# making Gene sets
+GWAS_OpenTarget_Overall_assoc.score_xxx <- arrange(df, desc(Overall_assoc.score))
+GWAS_OpenTarget_Overall_assoc.score_xxx <-   GWAS_OpenTarget_Overall_assoc.score_xxx[!is.na(GWAS_OpenTarget_Overall_assoc.score_xxx$Overall_assoc.score),]$Gene_symbol
+##genes genetic association score
+GWAS_OpenTarget_Genetic_assoc._xxx <- arrange(df, desc(Genetic_assoc.))
+GWAS_OpenTarget_Genetic_assoc._xxx <- GWAS_OpenTarget_Genetic_assoc._xxx[!is.na(GWAS_OpenTarget_Genetic_assoc._xxx$Genetic_assoc.),]$Gene_symbol
+##genes drug target
+GWAS_OpenTarget_Drugs_xxx <- arrange(df, desc(Drugs))
+GWAS_OpenTarget_Drugs_xxx <- GWAS_OpenTarget_Drugs_xxx[!is.na(GWAS_OpenTarget_Drugs_xxx$Drugs),]$Gene_symbol
+
+all_gene_sets <- list()
+list.names <- character()
+all_gene_sets[[1]] <- unique(GWAS_OpenTarget_Overall_assoc.score_xxx)
+all_gene_sets[[2]] <- unique(GWAS_OpenTarget_Genetic_assoc._xxx)
+all_gene_sets[[3]] <- unique(GWAS_OpenTarget_Drugs_xxx)
+list.names <- append(list.names,(c(gsub("xxx", disease.name,"GWAS_OpenTarget_Overall_assoc.score_xxx"),
+                            gsub("xxx", disease.name,"GWAS_OpenTarget_Genetic_assoc._xxx"),
+                            gsub("xxx", disease.name,"GWAS_OpenTarget_Drugs_xxx"))))
+names(all_gene_sets) <- list.names
+
+splitWithOverlap <- function(vec, seg.length, move) {
+  starts = seq(1, length(vec), by=move)
+  ends   = starts + seg.length - 1
+  ends[ends > length(vec)] = length(vec)
+
+  lapply(1:length(starts), function(i) vec[starts[i]:ends[i]])
+}
+win.size <- 50
+move.size <- 10
+windows.list <- lapply(all_gene_sets, splitWithOverlap, seg.length = win.size, move = move.size)
+
+process_gene_sets <- function(disease_abbr, rank_type, all_gene_sets, windows_list, set_index) {
+  #Unlist 
+  unlisted_gene_set <- unlist(all_gene_sets[[set_index]])
+  
+  #Subset
+  window50_rank_list <- windows_list[[set_index]]
+  
+  #create the rank names using the disease abbreviation and rank type
+  Rank_names <- rep(paste0(disease_abbr, "_", rank_type, "_Rank"), length(window50_rank_list))
+  Rank_names <- paste0(Rank_names, 1:length(Rank_names), sep="_")
+  
+  names(window50_rank_list) <- Rank_names
+  
+  return(list(unlisted_gene_set = unlisted_gene_set, ranked_window_list = window50_rank_list))
+}
+disease_abbr = "ALZ"
+ALZ_Genetic_results <- process_gene_sets(disease_abbr, "Genetic", all_gene_sets, windows.list, 2)
+OpenTargets_ALZ_Genetic_ <- ALZ_Genetic_results$unlisted_gene_set
+window50_rank_list_ALZ_Genetic <- ALZ_Genetic_results$ranked_window_list
+
+ALZ_Drugs_results <- process_gene_sets(disease_abbr, "Drugs", all_gene_sets, windows.list, 3)
+OpenTargets_ALZ_Drugs_ <- ALZ_Drugs_results$unlisted_gene_set
+window50_rank_list_ALZ_Drugs <- ALZ_Drugs_results$ranked_window_list
+```
+
+```{r}
+OpenTargets_ALZ_Genetic_topGenes_ <- OpenTargets_ALZ_Genetic_[1:50]
+```
+
+```{r}
+all_gene_sets_OpenTargets <- list(OpenTargets_ALZ_Genetic_=OpenTargets_ALZ_Genetic_,OpenTargets_ALZ_Genetic_topGenes_=OpenTargets_ALZ_Genetic_topGenes_,OpenTargets_ALZ_Drugs_=OpenTargets_ALZ_Drugs_)
+```
+
+Merge gene sets:
+
+```{r}
+all_gene_sets <- all_gene_sets_OpenTargets
+all_gene_sets <- append(all_gene_sets,all_gene_sets_structure_markers)
+all_gene_sets <- append(all_gene_sets,window50_rank_list_ALZ_Genetic)
+all_gene_sets <- append(all_gene_sets,window50_rank_list_ALZ_Drugs)
+```
+
+Calculate the percentage of genes present in the Seurat object:
+
+```{r}
+score.mat <- matrix(data = NA, nrow = length(all_gene_sets), ncol = 1, dimnames = list(names(all_gene_sets), "% of genes present"))
+
+for (i in 1:length(all_gene_sets)) {
+  genes <- unlist(all_gene_sets[i]) 
+  score.mat[i] <- mean(genes %in% rownames(se))
+  se <- AddModuleScore(se,list(genes), ctrl = 100, name = list(names(all_gene_sets[i])))
+}
+```
+
+this chunk takes about 90 minutes for all on my local. Maybe we can further optimize it. So don't try it at home!
+
+```{r}
+# perm.mat.window50.data <- generate_permutation_matrix_parallel(se, gnum = 50, permutation_nr = 10000, workers = 10)
+# perm.mat.genetic.data <- generate_permutation_matrix_parallel(se, gnum = 281, permutation_nr = 10000, workers = 10)
+# perm.mat.drugs.data <- generate_permutation_matrix_parallel(se, gnum = 132, permutation_nr = 10000, workers = 10)
+```
+
+let's load it for now
+
+```{r}
+perm_files <- c(
+  "Data_brain_example/Permutation_matrices/perm.mat_p10000_g50.RDS",
+  "Data_brain_example/Permutation_matrices/perm.mat_p10000_g281.RDS",
+  "Data_brain_example/Permutation_matrices/perm.mat_p10000_g132.RDS"
+)
+
+perm_matrices <- load_permutation_matrices(perm_files)
+perm.mat.window50.data <- as.data.frame(perm_matrices[[1]])
+perm.mat.genetic.data <- as.data.frame(perm_matrices[[2]])
+perm.mat.drugs.data <- as.data.frame(perm_matrices[[3]])
+```
+
+Finally! lets gets hands dirty with real enrichment analysis:
+
+
+```{r}
+p.val.mat.g <- SpatialTraitEnrichmentAnalysis(
+  se = se,
+  perm.mat.label.data = perm.mat.genetic.data,
+  perm.mat.window50.data = perm.mat.window50.data,
+  window_rank_list_abr_label = window50_rank_list_ALZ_Genetic,
+  ot_gene_set_label = "Genetic",
+  disease_abbr = "ALZ"
+)
+se$seurat_clusters <- as.numeric(as.character(se$seurat_clusters))
+se$p.val.g <- se$seurat_clusters
+se$p.val.adj.g <- se$seurat_clusters
+
+clusters <- sort(unique(se$seurat_clusters))
+
+for (i in clusters) {
+  idx <- as.integer(i) + 1
+  se$p.val.g[se$seurat_clusters == i] <- as.numeric(p.val.mat.g[1, idx])
+  se$p.val.adj.g[se$seurat_clusters == i] <- as.numeric(p.val.mat.g[2, idx])
+}
+
+ST.FeaturePlot(object = se, features = "p.val.adj.g", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
+ST.FeaturePlot(object = se, features = "p.val.g", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
+```
+
+```{r}
+p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
+  se = se,
+  perm.mat.label.data = perm.mat.drugs.data,
+  perm.mat.window50.data = perm.mat.window50.data,
+  window_rank_list_abr_label = window50_rank_list_ALZ_Drugs,
+  ot_gene_set_label = "Drugs",
+  disease_abbr = "ALZ"
+)
+se$p.val.d <- se$seurat_clusters
+se$p.val.adj.d <- se$seurat_clusters
+
+clusters <- sort(unique(se$seurat_clusters))
+
+for (i in clusters) {
+  idx <- as.integer(i) + 1
+  se$p.val.d[se$seurat_clusters == i] <- as.numeric(p.val.mat.d[1, idx])
+  se$p.val.adj.d[se$seurat_clusters == i] <- as.numeric(p.val.mat.d[2, idx])
+}
+
+ST.FeaturePlot(object = se, features = "p.val.adj.d", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
+ST.FeaturePlot(object = se, features = "p.val.d", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
+```
+
+
+```{r, fig.width=5, fig.height=4}
+spot_alpha = 0.5
+point.size = 1
+
+FeatureOverlay(se, 
+               features = c("p.val.g"),
+               pt.alpha = spot_alpha,
+               pt.size = point.size,
+               add.alpha=T,
+               ncols = 1,
+               cols = viridis(length(unique(se$seurat_clusters))))
+FeatureOverlay(se, 
+               features = c("p.val.d"),
+               pt.alpha = spot_alpha,
+               pt.size = point.size,
+               add.alpha=T,
+               ncols = 1,
+               cols = viridis(length(unique(se$seurat_clusters))))
+```
+
+
+```{r}
+rankPlotForClusters(se = se,
+                    perm.mat = perm.mat.drugs.data,
+                    perm.mat.window50 = perm.mat.window50.data,
+                    window_rank_list = window50_rank_list_ALZ_Drugs,
+                    ot_gene_set_label = "Drugs",
+                    disease_abbr = "ALZ")
+```
+
+
+```{r}
+featurePlotForRanks(se = se,
+                     perm.mat = perm.mat.genetic.data,
+                     perm.mat.window50 = perm.mat.window50.data,
+                     window_rank_list = window50_rank_list_ALZ_Genetic,
+                     ot_gene_set_label = "Genetic",
+                     disease_abbr = "ALZ",
+                     cluster_number = NULL, 
+                     ranks_per_plot = 1,
+                     spot_alpha = 0.5, 
+                     point_size = 0.5,
+                     all_clusters = TRUE)
+
+```
+
+```{r}
+featurePlotForRanks(se = se,
+                     perm.mat = perm.mat.drugs.data,
+                     perm.mat.window50 = perm.mat.window50.data,
+                     window_rank_list = window50_rank_list_ALZ_Drugs,
+                     ot_gene_set_label = "Drugs",
+                     disease_abbr = "ALZ",
+                     cluster_number = NULL, 
+                     ranks_per_plot = 6,
+                     spot_alpha = 0.5, 
+                     point_size = 1,
+                     all_clusters = TRUE)
+```
+
+```{r}
+plotScoreDist(
+  se = se,
+  perm.mat = perm.mat.genetic.data,
+  perm.mat.window50 = perm.mat.window50.data,
+  window_rank_list = window50_rank_list_ALZ_Genetic,
+  ot_gene_set_label = "Genetic",
+  disease_abbr = "ALZ",
+  use_cluster_prefix = TRUE
+)
+```
+
+```{r}
+plotScoreDist(se = se,
+              perm.mat = perm.mat.drugs.data,
+              perm.mat.window50 = perm.mat.window50.data,
+              window_rank_list = window50_rank_list_ALZ_Drugs,
+              ot_gene_set_label = "Drugs",
+              disease_abbr = "ALZ")
+```
