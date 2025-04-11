@@ -16,7 +16,7 @@ library(tidyverse)
 
 Load SC se object:
 ```{r}
-se <- readRDS("Data_brain_example/250310/1A_data/se_allen_brain_atlas_random_250_subclass_label.rds")
+se <- readRDS("data/rds_files/se_allen_brain_atlas_random_250_subclass_label.rds")
 se
 table(se$subclass_label)
 ```
