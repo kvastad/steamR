@@ -1,22 +1,24 @@
 ---
-title: "All_new_analysis"
+title: "all_sc_by_steam"
+author: "Rasool Saghaleyni"
+date: "2025-04-11"
 output: html_document
-date: '`r format(Sys.Date(), "%B %d, %Y")`'
 ---
 
-NB 1A:
 Load libraries
 ```{r}
 library(Seurat)
 library(SeuratObject)
 library(dplyr)
 library(tidyverse)
+library(ggplot2)
+library(viridis)
 ```
 
 
 Load SC se object:
 ```{r}
-se <- readRDS("Data_brain_example/250310/1A_data/se_allen_brain_atlas_random_250_subclass_label.rds")
+se <- readRDS("data/Seurat_objects/se_allen_brain_atlas_random_250_subclass_label.rds")
 se
 table(se$subclass_label)
 ```
@@ -57,7 +59,7 @@ seurat_clusters$Barcode <- colnames(se)
 seurat_clusters$seurat_clusters <- seurat_clusters$`se$subclass_label`
 seurat_clusters$`se$subclass_label` <- NULL
 
-# write.table(seurat_clusters,file="Data_brain_example/250310/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
+write.table(seurat_clusters,file="data/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
 ```
 
 Normalize data: se <- SCTransform(se,return.only.var.genes = T)
@@ -68,7 +70,7 @@ se <- SCTransform(se,return.only.var.genes = T)
 
 Save filtered and normalized se object
 ```{r, eval=FALSE}
-# saveRDS(se,file = "Data_brain_example/250310/Seurat_objects/se_250_cells_filtered_normalized.RDS")
+saveRDS(se,file = "data/Seurat_objects/se_250_cells_filtered_normalized.RDS")
 ```
 
 ```{r}
@@ -82,7 +84,7 @@ meta_cell_seurat_all_sum_with_metadata <- aggregate_metacells(clustered_metacell
 
 Save MetaCell Seurat Object
 ```{r,eval=T}
-# saveRDS(meta_cell_seurat_all_sum_with_metadata,file("Data_brain_example/250310/Seurat_objects/MetaCell.rds"))
+saveRDS(meta_cell_seurat_all_sum_with_metadata,file("data/Seurat_objects/MetaCell.rds"))
 ```
 
 
@@ -92,13 +94,12 @@ seurat_clusters <- as.data.frame(meta_cell_seurat_all_sum_with_metadata$subclass
 seurat_clusters$Barcode <- colnames(meta_cell_seurat_all_sum_with_metadata)
 seurat_clusters$seurat_clusters <- seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$subclass_label`
 seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$subclass_label` <- NULL
-
-# write.table(seurat_clusters,file="Data_brain_example/250310/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
+write.table(seurat_clusters,file="data/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
 ```
 
 
 ```{r, fig.width=35, fig.height=15}
-se <- readRDS("Data_brain_example/250310/Seurat_objects/MetaCell_normalized.RDS")
+se <- readRDS("data/Seurat_objects/MetaCell_normalized.RDS")
 se <- SetIdent(se, value = "supercluster_term")
 ```
 
@@ -106,10 +107,10 @@ Load OpenTargets gene sets and make a list of gene sets
 
 ```{r class.source = 'fold-show'}
 
-OpenTargets_SCZ_Genetic_ <- as.character(t(read.table(file = "OpenTargets_gene_sets/Human_OpenTargets_SCZ_Genetic.csv")))
+OpenTargets_SCZ_Genetic_ <- as.character(t(read.table(file = "data/OpenTargets_gene_sets/Human_OpenTargets_SCZ_Genetic.csv")))
 length(OpenTargets_SCZ_Genetic_)
 
-OpenTargets_SCZ_Drugs_ <- as.character(t(read.table(file = "OpenTargets_gene_sets/Human_OpenTargets_SCZ_Drugs.csv")))
+OpenTargets_SCZ_Drugs_ <- as.character(t(read.table(file = "data/OpenTargets_gene_sets/Human_OpenTargets_SCZ_Drugs.csv")))
 length(OpenTargets_SCZ_Drugs_)
 all_gene_sets_OpenTargets <- list(OpenTargets_SCZ_Genetic_=OpenTargets_SCZ_Genetic_,OpenTargets_SCZ_Drugs_=OpenTargets_SCZ_Drugs_)
 
@@ -117,8 +118,8 @@ all_gene_sets_OpenTargets <- list(OpenTargets_SCZ_Genetic_=OpenTargets_SCZ_Genet
 
 Load window rank lists
 ```{r}
-window50_rank_list_SCZ_Genetic <- readRDS(file = "OpenTargets_windowLists/Human_window50_rank_list_SCZ_Genetic.RDS")
-window50_rank_list_SCZ_Drugs <- readRDS(file = "OpenTargets_windowLists/Human_window50_rank_list_SCZ_Drugs.RDS")
+window50_rank_list_SCZ_Genetic <- readRDS(file = "data/OpenTargets_windowLists/Human_window50_rank_list_SCZ_Genetic.RDS")
+window50_rank_list_SCZ_Drugs <- readRDS(file = "data/OpenTargets_windowLists/Human_window50_rank_list_SCZ_Drugs.RDS")
 
 ```
 
@@ -188,9 +189,9 @@ Load perm.mat
 
 ```{r}
 perm_files <- c(
-  "Permutation_matrices/perm.mat_p10000_g50.RDS",
-  "Permutation_matrices/perm.mat_p10000_g1315.RDS",
-  "Permutation_matrices/perm.mat_p10000_g218.RDS"
+  "data/Permutation_matrices/perm.mat_p10000_g50.RDS",
+  "data/Permutation_matrices/perm.mat_p10000_g1315.RDS",
+  "data/Permutation_matrices/perm.mat_p10000_g218.RDS"
 )
 
 perm_matrices <- load_permutation_matrices(perm_files)
@@ -510,7 +511,7 @@ p
 ```
 
 ```{r}
-DEG_genes <- read_csv2("DEG_output/DE_genes.csv")
+DEG_genes <- read_csv2("data/DEG_output/DE_genes.csv")
 DEG_genes <- as.data.frame(DEG_genes)
 N.markers <- DEG_genes
 ```

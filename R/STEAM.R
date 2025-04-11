@@ -607,4 +607,15 @@ run_fisher_test_on_DEGs <- function(se, DEG_genes, OT_genes, adjust_method = "bo
   return(fisher_results)
 }
 
+load_permutation_matrices <- function(file_paths) {
+  matrices <- lapply(file_paths, readRDS)
+  names(matrices) <- basename(file_paths)
+  return(matrices)
+}
+
+calculate_gene_percentage <- function(se, pattern) {
+  genes <- grep(pattern, rownames(se), value = TRUE)
+  (Matrix::colSums(GetAssayData(se, slot = "counts")[genes, ]) /
+      Matrix::colSums(GetAssayData(se, slot = "counts"))) * 100
+}
 

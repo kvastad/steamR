@@ -25,7 +25,7 @@ library(viridis)
 Load ST data:
 ```{r}
 
-infoTable <- read.csv("Data_brain_example/spatial_data/infoTable.csv", sep = ";")
+infoTable <- read.csv("data/Data_brain_example/spatial_data/infoTable.csv", sep = ";")
 
 se <- InputFromTable(infotable = infoTable, 
                       minUMICountsPerGene = 100, 
@@ -40,7 +40,7 @@ se$percent.ribo <- calculate_gene_percentage(se, "^Rpl|^Rps")
 options(future.globals.maxSize = 4 * 1024^3)
 se <- SCTransform(se,return.only.var.genes = T)
 # add seurat cluster
-seurat_clusters <- read.csv(file = "Data_brain_example/spatial_structures/seurat_clusters.csv", sep = ";")
+seurat_clusters <- read.csv(file = "data/Data_brain_example/spatial_structures/seurat_clusters.csv", sep = ";")
 rownames(seurat_clusters) <- seurat_clusters$Barcode
 seurat_clusters$Barcode <- NULL
 se$seurat_clusters <- seurat_clusters
@@ -49,11 +49,6 @@ se$seurat_clusters_plot <- as.factor(se$seurat_clusters)
 
 Find spatial structures and their top marker genes:
 Steps corresponding to `spatial_structure` notebook
-
-```{r}
-library(Seurat)
-library(dplyr)
-```
 
 ```{r}
 clusterMarkers <- findClusterMarkers(se, nfactors = 40, dims = c(1:22, 24:32, 34:39), M = 10)
@@ -66,7 +61,7 @@ Steps corresponding to `OpenTargets_gene_sets` notebook
 it should be a function later
 
 ```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
-OpenTargets.path <- "Data_brain_example/OpenTargets/brain_mouse_10X/MONDO_0004975-associated-diseases_alzheimer_disease_v23.06.tsv"
+OpenTargets.path <- "data/Data_brain_example/OpenTargets/brain_mouse_10X/MONDO_0004975-associated-diseases_alzheimer_disease_v23.06.tsv"
 df <- read.table(paste(OpenTargets.path, sep= "/"),
                      sep= "\t",
                      header=TRUE,
@@ -75,7 +70,7 @@ column.names <- c("Gene_symbol","Overall_assoc.score","Genetic_assoc.","Somatic_
 df[df == "No data"] <- NA
 names(df) <- column.names
 
-mouse_genes = "Data_brain_example/OpenTargets_gene_sets/mouse_human_genes_feb_23.tsv"
+mouse_genes = "data/Data_brain_example/OpenTargets_gene_sets/mouse_human_genes_feb_23.tsv"
 conversion.table <- read.table(mouse_genes, sep = "\t", header = TRUE)
 
 df$Gene_symbol <- conversion.table[match(df$Gene_symbol,conversion.table$hgnc_symbol),]$mgi_symbol
@@ -189,9 +184,9 @@ let's load it for now
 
 ```{r}
 perm_files <- c(
-  "Data_brain_example/Permutation_matrices/perm.mat_p10000_g50.RDS",
-  "Data_brain_example/Permutation_matrices/perm.mat_p10000_g281.RDS",
-  "Data_brain_example/Permutation_matrices/perm.mat_p10000_g132.RDS"
+  "data/Data_brain_example/Permutation_matrices/perm.mat_p10000_g50.RDS",
+  "data/Data_brain_example/Permutation_matrices/perm.mat_p10000_g281.RDS",
+  "data/Data_brain_example/Permutation_matrices/perm.mat_p10000_g132.RDS"
 )
 
 perm_matrices <- load_permutation_matrices(perm_files)
@@ -200,7 +195,8 @@ perm.mat.genetic.data <- as.data.frame(perm_matrices[[2]])
 perm.mat.drugs.data <- as.data.frame(perm_matrices[[3]])
 ```
 
-Finally! lets gets hands dirty with real enrichment analysis:
+
+Enrichment analysis:
 
 
 ```{r}
