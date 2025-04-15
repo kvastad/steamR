@@ -1,3 +1,15 @@
+#' Find cluster markers
+#'
+#' @param se A Seurat object
+#' @param nfactors Number of factors to use for NMF
+#' @param dims Dimensions to use for clustering
+#' @param M Number of top markers to return for each cluster
+#'
+#' @returns A list containing marker genes for each cluster
+#' @export 
+#'
+#' @examples
+#' clusterMarkers <- FindClusterMarkers(se, nfactors = 10, dims = 1:10, M = 10)
 findClusterMarkers <- function(se, 
                                nfactors, 
                                dims = NULL, 
