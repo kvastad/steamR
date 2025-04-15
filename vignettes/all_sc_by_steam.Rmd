@@ -78,7 +78,6 @@ clustered_metacells <- generate_metacell_clusters(se, cluster_col = "subclass_la
 ```
 
 ```{r}
-# Example usage:
 meta_cell_seurat_all_sum_with_metadata <- aggregate_metacells(clustered_metacells)
 ```
 
@@ -507,11 +506,18 @@ p
 ```
 
 ```{r}
+# DefaultAssay(se) <- "RNA"
+# se <- se %>%
+#   NormalizeData() %>%
+#   ScaleData()
+# 
+# se <- SetIdent(se, value = "supercluster_term")
 # N.markers <- FindAllMarkers(se, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25,slot = "data")
+# write.csv(N.markers, file = "data/DEG_output/DE_genes.csv", row.names = FALSE, quote = FALSE)
 ```
 
 ```{r}
-DEG_genes <- read_csv2("data/DEG_output/DE_genes.csv")
+DEG_genes <- read.csv("data/DEG_output/DE_genes.csv", stringsAsFactors = FALSE)
 DEG_genes <- as.data.frame(DEG_genes)
 N.markers <- DEG_genes
 ```

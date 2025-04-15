@@ -494,6 +494,9 @@ generate_metacell_clusters <- function(se,
   # Filter cell types with too few cells
   label_counts <- table(se@meta.data[[cluster_col]])
   valid_labels <- names(label_counts[label_counts >= min_cells_per_type])
+  removed_labels <- setdiff(names(label_counts), valid_labels)
+  print("Removed cell types with too few cells:")
+  print(removed_labels)
   se <- subset(se, cells = colnames(se)[se@meta.data[[cluster_col]] %in% valid_labels])
   
   # Get remaining cell types
