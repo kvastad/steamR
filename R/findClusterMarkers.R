@@ -9,7 +9,7 @@
 #' @export 
 #'
 #' @examples
-#' clusterMarkers <- FindClusterMarkers(se, nfactors = 10, dims = 1:10, M = 10)
+#' clusterMarkers <- findClusterMarkers(se, nfactors = 10, dims = 1:10, M = 10)
 findClusterMarkers <- function(se, 
                                nfactors, 
                                dims = NULL, 

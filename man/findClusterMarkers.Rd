@@ -22,5 +22,5 @@ A list containing marker genes for each cluster
 Find cluster markers
 }
 \examples{
-clusterMarkers <- FindClusterMarkers(se, nfactors = 10, dims = 1:10, M = 10)
+clusterMarkers <- findClusterMarkers(se, nfactors = 10, dims = 1:10, M = 10)
 }

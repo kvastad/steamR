@@ -2,8 +2,10 @@ Package: steam
 Title: STEAM is a R package for Spatial Trait Enrichment Analysis with perMutation testing.
 Version: 0.0.0.9000
 Authors@R: 
-    person("Linda", "Kvastad", , "linda.kvastad@scilifelab.se", role = c("aut", "cre")),
-    person("Rasool", "saghaleyni", , "rasool.saghaleyni@scilifelab.se", role = "aut")
+    c(
+      person("Linda", "Kvastad", , "linda.kvastad@scilifelab.se", role = c("aut")),
+      person("Rasool", "saghaleyni", , "rasool.saghaleyni@scilifelab.se", role = c("aut", "cre"))
+    )
 Description: STEAM is an algorithm for Spatial Trait Enrichment Analysis with perMutation testing, a robust computational approach to measure the enrichment of average gene expression across clusters in a dataset from a given gene list; it calculates a permutation p-value and performs multiple testing corrections based on the number of clusters. For ranked gene lists, STEAM enables interrogation of the topmost relevant sets of genes based on their combined average enrichment.
 License: MIT + file LICENSE
 Encoding: UTF-8
