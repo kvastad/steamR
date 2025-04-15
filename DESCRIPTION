@@ -1,25 +1,11 @@
-Package: STEAM
-Type: Package
-Title: STEAM: Spatial Trait Enrichment Analysis
-Version: 0.1.0
+Package: steam
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
 Authors@R: 
-    person("Your", "Name", email = "you@example.com", role = c("aut", "cre"))
-Description: A package for Spatial Trait Enrichment Analysis with Permutation Testing.
-License: GPL-3
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
 Encoding: UTF-8
-LazyData: true
-Imports:
-    STutility,
-    dplyr,
-    RColorBrewer,
-    scales,
-    reshape2,
-    ggplot2,
-    furrr,
-    future.apply,
-    MASS,
-    future,
-    utils
-Suggests: 
-    testthat (>= 3.0.0)
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

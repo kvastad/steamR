@@ -3,3 +3,9 @@ steam.Rproj
 vignettes/data/
 .Rbuildignore
 .Rhistory
+.Rproj.user
+.vscode/
+.Rdata
+.httr-oauth
+.DS_Store
+.quarto
