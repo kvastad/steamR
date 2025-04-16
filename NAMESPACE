@@ -2,6 +2,7 @@
 
 export(SpatialTraitEnrichmentAnalysis)
 export(aggregate_metacells)
+export(calculate_gene_percentage)
 export(featurePlotForRanks)
 export(findClusterMarkers)
 export(generate_metacell_clusters)
