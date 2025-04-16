@@ -16,7 +16,7 @@ generate_permutation_matrix_parallel <- function(se, gnum = 50, permutation_nr =
   options(future.globals.maxSize = 4 * 1024^3)
   plan(multisession, workers = workers)
   
-  # Check if the specified cluster column exists
+  # Check cluster column
   if (!(cluster_col %in% colnames(se@meta.data))) {
     stop(paste("The specified cluster column", cluster_col, "is not found in the Seurat object metadata."))
   }
@@ -24,26 +24,25 @@ generate_permutation_matrix_parallel <- function(se, gnum = 50, permutation_nr =
   execution_time <- system.time({
     
     ref_genes_se <- rownames(se)
-    genes.in.NULL.set <- gnum
-    
-    # Use the specified cluster column
     cluster_names <- unique(se@meta.data[[cluster_col]])
     Perm_names <- paste0("Perm_nr", seq_len(permutation_nr))
-    perm.mat <- matrix(data = NA, nrow = permutation_nr, ncol = length(cluster_names), dimnames = list(Perm_names, cluster_names))
     
+    # Pre-generate gene sets for each permutation
+    set.seed(1)
+    gene_sets <- replicate(permutation_nr, sample(ref_genes_se, gnum), simplify = FALSE)
+    
+    # Run AddModuleScore on each gene set
     perm_results <- future_lapply(seq_len(permutation_nr), function(i) {
-      NULL_gene_set_ <- sample(ref_genes_se, genes.in.NULL.set)
-      genes <- unlist(list(NULL_gene_set_))
+      genes <- gene_sets[[i]]
       
       se_temp <- AddModuleScore(se, list(genes), ctrl = 100, name = "NULL_gene_set")
       se_metadata_NULL <- se_temp@meta.data[, c(cluster_col, "NULL_gene_set1")]
       
-      # Rename the cluster column for consistent processing
       colnames(se_metadata_NULL)[1] <- "cluster"
       
       se_metadata_by_cluster_NULL <- se_metadata_NULL %>%
         group_by(cluster) %>%
-        summarise(median_score = median(NULL_gene_set1, na.rm = TRUE))
+        summarise(median_score = median(NULL_gene_set1, na.rm = TRUE), .groups = "drop")
       
       return(se_metadata_by_cluster_NULL$median_score)
     }, future.seed = TRUE)
