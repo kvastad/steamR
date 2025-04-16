@@ -1,5 +1,6 @@
 steam.Rproj
 /.Rproj.user/
+inst/
 vignettes/data/
 .Rbuildignore
 .Rhistory
