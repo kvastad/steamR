@@ -12,6 +12,10 @@
 #' @param disease_abbr A short abbreviation for the disease or trait (e.g., "SCZ").
 #' @param cluster_col The name of the metadata column specifying clusters 
 #'        (default is `"seurat_clusters"`).
+#' @param ylim A numeric vector of length two specifying the y-axis limits for the plots 
+#'        (default is `c(-0.3, 0.3)`).
+#' @param clusters_to_plot Optional numeric or character vector indicating specific cluster 
+#'        indices (positions) to plot from the sorted list of cluster IDs. If `NULL`, all are plotted.
 #'
 #' @returns Line plots per cluster showing the structure of rank-wise median scores.
 #' @export
@@ -24,10 +28,12 @@
 #'   window_rank_list = window50_rank_list_SCZ_Genetic,
 #'   ot_gene_set_label = "Genetic",
 #'   disease_abbr = "SCZ",
-#'   cluster_col = "supercluster_term"
+#'   cluster_col = "supercluster_term",
+#'   ylim = c(-0.2, 0.2),
+#'   clusters_to_plot = 1:5
 #' )
 rankPlotForClusters <- function(se, perm.mat, perm.mat.window50, window_rank_list, 
-                                ot_gene_set_label, disease_abbr, cluster_col = "seurat_clusters") {
+                                ot_gene_set_label, disease_abbr, cluster_col = "seurat_clusters", ylim = c(-0.3, 0.3), clusters_to_plot = NULL) {
   
   term <- paste0("^", disease_abbr, "_", ot_gene_set_label)
   se_subset <- list()
@@ -40,6 +46,27 @@ rankPlotForClusters <- function(se, perm.mat, perm.mat.window50, window_rank_lis
   }
   
   cluster_ids <- unique(se@meta.data[[cluster_col]])
+  
+  # Separate numeric and non-numeric IDs
+  suppressWarnings({
+    numeric_ids <- cluster_ids[!is.na(as.numeric(as.character(cluster_ids)))]
+    non_numeric_ids <- cluster_ids[is.na(as.numeric(as.character(cluster_ids)))]
+  })
+  
+  # Sort numerically and alphabetically
+  sorted_ids <- c(
+    sort(as.numeric(as.character(numeric_ids))),
+    sort(as.character(non_numeric_ids))
+  )
+  
+  cluster_ids <- sorted_ids
+  
+  
+  # Filter cluster_ids if clusters_to_plot is provided
+  if (!is.null(clusters_to_plot)) {
+    cluster_ids <- cluster_ids[clusters_to_plot]
+  }
+  
   
   # Temporarily set identity class to the selected clustering column
   se <- SetIdent(se, value = cluster_col)
@@ -72,11 +99,12 @@ rankPlotForClusters <- function(se, perm.mat, perm.mat.window50, window_rank_lis
     plot(
       abr_label_structure_i$Rank,
       abr_label_structure_i$Median,
-      main = paste(disease_abbr, ot_gene_set_label, "Structure", i),
-      xlab = "Rank",
-      ylab = "Score",
+      main = paste(disease_abbr, ot_gene_set_label, "Cluster:", i),
+      xlab = "Window Rank",
+      ylab = "Median Score",
       type = "o",
-      ylim = c(-0.3, 0.3)
+      ylim = ylim,
+      xaxt = "n"
     )
     axis(1, at = seq(1, 200, by = 1), cex.axis = 0.5)
     

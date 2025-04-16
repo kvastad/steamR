@@ -11,7 +11,9 @@ rankPlotForClusters(
   window_rank_list,
   ot_gene_set_label,
   disease_abbr,
-  cluster_col = "seurat_clusters"
+  cluster_col = "seurat_clusters",
+  ylim = c(-0.3, 0.3),
+  clusters_to_plot = NULL
 )
 }
 \arguments{
@@ -29,6 +31,12 @@ rankPlotForClusters(
 
 \item{cluster_col}{The name of the metadata column specifying clusters
 (default is \code{"seurat_clusters"}).}
+
+\item{ylim}{A numeric vector of length two specifying the y-axis limits for the plots
+(default is \code{c(-0.3, 0.3)}).}
+
+\item{clusters_to_plot}{Optional numeric or character vector indicating specific cluster
+indices (positions) to plot from the sorted list of cluster IDs. If \code{NULL}, all are plotted.}
 }
 \value{
 Line plots per cluster showing the structure of rank-wise median scores.
@@ -46,6 +54,8 @@ rankPlotForClusters(
   window_rank_list = window50_rank_list_SCZ_Genetic,
   ot_gene_set_label = "Genetic",
   disease_abbr = "SCZ",
-  cluster_col = "supercluster_term"
+  cluster_col = "supercluster_term",
+  ylim = c(-0.2, 0.2),
+  clusters_to_plot = 1:5
 )
 }

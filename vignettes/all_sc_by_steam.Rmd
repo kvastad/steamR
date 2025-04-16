@@ -260,7 +260,9 @@ rankPlotForClusters(
   window_rank_list = window50_rank_list_SCZ_Genetic,
   ot_gene_set_label = "Genetic",
   disease_abbr = "SCZ",
-  cluster_col = "supercluster_term"
+  cluster_col = "supercluster_term",
+  ylim = c(-0.3, 0.3),           
+  clusters_to_plot = NULL        
 )
 ```
 
@@ -296,7 +298,9 @@ rankPlotForClusters(
   window_rank_list = window50_rank_list_SCZ_Drugs,
   ot_gene_set_label = "Drugs",
   disease_abbr = "SCZ",
-  cluster_col = "supercluster_term"
+  cluster_col = "supercluster_term",
+  ylim = c(-0.3, 0.3),
+  clusters_to_plot = NULL
 )
 ```
 

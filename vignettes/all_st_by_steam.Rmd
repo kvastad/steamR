@@ -281,12 +281,14 @@ FeatureOverlay(se,
 
 
 ```{r}
-rankPlotForClusters(se = se,
-                    perm.mat = perm.mat.drugs.data,
-                    perm.mat.window50 = perm.mat.window50.data,
-                    window_rank_list = window50_rank_list_ALZ_Drugs,
-                    ot_gene_set_label = "Drugs",
-                    disease_abbr = "ALZ")
+rankPlotForClusters(
+  se = se,
+  perm.mat = perm.mat.drugs.data,
+  perm.mat.window50 = perm.mat.window50.data,
+  window_rank_list = window50_rank_list_ALZ_Drugs,
+  ot_gene_set_label = "Drugs",
+  disease_abbr = "ALZ",
+  ylim = c(-0.3, 0.3))
 ```
 
 
