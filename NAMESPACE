@@ -3,3 +3,4 @@
 export(SpatialTraitEnrichmentAnalysis)
 export(findClusterMarkers)
 export(generate_permutation_matrix_parallel)
+export(rankPlotForClusters)
