@@ -30,9 +30,13 @@ aggregate_metacells <- function(cell_type_clusters, cluster_col = "subclass_labe
     }
     
     meta_cell_matrix <- do.call(cbind, meta_cell_data)
-    colnames(meta_cell_matrix) <- names(meta_cell_data)
+    cell_type <- unique(cluster_cells@meta.data[[cluster_col]])[1]
+    colnames(meta_cell_matrix) <- paste(cell_type, names(meta_cell_data), sep = "_")
+    meta_cell_matrix <- as(Matrix::Matrix(meta_cell_matrix, sparse = TRUE), "dgCMatrix")
+    
     meta_cell_seurat <- CreateSeuratObject(counts = meta_cell_matrix)
     meta_cell_seurat@meta.data[[cluster_col]] <- factor(unlist(meta_cell_metadata), levels = unique(unlist(meta_cell_metadata)))
+    
     
     return(meta_cell_seurat)
   }
