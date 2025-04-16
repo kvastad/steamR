@@ -13,13 +13,14 @@ Load libraries:
 ```{r, message=FALSE}
 library(STutility)
 library(dplyr)
-library(RColorBrewer)
-library(scales)
-library(reshape2)
-library(corrplot)
-library(lawstat)
-library(MASS)
+# library(RColorBrewer)
+# library(scales)
+# library(reshape2)
+# library(corrplot)
+# library(lawstat)
+# library(MASS)
 library(viridis)
+library(steam)
 ```
 
 Load ST data:
@@ -51,10 +52,15 @@ Find spatial structures and their top marker genes:
 Steps corresponding to `spatial_structure` notebook
 
 ```{r}
-clusterMarkers <- findClusterMarkers(se, nfactors = 40, dims = c(1:22, 24:32, 34:39), M = 10)
+# options(future.globals.maxSize = 16 * 1024^3)
+# clusterMarkers <- findClusterMarkers(se, nfactors = 40, dims = c(1:22, 24:32, 34:39), M = 10)
+# saveRDS(clusterMarkers, file = "data/Data_brain_example/clusterMarkers_nf40_d22_24_32_34_39.rds")
+
+clusterMarkers <- readRDS("data/Data_brain_example/clusterMarkers_nf40_d22_24_32_34_39.rds")
 se <- clusterMarkers$updated_se
 all_gene_sets_structure_markers <- clusterMarkers$marker_genes
 ```
+
 
 loading OpenTargets gene sets:
 Steps corresponding to `OpenTargets_gene_sets` notebook
@@ -193,6 +199,10 @@ perm_matrices <- load_permutation_matrices(perm_files)
 perm.mat.window50.data <- as.data.frame(perm_matrices[[1]])
 perm.mat.genetic.data <- as.data.frame(perm_matrices[[2]])
 perm.mat.drugs.data <- as.data.frame(perm_matrices[[3]])
+
+colnames(perm.mat.genetic.data) <- gsub("^cluster_", "", colnames(perm.mat.genetic.data))
+colnames(perm.mat.window50.data) <- gsub("^cluster_", "", colnames(perm.mat.window50.data))
+colnames(perm.mat.drugs.data) <- gsub("^cluster_", "", colnames(perm.mat.drugs.data))
 ```
 
 
@@ -204,7 +214,7 @@ p.val.mat.g <- SpatialTraitEnrichmentAnalysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window50.data = perm.mat.window50.data,
-  window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
+  window_rank_list_abr_label = window50_rank_list_ALZ_Genetic,
   gene_list = "OpenTargets_ALZ_Genetic_1"
 )
 
@@ -229,7 +239,7 @@ p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window50.data = perm.mat.window50.data,
-  window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
+  window_rank_list_abr_label = window50_rank_list_ALZ_Genetic,
   gene_list = "OpenTargets_ALZ_Drugs_1"
 )
 
@@ -316,12 +326,13 @@ plotScoreDist(
   perm.mat.window50 = perm.mat.window50.data,
   window_rank_list = window50_rank_list_ALZ_Genetic,
   ot_gene_set_label = "Genetic",
-  disease_abbr = "ALZ",
-  use_cluster_prefix = TRUE
+  disease_abbr = "ALZ"
 )
 ```
 
 ```{r}
+colnames(perm.mat.genetic.data) <- gsub("^cluster_", "", colnames(perm.mat.genetic.data))
+colnames(perm.mat.window50.data) <- gsub("^cluster_", "", colnames(perm.mat.window50.data))
 plotScoreDist(se = se,
               perm.mat = perm.mat.drugs.data,
               perm.mat.window50 = perm.mat.window50.data,

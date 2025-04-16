@@ -10,7 +10,7 @@ Load libraries
 # library(Seurat)
 # library(SeuratObject)
 # library(dplyr)
-# library(tidyverse)
+library(tidyverse)
 # library(ggplot2)
 # library(viridis)
 ```
@@ -226,11 +226,10 @@ Drugs:
 ```{r}
 p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
   se = se,
-  perm.mat.label.data = perm.mat.drugs.data,
+  perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window50.data = perm.mat.window50.data,
-  window_rank_list_abr_label = window50_rank_list_SCZ_Drugs,
-  ot_gene_set_label = "Drugs",
-  disease_abbr = "SCZ",
+  window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
+  gene_list = "OpenTargets_SCZ_Drugs_1",
   cluster_col = "supercluster_term"
 )
 ```
@@ -274,8 +273,7 @@ plotScoreDist(se = se,
               window_rank_list = window50_rank_list_SCZ_Genetic,
               ot_gene_set_label = "Genetic",
               disease_abbr = "SCZ",
-              cluster_col = "supercluster_term",
-              use_cluster_prefix = FALSE)
+              cluster_col = "supercluster_term")
 
 ```
 
@@ -309,8 +307,7 @@ plotScoreDist(se = se,
               window_rank_list = window50_rank_list_SCZ_Drugs,
               ot_gene_set_label = "Drugs",
               disease_abbr = "SCZ",
-              cluster_col = "supercluster_term",
-              use_cluster_prefix = FALSE)
+              cluster_col = "supercluster_term")
 
 ```
 
