@@ -106,11 +106,9 @@ SpatialTraitEnrichmentAnalysis <- function(
     perm.mat.label.data,
     perm.mat.window50.data,
     window_rank_list_abr_label,
-    ot_gene_set_label = "Genetic",
-    disease_abbr = "ALZ",
+    gene_list,
     cluster_col = "seurat_clusters"
 ) {
-  term <- paste0("^", disease_abbr, "_", ot_gene_set_label)
   se_subset <- list()
   meta_data_subset <- list()
   meta_data_abr_label <- list()
@@ -118,6 +116,11 @@ SpatialTraitEnrichmentAnalysis <- function(
   # Check that clustering column exists
   if (!(cluster_col %in% colnames(se@meta.data))) {
     stop(paste("The specified cluster column", cluster_col, "is not found in the Seurat object metadata."))
+  }
+  
+  # Check gene list column exists
+  if (!(gene_list %in% colnames(se@meta.data))) {
+    stop(paste("The specified gene list column", gene_list, "is not found in the metadata."))
   }
   
   cluster_numbers <- sort(unique(se@meta.data[[cluster_col]]))
@@ -129,8 +132,14 @@ SpatialTraitEnrichmentAnalysis <- function(
     se_subset[[subset_name]] <- subset(se, cells = cells_i)
     
     meta_data_subset[[subset_name]] <- se_subset[[subset_name]][[]]
-    start_with_abr_label <- grep(term, colnames(meta_data_subset[[subset_name]]), value = TRUE)
-    meta_data_abr_label[[subset_name]] <- subset(meta_data_subset[[subset_name]], select = start_with_abr_label)
+    matched_cols <- grep(gene_list, colnames(meta_data_subset[[subset_name]]), value = TRUE)
+    
+    if (length(matched_cols) == 0) {
+      warning(paste("No matching columns found for:", gene_list, "in cluster:", i))
+      next
+    }
+    
+    meta_data_abr_label[[subset_name]] <- subset(meta_data_subset[[subset_name]], select = matched_cols)
   }
   
   permutation_nr <- dim(perm.mat.label.data)[1]
@@ -142,10 +151,15 @@ SpatialTraitEnrichmentAnalysis <- function(
   for (index in seq_along(cluster_numbers)) {
     i <- cluster_numbers[index]
     subset_name <- paste0("se_", i)
-    cluster_name <- paste0("cluster_", i)
+    cluster_name <- as.character(i)
+    
+    if (!cluster_name %in% colnames(perm.mat.label.data)) {
+      warning(paste("Cluster", cluster_name, "not found in permutation matrix. Skipping."))
+      next
+    }
     
     abr_label_structure_i <- data.frame()
-    for (k in 1:length(meta_data_abr_label[[subset_name]])) {
+    for (k in 1:ncol(meta_data_abr_label[[subset_name]])) {
       median_value <- median(meta_data_abr_label[[subset_name]][, k], na.rm = TRUE)
       abr_label_structure_i <- rbind(abr_label_structure_i, data.frame(Rank = as.character(k), Median = median_value))
     }
@@ -159,9 +173,9 @@ SpatialTraitEnrichmentAnalysis <- function(
       cluster_i_w_p_val <- (nrow(perm_mat_window_cluster_bigger) + 1) / (permutation_nr + 1)
       adjusted_p_val <- p.adjust(cluster_i_w_p_val, method = "bonferroni", n = nr_of_tests)
       
-      ot_name <- paste("OpenTargets", disease_abbr, ot_gene_set_label, "1", sep = "_")
+      actual_median <- median(as.numeric(unlist(se_subset[[subset_name]][[gene_list]])), na.rm = TRUE)
       perm_mat_label_bigger <- subset(perm.mat.label.data,
-                                      perm.mat.label.data[[cluster_name]] >= median(as.numeric(unlist(se_subset[[subset_name]][[ot_name]]))))
+                                      perm.mat.label.data[[cluster_name]] >= actual_median)
       
       cluster_i_p_val <- (nrow(perm_mat_label_bigger) + 1) / (permutation_nr + 1)
       cluster_i_p_val_adj <- p.adjust(cluster_i_p_val, method = "bonferroni", n = nr_of_tests)
@@ -173,7 +187,6 @@ SpatialTraitEnrichmentAnalysis <- function(
   
   return(p_val_mat)
 }
-
 
 rankPlotForClusters <- function(se, perm.mat, perm.mat.window50, window_rank_list, 
                                 ot_gene_set_label, disease_abbr, cluster_col = "seurat_clusters") {
