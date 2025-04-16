@@ -11,8 +11,7 @@ plotScoreDist(
   window_rank_list,
   ot_gene_set_label = "Genetic",
   disease_abbr = "ALZ",
-  cluster_col = "seurat_clusters",
-  use_cluster_prefix = TRUE
+  cluster_col = "seurat_clusters"
 )
 }
 \arguments{
@@ -29,8 +28,6 @@ plotScoreDist(
 \item{disease_abbr}{A character abbreviation for the trait/disease (e.g., \code{"SCZ"}).}
 
 \item{cluster_col}{Metadata column to use for clustering (default is \code{"seurat_clusters"}).}
-
-\item{use_cluster_prefix}{Logical. If \code{TRUE}, prefix \code{"cluster_"} will be added to cluster names when looking up in permutation matrices.}
 }
 \value{
 No return value. Generates enrichment score plots for each cluster.
@@ -47,6 +44,6 @@ plotScoreDist(
   window_rank_list = window50_rank_list_SCZ_Genetic,
   ot_gene_set_label = "Genetic",
   disease_abbr = "SCZ",
-  cluster_col = "supercluster_term"
+  cluster_col = "seurat_clusters"
 )
 }
