@@ -50,9 +50,6 @@ findClusterMarkers <- function(se,
 }
 
 generate_permutation_matrix_parallel <- function(se, gnum = 50, permutation_nr = 10000, workers = 10, cluster_col = "seurat_clusters") {
-  library(future.apply)
-  library(dplyr)
-  library(Seurat)
   
   options(future.globals.maxSize = 4 * 1024^3)
   plan(multisession, workers = workers)
