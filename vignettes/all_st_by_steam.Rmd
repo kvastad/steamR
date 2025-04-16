@@ -204,10 +204,10 @@ p.val.mat.g <- SpatialTraitEnrichmentAnalysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window50.data = perm.mat.window50.data,
-  window_rank_list_abr_label = window50_rank_list_ALZ_Genetic,
-  ot_gene_set_label = "Genetic",
-  disease_abbr = "ALZ"
+  window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
+  gene_list = "OpenTargets_ALZ_Genetic_1"
 )
+
 se$seurat_clusters <- as.numeric(as.character(se$seurat_clusters))
 se$p.val.g <- se$seurat_clusters
 se$p.val.adj.g <- se$seurat_clusters
@@ -227,12 +227,12 @@ ST.FeaturePlot(object = se, features = "p.val.g", pt.size = 1.5, cols = viridis(
 ```{r}
 p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
   se = se,
-  perm.mat.label.data = perm.mat.drugs.data,
+  perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window50.data = perm.mat.window50.data,
-  window_rank_list_abr_label = window50_rank_list_ALZ_Drugs,
-  ot_gene_set_label = "Drugs",
-  disease_abbr = "ALZ"
+  window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
+  gene_list = "OpenTargets_ALZ_Drugs_1"
 )
+
 se$p.val.d <- se$seurat_clusters
 se$p.val.adj.d <- se$seurat_clusters
 
