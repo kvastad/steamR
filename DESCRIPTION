@@ -14,3 +14,17 @@ RoxygenNote: 7.3.2
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Imports: 
+    corrplot,
+    dplyr,
+    future.apply,
+    ggplot2,
+    lawstat,
+    MASS,
+    RColorBrewer,
+    reshape2,
+    scales,
+    Seurat,
+    SeuratObject,
+    STutility,
+    viridis
