@@ -41,11 +41,9 @@ generate_metacell_clusters <- function(se,
     subset(se, cells = colnames(se)[se@meta.data[[cluster_col]] == ct])
   })
   
-  cell_type_clusters <- lapply(seq_along(cell_types), function(i) {
-    ct_name <- cell_types[i]
-    ct_subset <- cell_type_subsets[[i]]
-    
-    message("\nProcessing ", ct_name)
+  cell_type_clusters <- lapply(cell_type_subsets, function(ct_subset) {
+    cell_type <- unique(ct_subset@meta.data[[cluster_col]])[1]
+    message("\nProcessing cell type: ", cell_type)
     
     ct_subset <- SCTransform(ct_subset, verbose = verbose)
     ct_subset <- FindVariableFeatures(ct_subset, verbose = verbose)
@@ -59,14 +57,11 @@ generate_metacell_clusters <- function(se,
     
     while (num_clusters < desired_clusters) {
       resolution <- resolution + 0.1
-      message("Increasing resolution to ", round(resolution, 2), " for ", ct_name)
       ct_subset <- FindClusters(ct_subset, resolution = resolution, verbose = verbose)
       num_clusters <- length(unique(ct_subset$seurat_clusters))
     }
-    
     while (num_clusters > desired_clusters) {
       resolution <- resolution - 0.1
-      message("Decreasing resolution to ", round(resolution, 2), " for ", ct_name)
       ct_subset <- FindClusters(ct_subset, resolution = resolution, verbose = verbose)
       num_clusters <- length(unique(ct_subset$seurat_clusters))
     }

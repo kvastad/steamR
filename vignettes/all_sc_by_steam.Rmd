@@ -7,12 +7,13 @@ output: html_document
 
 Load libraries
 ```{r}
-# library(Seurat)
-# library(SeuratObject)
-# library(dplyr)
+library(Seurat)
+library(SeuratObject)
+library(dplyr)
 library(tidyverse)
-# library(ggplot2)
-# library(viridis)
+library(steam)
+library(ggplot2)
+library(viridis)
 ```
 
 
@@ -74,7 +75,7 @@ Save filtered and normalized se object
 ```
 
 ```{r}
-clustered_metacells <- generate_metacell_clusters(se, cluster_col = "subclass_label")
+clustered_metacells <- generate_metacell_clusters(se, cluster_col = "subclass_label", verbose = FALSE)
 ```
 
 ```{r}
