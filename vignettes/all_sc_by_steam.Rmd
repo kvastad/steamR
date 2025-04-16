@@ -7,12 +7,12 @@ output: html_document
 
 Load libraries
 ```{r}
-library(Seurat)
-library(SeuratObject)
-library(dplyr)
-library(tidyverse)
-library(ggplot2)
-library(viridis)
+# library(Seurat)
+# library(SeuratObject)
+# library(dplyr)
+# library(tidyverse)
+# library(ggplot2)
+# library(viridis)
 ```
 
 
@@ -59,7 +59,7 @@ seurat_clusters$Barcode <- colnames(se)
 seurat_clusters$seurat_clusters <- seurat_clusters$`se$subclass_label`
 seurat_clusters$`se$subclass_label` <- NULL
 
-write.table(seurat_clusters,file="data/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
+# write.table(seurat_clusters,file="data/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
 ```
 
 Normalize data: se <- SCTransform(se,return.only.var.genes = T)
@@ -70,7 +70,7 @@ se <- SCTransform(se,return.only.var.genes = T)
 
 Save filtered and normalized se object
 ```{r, eval=FALSE}
-saveRDS(se,file = "data/Seurat_objects/se_250_cells_filtered_normalized.RDS")
+# saveRDS(se,file = "data/Seurat_objects/se_250_cells_filtered_normalized.RDS")
 ```
 
 ```{r}
@@ -83,7 +83,7 @@ meta_cell_seurat_all_sum_with_metadata <- aggregate_metacells(clustered_metacell
 
 Save MetaCell Seurat Object
 ```{r,eval=T}
-saveRDS(meta_cell_seurat_all_sum_with_metadata,file("data/Seurat_objects/MetaCell.rds"))
+# saveRDS(meta_cell_seurat_all_sum_with_metadata,file("data/Seurat_objects/MetaCell.rds"))
 ```
 
 
@@ -93,7 +93,7 @@ seurat_clusters <- as.data.frame(meta_cell_seurat_all_sum_with_metadata$subclass
 seurat_clusters$Barcode <- colnames(meta_cell_seurat_all_sum_with_metadata)
 seurat_clusters$seurat_clusters <- seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$subclass_label`
 seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$subclass_label` <- NULL
-write.table(seurat_clusters,file="data/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
+# write.table(seurat_clusters,file="data/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
 ```
 
 
