@@ -63,8 +63,6 @@ all_gene_sets_structure_markers <- clusterMarkers$marker_genes
 
 
 loading OpenTargets gene sets:
-Steps corresponding to `OpenTargets_gene_sets` notebook
-it should be a function later
 
 ```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 OpenTargets.path <- "data/Data_brain_example/OpenTargets/brain_mouse_10X/MONDO_0004975-associated-diseases_alzheimer_disease_v23.06.tsv"
@@ -116,42 +114,6 @@ names(all_gene_sets) <- list.names
 # Extract Genetic and Drug gene sets
 OpenTargets_ALZ_Genetic_ <- all_gene_sets[[grep("Genetic", names(all_gene_sets))]]
 OpenTargets_ALZ_Drugs_ <- all_gene_sets[[grep("Drugs", names(all_gene_sets))]]
-
-
-# splitWithOverlap <- function(vec, seg.length, move) {
-#   starts = seq(1, length(vec), by=move)
-#   ends   = starts + seg.length - 1
-#   ends[ends > length(vec)] = length(vec)
-# 
-#   lapply(1:length(starts), function(i) vec[starts[i]:ends[i]])
-# }
-# win.size <- 50
-# move.size <- 10
-# windows.list <- lapply(all_gene_sets, splitWithOverlap, seg.length = win.size, move = move.size)
-
-# process_gene_sets <- function(disease_abbr, rank_type, all_gene_sets, windows_list, set_index) {
-#   #Unlist 
-#   unlisted_gene_set <- unlist(all_gene_sets[[set_index]])
-#   
-#   #Subset
-#   window50_rank_list <- windows_list[[set_index]]
-#   
-#   #create the rank names using the disease abbreviation and rank type
-#   Rank_names <- rep(paste0(disease_abbr, "_", rank_type, "_Rank"), length(window50_rank_list))
-#   Rank_names <- paste0(Rank_names, 1:length(Rank_names), sep="_")
-#   
-#   names(window50_rank_list) <- Rank_names
-#   
-#   return(list(unlisted_gene_set = unlisted_gene_set, ranked_window_list = window50_rank_list))
-# }
-# disease_abbr = "ALZ"
-# ALZ_Genetic_results <- process_gene_sets(disease_abbr, "Genetic", all_gene_sets, windows.list, 2)
-# OpenTargets_ALZ_Genetic_ <- ALZ_Genetic_results$unlisted_gene_set
-# window50_rank_list_ALZ_Genetic <- ALZ_Genetic_results$ranked_window_list
-# 
-# ALZ_Drugs_results <- process_gene_sets(disease_abbr, "Drugs", all_gene_sets, windows.list, 3)
-# OpenTargets_ALZ_Drugs_ <- ALZ_Drugs_results$unlisted_gene_set
-# window50_rank_list_ALZ_Drugs <- ALZ_Drugs_results$ranked_window_list
 ```
 
 
