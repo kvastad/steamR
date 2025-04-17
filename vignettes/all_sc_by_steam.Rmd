@@ -160,39 +160,38 @@ for (i in 1:length(all_gene_sets)) {
 # NULL set permutation
 
 ```{r, eval=FALSE}
-#Permutation matrixs
-# perm.mat_p10000_g50 <- generate_permutation_matrix_parallel(
+#generate permutation matrices (non-parallel, 1000 permutations)
+
+# perm.mat_p1000_g50 <- generate_permutation_matrix(
 #   se = se,
 #   gnum = 50,
-#   permutation_nr = 10000,
-#   workers = 10,
+#   permutation_nr = 1000,
 #   cluster_col = "supercluster_term"
 # )
 # 
-# saveRDS(perm.mat_p10000_g50, file = "Permutation_matrices/perm.mat_p10000_g50.RDS")
-# write.matrix(perm.mat_p10000_g50, file=paste0("Permutation_matrices/perm.mat_p10000_g50.csv"), sep = ";")
-
-# perm.mat_p10000_g218 <- generate_permutation_matrix_parallel(
+# saveRDS(perm.mat_p1000_g50, file = "Permutation_matrices/perm.mat_p1000_g50.RDS")
+# write.matrix(perm.mat_p1000_g50, file = "Permutation_matrices/perm.mat_p1000_g50.csv", sep = ";")
+# 
+# perm.mat_p1000_g218 <- generate_permutation_matrix(
 #   se = se,
 #   gnum = 218,
-#   permutation_nr = 10000,
-#   workers = 10,
+#   permutation_nr = 1000,
 #   cluster_col = "supercluster_term"
 # )
 # 
-# saveRDS(perm.mat_p10000_g218, file = "Permutation_matrices/perm.mat_p10000_g218.RDS")
-# write.matrix(perm.mat_p10000_g218, file=paste0("Permutation_matrices/perm.mat_p10000_g218.csv"), sep = ";")
-
-# perm.mat_p10000_g1315 <- generate_permutation_matrix_parallel(
+# saveRDS(perm.mat_p1000_g218, file = "Permutation_matrices/perm.mat_p1000_g218.RDS")
+# write.matrix(perm.mat_p1000_g218, file = "Permutation_matrices/perm.mat_p1000_g218.csv", sep = ";")
+# 
+# perm.mat_p1000_g1315 <- generate_permutation_matrix(
 #   se = se,
 #   gnum = 1315,
-#   permutation_nr = 10000,
-#   workers = 10,
+#   permutation_nr = 1000,
 #   cluster_col = "supercluster_term"
 # )
 # 
-# saveRDS(perm.mat_p10000_g1315, file = "Data_brain_example/Permutation_matrices/perm.mat_p10000_g1315.RDS")
-# write.matrix(perm.mat_p10000_g1315, file=paste0("Data_brain_example/Permutation_matrices/perm.mat_p10000_g1315.csv"), sep = ";")
+# saveRDS(perm.mat_p1000_g1315, file = "Data_brain_example/Permutation_matrices/perm.mat_p1000_g1315.RDS")
+# write.matrix(perm.mat_p1000_g1315, file = "Data_brain_example/Permutation_matrices/perm.mat_p1000_g1315.csv", sep = ";")
+
 ```
 
 Load perm.mat

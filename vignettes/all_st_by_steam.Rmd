@@ -154,9 +154,28 @@ for (i in 1:length(all_gene_sets)) {
 this chunk takes about 90 minutes for all on my local. Maybe we can further optimize it. So don't try it at home!
 
 ```{r}
-# perm.mat.window50.data <- generate_permutation_matrix_parallel(se, gnum = 50, permutation_nr = 10000, workers = 10)
-# perm.mat.genetic.data <- generate_permutation_matrix_parallel(se, gnum = 281, permutation_nr = 10000, workers = 10)
-# perm.mat.drugs.data <- generate_permutation_matrix_parallel(se, gnum = 132, permutation_nr = 10000, workers = 10)
+# Generate permutation matrices (non-parallel, 1000 permutations)
+
+# perm.mat.window50.data <- generate_permutation_matrix(
+#   se = se,
+#   gnum = 50,
+#   permutation_nr = 1000,
+#   cluster_col = "seurat_clusters"
+# )
+# 
+# perm.mat.genetic.data <- generate_permutation_matrix(
+#   se = se,
+#   gnum = 281,
+#   permutation_nr = 1000,
+#   cluster_col = "seurat_clusters"
+# )
+# 
+# perm.mat.drugs.data <- generate_permutation_matrix(
+#   se = se,
+#   gnum = 132,
+#   permutation_nr = 1000,
+#   cluster_col = "seurat_clusters"
+# )
 ```
 
 let's load it for now
