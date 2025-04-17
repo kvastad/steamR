@@ -42,10 +42,7 @@ options(future.globals.maxSize = 4 * 1024^3)
 se <- SCTransform(se,return.only.var.genes = T)
 # add seurat cluster
 seurat_clusters <- read.csv(file = "data/Data_brain_example/spatial_structures/seurat_clusters.csv", sep = ";")
-rownames(seurat_clusters) <- seurat_clusters$Barcode
-seurat_clusters$Barcode <- NULL
-se$seurat_clusters <- seurat_clusters
-se$seurat_clusters_plot <- as.factor(se$seurat_clusters)
+se <- addClusterAnnotations(se, AnnoDataframe = seurat_clusters, BarcodeName = "Barcode", AnnoName = "seurat_clusters")
 ```
 
 Find spatial structures and their top marker genes:
@@ -63,6 +60,7 @@ all_gene_sets_structure_markers <- clusterMarkers$marker_genes
 
 
 loading OpenTargets gene sets:
+Steps corresponding to `OpenTargets_gene_sets` notebook
 
 ```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 OpenTargets.path <- "data/Data_brain_example/OpenTargets/brain_mouse_10X/MONDO_0004975-associated-diseases_alzheimer_disease_v23.06.tsv"
