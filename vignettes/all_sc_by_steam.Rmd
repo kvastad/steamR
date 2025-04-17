@@ -130,7 +130,6 @@ Load window rank lists
 ```{r}
 window50_rank_list_SCZ_Genetic <- readRDS(file = "data/OpenTargets_windowLists/Human_window50_rank_list_SCZ_Genetic.RDS")
 window50_rank_list_SCZ_Drugs <- readRDS(file = "data/OpenTargets_windowLists/Human_window50_rank_list_SCZ_Drugs.RDS")
-
 ```
 
 Merge gene sets

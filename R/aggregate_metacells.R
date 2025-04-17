@@ -21,7 +21,7 @@ aggregate_metacells <- function(cell_type_clusters, cluster_col = "subclass_labe
     
     for (cluster_id in clusters) {
       cluster_cells <- ct_subset[, ct_subset$seurat_clusters == cluster_id]
-      summed_expression <- rowSums(as.matrix(cluster_cells@assays$RNA@counts))
+      summed_expression <- rowSums(as.matrix(GetAssayData(cluster_cells, slot = "counts")))
       meta_cell_data[[as.character(cluster_id)]] <- summed_expression
       
       subclass_label_values <- cluster_cells@meta.data[[cluster_col]]
