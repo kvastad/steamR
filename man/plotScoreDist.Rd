@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotScoreDist.R
 \name{plotScoreDist}
 \alias{plotScoreDist}
-\title{Plot Enrichment Score Distribution Against Null}
+\title{Plot Enrichment Score Distributions for Clusters}
 \usage{
 plotScoreDist(
   se,
@@ -11,30 +11,35 @@ plotScoreDist(
   window_rank_list,
   ot_gene_set_label = "Genetic",
   disease_abbr = "ALZ",
-  cluster_col = "seurat_clusters"
+  cluster_col = "seurat_clusters",
+  clusters_to_plot = NULL
 )
 }
 \arguments{
-\item{se}{A Seurat object containing enrichment scores in metadata.}
+\item{se}{A Seurat object containing enrichment scores in the metadata.}
 
-\item{perm.mat}{A permutation matrix of actual enrichment scores per cluster.}
+\item{perm.mat}{A permutation matrix of enrichment scores per cluster (global medians).}
 
-\item{perm.mat.window50}{A window-level permutation matrix (e.g. 50-gene ranks).}
+\item{perm.mat.window50}{A permutation matrix based on ranked gene windows (optional but preloaded).}
 
-\item{window_rank_list}{A list of ranked gene windows used for enrichment.}
+\item{window_rank_list}{A list or vector of rank indices used to define the enrichment windows.}
 
-\item{ot_gene_set_label}{A character label for the gene set type (e.g., \code{"Genetic"}).}
+\item{ot_gene_set_label}{A string label for the gene set (e.g., \code{"Genetic"} or \code{"Drugs"}).}
 
-\item{disease_abbr}{A character abbreviation for the trait/disease (e.g., \code{"SCZ"}).}
+\item{disease_abbr}{A short string indicating the trait or disease (e.g., \code{"SCZ"} or \code{"ALZ"}).}
 
-\item{cluster_col}{Metadata column to use for clustering (default is \code{"seurat_clusters"}).}
+\item{cluster_col}{The column in the Seurat metadata that contains cluster labels (default is \code{"seurat_clusters"}).}
+
+\item{clusters_to_plot}{Optional vector of indices to subset and plot specific clusters only.}
 }
 \value{
-No return value. Generates enrichment score plots for each cluster.
+No return value. Produces a series of ggplot2 density plots, one per cluster.
 }
 \description{
-Generates a density plot of the NULL gene set median scores for each cluster,
-and overlays the actual enrichment score to assess statistical significance.
+Generates density plots of NULL distribution scores for each cluster
+and overlays the actual enrichment score to visually compare significance.
+This function is useful for assessing whether observed enrichment scores
+deviate from a random background.
 }
 \examples{
 plotScoreDist(
@@ -44,6 +49,6 @@ plotScoreDist(
   window_rank_list = window50_rank_list_SCZ_Genetic,
   ot_gene_set_label = "Genetic",
   disease_abbr = "SCZ",
-  cluster_col = "seurat_clusters"
+  cluster_col = "supercluster_term"
 )
 }

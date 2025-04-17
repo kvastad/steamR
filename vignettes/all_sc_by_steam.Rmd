@@ -19,82 +19,92 @@ library(viridis)
 
 Load SC se object:
 ```{r}
-se <- readRDS("data/Seurat_objects/se_allen_brain_atlas_random_250_subclass_label.rds")
-se
-table(se$subclass_label)
+# se <- readRDS("data/Seurat_objects/se_allen_brain_atlas_random_250_subclass_label.rds")
+# se
+# table(se$subclass_label)
 ```
 
 
 Collect QC metrics
 ```{r}
-se[["percent.mt"]] <- PercentageFeatureSet(se, pattern = "^mt-")
-se[["percent.rb"]] <- PercentageFeatureSet(se, pattern = "^Rpl|^Rps")
+# se[["percent.mt"]] <- PercentageFeatureSet(se, pattern = "^mt-")
+# se[["percent.rb"]] <- PercentageFeatureSet(se, pattern = "^Rpl|^Rps")
 ```
 
 Filtering cells
 ```{r}
-se
-se <- subset(se, subset = nFeature_RNA > 200 & nFeature_RNA < 8000 & 
-                    nCount_RNA > 500 & nCount_RNA < 35000 & 
-                    percent.mt <= 10 & percent.rb <= 15)
-se
+# se
+# se <- subset(se, subset = nFeature_RNA > 200 & nFeature_RNA < 8000 &
+#                     nCount_RNA > 500 & nCount_RNA < 35000 &
+#                     percent.mt <= 10 & percent.rb <= 15)
+# se
 ```
+
 Filtering genes
 ```{r}
-se
-# Define a threshold for the total UMI count
-min_umi <- 100
-
-# Calculate the total UMIs per gene
-gene_totals <- Matrix::rowSums(GetAssayData(se, slot = "counts"))
-
-# Subset genes with total UMIs above the threshold
-se <- subset(se, features = rownames(se)[gene_totals >= min_umi])
-se
+# se
+# # Define a threshold for the total UMI count
+# min_umi <- 100
+# 
+# # Calculate the total UMIs per gene
+# gene_totals <- Matrix::rowSums(GetAssayData(se, slot = "counts"))
+# 
+# # Subset genes with total UMIs above the threshold
+# se <- subset(se, features = rownames(se)[gene_totals >= min_umi])
+# se
 ```
 
 Save cluster annotations
 ```{r, eval=FALSE}
-seurat_clusters <- as.data.frame(se$subclass_label)
-seurat_clusters$Barcode <- colnames(se)
-seurat_clusters$seurat_clusters <- seurat_clusters$`se$subclass_label`
-seurat_clusters$`se$subclass_label` <- NULL
-
+# seurat_clusters <- as.data.frame(se$subclass_label)
+# seurat_clusters$Barcode <- colnames(se)
+# seurat_clusters$seurat_clusters <- seurat_clusters$`se$subclass_label`
+# seurat_clusters$`se$subclass_label` <- NULL
 # write.table(seurat_clusters,file="data/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
 ```
 
-Normalize data: se <- SCTransform(se,return.only.var.genes = T)
+Normalize data: se <- SCTransform(se,return.only.var.genes = T) and Save filtered and normalized se object
+
 ```{r, message=FALSE, include=FALSE}
-options(future.globals.maxSize = 5 * 1024^3)
-se <- SCTransform(se,return.only.var.genes = T)
-```
-
-Save filtered and normalized se object
-```{r, eval=FALSE}
+# options(future.globals.maxSize = 5 * 1024^3)
+# se <- SCTransform(se,return.only.var.genes = T)
 # saveRDS(se,file = "data/Seurat_objects/se_250_cells_filtered_normalized.RDS")
+# se <- readRDS("data/Seurat_objects/se_250_cells_filtered_normalized.RDS")
 ```
+
+Generate metacell clusters
 
 ```{r}
-clustered_metacells <- generate_metacell_clusters(se, cluster_col = "subclass_label", verbose = FALSE)
+# clustered_metacells <- generate_metacell_clusters(se, cluster_col = "subclass_label", verbose = FALSE)
 ```
+
+Aggregate and save metacell clusters
 
 ```{r}
-meta_cell_seurat_all_sum_with_metadata <- aggregate_metacells(clustered_metacells)
-```
-
-Save MetaCell Seurat Object
-```{r,eval=T}
+# meta_cell_seurat_all_sum_with_metadata <- aggregate_metacells(clustered_metacells)
 # saveRDS(meta_cell_seurat_all_sum_with_metadata,file("data/Seurat_objects/MetaCell.rds"))
 ```
 
+Read saved aggregated MetaCell Seurat Object
+
+```{r,eval=T}
+# meta_cell_seurat_all_sum_with_metadata <- readRDS("data/Seurat_objects/MetaCell.rds")
+
+```
 
 Save cluster annotations
 ```{r, eval=T}
-seurat_clusters <- as.data.frame(meta_cell_seurat_all_sum_with_metadata$subclass_label)
-seurat_clusters$Barcode <- colnames(meta_cell_seurat_all_sum_with_metadata)
-seurat_clusters$seurat_clusters <- seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$subclass_label`
-seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$subclass_label` <- NULL
+# seurat_clusters <- as.data.frame(meta_cell_seurat_all_sum_with_metadata$subclass_label)
+# seurat_clusters$Barcode <- colnames(meta_cell_seurat_all_sum_with_metadata)
+# seurat_clusters$seurat_clusters <- seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$subclass_label`
+# seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$subclass_label` <- NULL
 # write.table(seurat_clusters,file="data/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
+
+seurat_clusters <- read.table("data/Seurat_objects/seurat_clusters.csv",
+                               header = TRUE,
+                               sep = ";",
+                               stringsAsFactors = FALSE)
+
 ```
 
 
