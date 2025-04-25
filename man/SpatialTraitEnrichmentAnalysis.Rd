@@ -32,12 +32,7 @@ to test for enrichment (e.g., "OpenTargets_SCZ_Genetic_1").}
 (e.g., "seurat_clusters" or "supercluster_term").}
 }
 \value{
-A matrix of enrichment results for each cluster. Rows contain:
-\describe{
-\item{-log10(p.val)}{The log-transformed unadjusted p-values}
-\item{-log10(p.val.adj)}{The log-transformed Bonferroni-adjusted p-values}
-}
-Columns correspond to each cluster analyzed.
+A data frame of unadjusted p-values for each cluster.
 }
 \description{
 Performs permutation-based enrichment analysis of a trait-specific gene score

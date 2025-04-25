@@ -4,114 +4,73 @@
 #' for each cluster. This helps visualize how enrichment scores vary 
 #' by window rank and how they compare to permutation null distributions.
 #'
-#' @param se A Seurat object containing cluster metadata and enrichment scores.
-#' @param perm.mat A permutation matrix containing global median scores for each cluster.
-#' @param perm.mat.window50 A permutation matrix for window-based (e.g., 50-gene) median scores.
-#' @param window_rank_list A list or vector of window ranks used to generate enrichment scores.
-#' @param ot_gene_set_label A string identifying the gene set type (e.g., "Genetic").
-#' @param disease_abbr A short abbreviation for the disease or trait (e.g., "SCZ").
-#' @param cluster_col The name of the metadata column specifying clusters 
-#'        (default is `"seurat_clusters"`).
-#' @param ylim A numeric vector of length two specifying the y-axis limits for the plots 
-#'        (default is `c(-0.3, 0.3)`).
-#' @param clusters_to_plot Optional numeric or character vector indicating specific cluster 
-#'        indices (positions) to plot from the sorted list of cluster IDs. If `NULL`, all are plotted.
+#' @param window_results Output from WindowRankEnrichmentAnalysis containing pre-calculated scores and quantiles
+#' @param perm.mat.window50 A permutation matrix for window-based median scores (only used for visualization)
+#' @param clusters_to_plot Optional numeric vector indicating specific clusters to plot. If NULL, all are plotted.
+#' @param ylim A numeric vector of length two specifying the y-axis limits (default: c(-0.3, 0.3))
 #'
 #' @returns Line plots per cluster showing the structure of rank-wise median scores.
 #' @export
 #'
 #' @examples
-#' rankPlotForClusters(
+#' window_results <- WindowRankEnrichmentAnalysis(
 #'   se = se,
-#'   perm.mat = perm.mat.genetic.data,
-#'   perm.mat.window50 = perm.mat.window50.data,
-#'   window_rank_list = window50_rank_list_SCZ_Genetic,
-#'   ot_gene_set_label = "Genetic",
-#'   disease_abbr = "SCZ",
-#'   cluster_col = "supercluster_term",
-#'   ylim = c(-0.2, 0.2),
-#'   clusters_to_plot = 1:5
+#'   perm.mat.window50.data = perm.mat.window50.data,
+#'   window_rank_list = window50_rank_list_ALZ_Drugs,
+#'   ot_gene_set_label = "Drugs",
+#'   disease_abbr = "ALZ"
 #' )
-rankPlotForClusters <- function(se, perm.mat, perm.mat.window50, window_rank_list, 
-                                ot_gene_set_label, disease_abbr, cluster_col = "seurat_clusters", ylim = c(-0.3, 0.3), clusters_to_plot = NULL) {
-  
-  term <- paste0("^", disease_abbr, "_", ot_gene_set_label)
-  se_subset <- list()
-  meta_data_subset <- list()
-  meta_data_abr_label <- list()
-  
-  # Ensure cluster_col exists
-  if (!(cluster_col %in% colnames(se@meta.data))) {
-    stop(paste("The specified cluster column", cluster_col, "does not exist in the Seurat object metadata."))
-  }
-  
-  cluster_ids <- unique(se@meta.data[[cluster_col]])
-  
-  # Separate numeric and non-numeric IDs
-  suppressWarnings({
-    numeric_ids <- cluster_ids[!is.na(as.numeric(as.character(cluster_ids)))]
-    non_numeric_ids <- cluster_ids[is.na(as.numeric(as.character(cluster_ids)))]
-  })
-  
-  # Sort numerically and alphabetically
-  sorted_ids <- c(
-    sort(as.numeric(as.character(numeric_ids))),
-    sort(as.character(non_numeric_ids))
-  )
-  
-  cluster_ids <- sorted_ids
-  
-  
-  # Filter cluster_ids if clusters_to_plot is provided
-  if (!is.null(clusters_to_plot)) {
-    cluster_ids <- cluster_ids[clusters_to_plot]
-  }
-  
-  
-  # Temporarily set identity class to the selected clustering column
-  se <- SetIdent(se, value = cluster_col)
-  
-  for (i in cluster_ids) {
-    subset_name <- paste0("se_", i)
-    se_subset[[subset_name]] <- subset(se, idents = i)
-    meta_data_subset[[subset_name]] <- se_subset[[subset_name]][[]]
-    start_with_abr_label <- grep(term, colnames(meta_data_subset[[subset_name]]), value = TRUE)
-    meta_data_abr_label[[subset_name]] <- subset(meta_data_subset[[subset_name]],
-                                                 select = start_with_abr_label)
-  }
-  
-  for (i in cluster_ids) {
-    subset_name <- paste0("se_", i)
-    abr_label_structure_i <- NULL
+#' 
+#' rankPlotForClusters(
+#'   window_results = window_results,
+#'   perm.mat.window50 = perm.mat.window50.data,
+#'   ylim = c(-0.3, 0.3)
+#' )
+rankPlotForClusters <- function(window_results, 
+                               perm.mat.window50, 
+                               clusters_to_plot = NULL,
+                               ylim = c(-0.3, 0.3)) {
     
-    for (k in seq_len(ncol(meta_data_abr_label[[subset_name]]))) {
-      meta_data_vector <- data.frame(
-        Rank = as.character(k),
-        Median = median(meta_data_abr_label[[subset_name]][, k], na.rm = TRUE)
-      )
-      abr_label_structure_i <- rbind(abr_label_structure_i, meta_data_vector)
+    # Get unique clusters in their original order (maintained by factor levels)
+    unique_clusters <- levels(window_results$cluster)
+    if (is.null(unique_clusters)) {
+        unique_clusters <- sort(unique(window_results$cluster))
     }
     
-    rownames(abr_label_structure_i) <- seq_len(nrow(abr_label_structure_i))
-    abr_label_structure_i <- as.data.frame(abr_label_structure_i)
+    # Filter clusters if specified
+    if (!is.null(clusters_to_plot)) {
+        cluster_names <- paste0("cluster_", clusters_to_plot)
+        unique_clusters <- unique_clusters[unique_clusters %in% cluster_names]
+    }
     
-    # Plot
-    plot(
-      abr_label_structure_i$Rank,
-      abr_label_structure_i$Median,
-      main = paste(disease_abbr, ot_gene_set_label, "Cluster:", i),
-      xlab = "Window Rank",
-      ylab = "Median Score",
-      type = "o",
-      ylim = ylim,
-      xaxt = "n"
-    )
-    axis(1, at = seq(1, 200, by = 1), cex.axis = 0.5)
-    
-    abline(h = max(perm.mat.window50[, 1]), col = "darkred", lwd = 2, lty = 2)
-    abline(h = quantile(as.numeric(perm.mat.window50[, 1]), probs = 0.95), col = "red", lwd = 2, lty = 2)
-    abline(h = median(perm.mat.window50[, 1]), col = "blue", lwd = 2, lty = 2)
-    abline(h = quantile(as.numeric(perm.mat.window50[, 1]), probs = 0.05), col = "red", lwd = 2, lty = 2)
-    abline(h = min(perm.mat.window50[, 1]), col = "darkred", lwd = 2, lty = 2)
-  }
+    # Create plots in the correct order
+    for (cluster in unique_clusters) {
+        cluster_data <- window_results[window_results$cluster == cluster, ]
+        
+        # Sort by window number to ensure correct plotting order
+        cluster_data <- cluster_data[order(cluster_data$window), ]
+        
+        plot(cluster_data$window,
+             cluster_data$observed_score,
+             main = paste("Cluster:", gsub("cluster_", "", cluster)),
+             xlab = "Window Rank",
+             ylab = "Median Score",
+             type = "o",
+             ylim = ylim,
+             xaxt = "n")
+        
+        axis(1, at = seq_along(cluster_data$window), cex.axis = 0.5)
+        
+        abline(h = cluster_data$q95[1], col = "red", lwd = 2, lty = 2)
+        abline(h = cluster_data$q05[1], col = "red", lwd = 2, lty = 2)
+        
+        if (!is.null(perm.mat.window50)) {
+            null_dist <- perm.mat.window50[[gsub("cluster_", "", cluster)]]
+            if (!is.null(null_dist)) {
+                abline(h = max(null_dist), col = "darkred", lwd = 2, lty = 2)
+                abline(h = min(null_dist), col = "darkred", lwd = 2, lty = 2)
+                abline(h = median(null_dist), col = "blue", lwd = 2, lty = 2)
+            }
+        }
+    }
 }

@@ -209,19 +209,42 @@ p.val.mat.g <- SpatialTraitEnrichmentAnalysis(
   window_rank_list_abr_label = window50_rank_list_ALZ_Genetic,
   gene_list = "OpenTargets_ALZ_Genetic_1"
 )
+```
 
-se$seurat_clusters <- as.numeric(as.character(se$seurat_clusters))
-se$p.val.g <- se$seurat_clusters
-se$p.val.adj.g <- se$seurat_clusters
+```{r}
+# Get all p-values
+all_pvals.g <- as.numeric(p.val.mat.g[1, ])
 
+# Adjust p-values (using Bonferroni correction)
+adjusted_pvals.g <- p.adjust(all_pvals.g, method = "bonferroni")
+
+# Create a new data frame with both p-values
+p.val.mat.g <- rbind(
+  p.val.mat.g,
+  "p.val.adj" = adjusted_pvals.g
+)
+```
+
+```{r}
+se$seurat_clusters <- as.character(se$seurat_clusters)
 clusters <- sort(unique(se$seurat_clusters))
 
-for (i in clusters) {
-  idx <- as.integer(i) + 1
-  se$p.val.g[se$seurat_clusters == i] <- as.numeric(p.val.mat.g[1, idx])
-  se$p.val.adj.g[se$seurat_clusters == i] <- as.numeric(p.val.mat.g[2, idx])
-}
+se$p.val.g <- NA
+se$p.val.adj.g <- NA
 
+# Match by cluster names
+for (cluster in clusters) {
+  cluster_name <- paste0("cluster_", cluster)
+  if (cluster_name %in% colnames(p.val.mat.g)) {
+    se$p.val.g[se$seurat_clusters == cluster] <- as.numeric(p.val.mat.g["p.val", cluster_name])
+    se$p.val.adj.g[se$seurat_clusters == cluster] <- as.numeric(p.val.mat.g["p.val.adj", cluster_name])
+  } else {
+    warning(paste("Cluster", cluster_name, "not found in p.val.mat.g"))
+  }
+}
+```
+
+```{r}
 ST.FeaturePlot(object = se, features = "p.val.adj.g", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
 ST.FeaturePlot(object = se, features = "p.val.g", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
 ```
@@ -235,17 +258,39 @@ p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
   gene_list = "OpenTargets_ALZ_Drugs_1"
 )
 
-se$p.val.d <- se$seurat_clusters
-se$p.val.adj.d <- se$seurat_clusters
+# Get all p-values
+all_pvals.d <- as.numeric(p.val.mat.d[1, ])
 
+# Adjust p-values (using Bonferroni correction)
+adjusted_pvals.d <- p.adjust(all_pvals.d, method = "bonferroni")
+
+# Create a new data frame with both p-values
+p.val.mat.d <- rbind(
+  p.val.mat.d,
+  "p.val.adj" = adjusted_pvals.d
+)
+```
+
+```{r}
+se$seurat_clusters <- as.character(se$seurat_clusters)
 clusters <- sort(unique(se$seurat_clusters))
 
-for (i in clusters) {
-  idx <- as.integer(i) + 1
-  se$p.val.d[se$seurat_clusters == i] <- as.numeric(p.val.mat.d[1, idx])
-  se$p.val.adj.d[se$seurat_clusters == i] <- as.numeric(p.val.mat.d[2, idx])
-}
+se$p.val.d <- NA
+se$p.val.adj.d <- NA
 
+# Match by cluster names
+for (cluster in clusters) {
+  cluster_name <- paste0("cluster_", cluster)
+  if (cluster_name %in% colnames(p.val.mat.d)) {
+    se$p.val.d[se$seurat_clusters == cluster] <- as.numeric(p.val.mat.d["p.val", cluster_name])
+    se$p.val.adj.d[se$seurat_clusters == cluster] <- as.numeric(p.val.mat.d["p.val.adj", cluster_name])
+  } else {
+    warning(paste("Cluster", cluster_name, "not found in p.val.mat.d"))
+  }
+}
+```
+
+```{r}
 ST.FeaturePlot(object = se, features = "p.val.adj.d", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
 ST.FeaturePlot(object = se, features = "p.val.d", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
 ```
@@ -270,17 +315,29 @@ FeatureOverlay(se,
                ncols = 1,
                cols = viridis(length(unique(se$seurat_clusters))))
 ```
+```{r}
+window_results <- WindowRankEnrichmentAnalysis(
+    se = se,
+    perm.mat.window50.data = perm.mat.window50.data,
+    window_rank_list = window50_rank_list_ALZ_Drugs,
+    ot_gene_set_label = "Drugs",
+    disease_abbr = "ALZ"
+)
+
+# adjust p-values
+window_results$p_value_adj <- p.adjust(window_results$p_value, method = "bonferroni")
+# other methods:
+# window_results$p_value_adj <- p.adjust(window_results$p_value, method = "fdr")
+# window_results$p_value_adj <- p.adjust(window_results$p_value, method = "holm")
+```
 
 
 ```{r}
 rankPlotForClusters(
-  se = se,
-  perm.mat = perm.mat.drugs.data,
-  perm.mat.window50 = perm.mat.window50.data,
-  window_rank_list = window50_rank_list_ALZ_Drugs,
-  ot_gene_set_label = "Drugs",
-  disease_abbr = "ALZ",
-  ylim = c(-0.3, 0.3))
+    window_results = window_results,
+    perm.mat.window50 = perm.mat.window50.data,
+    ylim = c(-0.3, 0.3)
+)
 ```
 
 

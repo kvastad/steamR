@@ -16,7 +16,12 @@
 #' @param cluster_col Column name in `se@meta.data` specifying the clustering to use 
 #'        (e.g., "seurat_clusters" or "supercluster_term").
 #'
-#' @returns A data frame of unadjusted p-values for each cluster.
+#' @returns A matrix of enrichment results for each cluster. Rows contain:
+#' \describe{
+#'   \item{-log10(p.val)}{The log-transformed unadjusted p-values}
+#'   \item{-log10(p.val.adj)}{The log-transformed Bonferroni-adjusted p-values}
+#' }
+#' Columns correspond to each cluster analyzed.
 #'
 #' @export
 #'
@@ -73,8 +78,8 @@ SpatialTraitEnrichmentAnalysis <- function(
   permutation_nr <- dim(perm.mat.label.data)[1]
   nr_of_tests <- length(cluster_numbers)
   cluster_names <- paste0("cluster_", cluster_numbers)
-  p_val_mat <- matrix(NA, nrow = 1, ncol = length(cluster_names),
-                      dimnames = list("p.val", cluster_names))
+  p_val_mat <- matrix(NA, nrow = 2, ncol = length(cluster_names),
+                      dimnames = list(c("-log10(p.val)", "-log10(p.val.adj)"), cluster_names))
   
   for (index in seq_along(cluster_numbers)) {
     i <- cluster_numbers[index]
@@ -99,16 +104,19 @@ SpatialTraitEnrichmentAnalysis <- function(
                                                perm.mat.window50.data[[cluster_name]] >= OT_label_window)
       
       cluster_i_w_p_val <- (nrow(perm_mat_window_cluster_bigger) + 1) / (permutation_nr + 1)
+      adjusted_p_val <- p.adjust(cluster_i_w_p_val, method = "bonferroni", n = nr_of_tests)
       
       actual_median <- median(as.numeric(unlist(se_subset[[subset_name]][[gene_list]])), na.rm = TRUE)
       perm_mat_label_bigger <- subset(perm.mat.label.data,
                                       perm.mat.label.data[[cluster_name]] >= actual_median)
       
       cluster_i_p_val <- (nrow(perm_mat_label_bigger) + 1) / (permutation_nr + 1)
+      cluster_i_p_val_adj <- p.adjust(cluster_i_p_val, method = "bonferroni", n = nr_of_tests)
       
-      p_val_mat[1, index] <- cluster_i_p_val
+      p_val_mat[1, index] <- -log10(cluster_i_p_val)
+      p_val_mat[2, index] <- -log10(cluster_i_p_val_adj)
     }
   }
   
-  return(as.data.frame(p_val_mat))
+  return(p_val_mat)
 }

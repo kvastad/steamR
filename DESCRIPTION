@@ -26,5 +26,6 @@ Imports:
     scales,
     Seurat,
     SeuratObject,
+    stats,
     STutility,
     viridis
