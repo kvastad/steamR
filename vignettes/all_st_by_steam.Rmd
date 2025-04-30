@@ -25,14 +25,32 @@ library(steam)
 Load ST data:
 ```{r}
 
-infoTable <- read.csv("data/Data_brain_example/spatial_data/infoTable.csv", sep = ";")
+infoTable <- read.csv("data/Data_brain_example/spatial_data/infoTable.csv", 
+                     sep = ";", 
+                     fileEncoding = "UTF-8",
+                     check.names = FALSE)
 
-se <- InputFromTable(infotable = infoTable, 
-                      minUMICountsPerGene = 100, 
-                      minSpotsPerGene = 5,
-                      minUMICountsPerSpot = 500,
-                      platform =  "Visium")
-se <- LoadImages(se, time.resolve = FALSE)
+# se <- InputFromTable(infotable = infoTable, 
+#                       minUMICountsPerGene = 100, 
+#                       minSpotsPerGene = 5,
+#                       minUMICountsPerSpot = 500,
+#                       platform =  "Visium")
+# se <- LoadImages(se, time.resolve = FALSE)
+
+# Read the count matrix from h5 file
+counts <- Read10X_h5(infoTable$samples[1])
+
+# Create Seurat object
+se <- CreateSeuratObject(
+    counts = counts,
+    min.cells = 5,
+    min.features = 100,
+    project = "spatial"
+)
+
+# Filter cells based on UMI counts
+se <- subset(se, subset = nCount_RNA > 500) 
+
 #calculate mitochondrial and ribosomal percentages
 se$percent.mito <- calculate_gene_percentage(se, "^mt-")
 se$percent.ribo <- calculate_gene_percentage(se, "^Rpl|^Rps")
@@ -40,8 +58,18 @@ se$percent.ribo <- calculate_gene_percentage(se, "^Rpl|^Rps")
 options(future.globals.maxSize = 4 * 1024^3)
 se <- SCTransform(se,return.only.var.genes = T)
 # add seurat cluster
-seurat_clusters <- read.csv(file = "data/Data_brain_example/spatial_structures/seurat_clusters.csv", sep = ";")
-se <- addClusterAnnotations(se, AnnoDataframe = seurat_clusters, BarcodeName = "Barcode", AnnoName = "seurat_clusters")
+seurat_clusters <- read.csv(file = "data/Data_brain_example/spatial_structures/seurat_clusters.csv", 
+                           sep = ";",
+                           fileEncoding = "UTF-8",
+                           check.names = FALSE)
+# Clean up barcodes in the cluster annotations to match Seurat object
+seurat_clusters$Barcode <- gsub("_1$", "", seurat_clusters$Barcode)  # Remove _1 suffix if present
+
+# Add cluster annotations
+se <- addClusterAnnotations(se, 
+                           AnnoDataframe = seurat_clusters, 
+                           BarcodeName = "Barcode", 
+                           AnnoName = "seurat_clusters")
 ```
 
 Find spatial structures and their top marker genes:
@@ -244,6 +272,7 @@ for (cluster in clusters) {
 ```
 
 ```{r}
+library(STutility)
 ST.FeaturePlot(object = se, features = "p.val.adj.g", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
 ST.FeaturePlot(object = se, features = "p.val.g", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
 ```
