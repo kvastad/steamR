@@ -50,13 +50,24 @@ WindowRankEnrichmentAnalysis <- function(
     results <- data.frame()
     
     # Get unique clusters
-    cluster_numbers <- sort(unique(se@meta.data[[cluster_col]]))
+    cluster_numbers <- unique(se@meta.data[[cluster_col]])
+    
+    # Try to convert clusters to numeric, handling non-numeric gracefully
+    numeric_clusters <- suppressWarnings(as.numeric(cluster_numbers))
+    numeric_indices <- !is.na(numeric_clusters)
+    
+    # Split clusters into numeric and non-numeric
+    numeric_clusters <- sort(numeric_clusters[numeric_indices])
+    non_numeric_clusters <- sort(cluster_numbers[!numeric_indices])
+    
+    # Combine them in the correct order
+    sorted_clusters <- c(numeric_clusters, non_numeric_clusters)
     
     # Pattern for matching window-specific columns
     pattern <- paste0("^", disease_abbr, "_", ot_gene_set_label, "_Rank")
     
     # Process each cluster
-    for (cluster_id in cluster_numbers) {
+    for (cluster_id in sorted_clusters) {
         cluster_name <- as.character(cluster_id)
         cluster_key <- paste0("cluster_", cluster_name)
         
