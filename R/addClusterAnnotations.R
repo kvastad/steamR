@@ -1,28 +1,41 @@
 #' Add Cluster Annotations to Seurat Object
 #'
-#' This function extracts barcode and annotation columns from a provided dataframe
-#' and adds them directly to the metadata of a Seurat object under the column `seurat_clusters`.
-#' It ensures that annotations are correctly aligned by barcode.
+#' Adds cluster annotations from a data frame to the Seurat object's metadata.
 #'
-#' @param se A Seurat object.
-#' @param AnnoDataframe A dataframe containing cell or spatial barcodes and their corresponding annotations.
-#' @param BarcodeName Name of the column in `AnnoDataframe` containing barcodes (must match `colnames(se)`).
-#' @param AnnoName Name of the column in `AnnoDataframe` containing cluster annotations.
+#' @param se A Seurat object
+#' @param AnnoDataframe A data frame containing cluster annotations
+#' @param BarcodeName Name of the column in AnnoDataframe containing cell barcodes
+#' @param AnnoName Name of the column in AnnoDataframe containing cluster annotations
+#' @param slot_name Name of the metadata slot to store the annotations (default: "cluster_anno")
 #'
-#' @return A Seurat object with added metadata column `seurat_clusters`.
+#' @returns Seurat object with added cluster annotations
 #' @export
 #'
 #' @examples
-#' seurat_clusters <- read.csv("data/annotations/seurat_clusters.csv", sep = ";")
-#' se <- addClusterAnnotations(se, AnnoDataframe = seurat_clusters, BarcodeName = "Barcode", AnnoName = "seurat_clusters")
-addClusterAnnotations <- function(se,
-                                  AnnoDataframe,
-                                  BarcodeName,
-                                  AnnoName) {
-  seurat_clusters <- AnnoDataframe[, c(BarcodeName, AnnoName)]
-  colnames(seurat_clusters) <- c("Barcode", "seurat_clusters")
-  rownames(seurat_clusters) <- seurat_clusters$Barcode
-  seurat_clusters$Barcode <- NULL
-  se <- AddMetaData(se, metadata = seurat_clusters)
-  return(se)
+#' seurat_clusters <- read.csv("path/to/clusters.csv", sep = ";")
+#' se <- addClusterAnnotations(se, 
+#'                            AnnoDataframe = seurat_clusters, 
+#'                            BarcodeName = "Barcode", 
+#'                            AnnoName = "seurat_clusters")
+addClusterAnnotations <- function(se, 
+                                AnnoDataframe, 
+                                BarcodeName, 
+                                AnnoName,
+                                slot_name = "cluster_anno") {
+    
+    # Check if required columns exist
+    if (!BarcodeName %in% colnames(AnnoDataframe)) {
+        stop(paste("Column", BarcodeName, "not found in AnnoDataframe"))
+    }
+    if (!AnnoName %in% colnames(AnnoDataframe)) {
+        stop(paste("Column", AnnoName, "not found in AnnoDataframe"))
+    }
+    
+    # Create a named vector of cluster annotations
+    cluster_anno <- setNames(AnnoDataframe[[AnnoName]], AnnoDataframe[[BarcodeName]])
+    
+    # Add to Seurat object metadata
+    se[[slot_name]] <- cluster_anno
+    
+    return(se)
 }

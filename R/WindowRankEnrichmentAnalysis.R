@@ -66,26 +66,23 @@ WindowRankEnrichmentAnalysis <- function(
     # Pattern for matching window-specific columns
     pattern <- paste0("^", disease_abbr, "_", ot_gene_set_label, "_Rank")
     
+    # Get all window-specific columns once
+    all_window_cols <- grep(pattern, colnames(se@meta.data), value = TRUE)
+    if (length(all_window_cols) == 0) {
+        stop(paste("No matching columns found for pattern:", pattern))
+    }
+    
     # Process each cluster
     for (cluster_id in sorted_clusters) {
         cluster_name <- as.character(cluster_id)
         cluster_key <- paste0("cluster_", cluster_name)
         
-        # Subset cells for this cluster
-        cells_in_cluster <- colnames(se)[se@meta.data[[cluster_col]] == cluster_id]
-        se_subset <- subset(se, cells = cells_in_cluster)
+        # Get cells for this cluster
+        cells_in_cluster <- rownames(se@meta.data)[se@meta.data[[cluster_col]] == cluster_id]
         
-        # Get window-specific columns
-        window_cols <- grep(pattern, colnames(se_subset@meta.data), value = TRUE)
-        
-        if (length(window_cols) == 0) {
-            warning(paste("No matching columns found for pattern:", pattern, "in cluster:", cluster_id))
-            next
-        }
-        
-        # Calculate observed median scores for each window
-        observed_scores <- sapply(window_cols, function(col) {
-            median(se_subset@meta.data[[col]], na.rm = TRUE)
+        # Calculate observed median scores for each window using the metadata directly
+        observed_scores <- sapply(all_window_cols, function(col) {
+            median(se@meta.data[cells_in_cluster, col], na.rm = TRUE)
         })
         
         # Get null distribution for this cluster

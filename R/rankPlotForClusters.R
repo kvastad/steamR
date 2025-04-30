@@ -38,7 +38,7 @@ rankPlotForClusters <- function(window_results,
     }
     
     # Filter clusters if specified
-    if (!is.null(clusters_to_plot)) {
+  if (!is.null(clusters_to_plot)) {
         cluster_names <- paste0("cluster_", clusters_to_plot)
         unique_clusters <- unique_clusters[unique_clusters %in% cluster_names]
     }
@@ -53,14 +53,14 @@ rankPlotForClusters <- function(window_results,
         plot(cluster_data$window,
              cluster_data$observed_score,
              main = paste("Cluster:", gsub("cluster_", "", cluster)),
-             xlab = "Window Rank",
-             ylab = "Median Score",
-             type = "o",
-             ylim = ylim,
+      xlab = "Window Rank",
+      ylab = "Median Score",
+      type = "o",
+      ylim = ylim,
              xaxt = "n")
         
         axis(1, at = seq_along(cluster_data$window), cex.axis = 0.5)
-        
+    
         abline(h = cluster_data$q95[1], col = "red", lwd = 2, lty = 2)
         abline(h = cluster_data$q05[1], col = "red", lwd = 2, lty = 2)
         
@@ -72,5 +72,5 @@ rankPlotForClusters <- function(window_results,
                 abline(h = median(null_dist), col = "blue", lwd = 2, lty = 2)
             }
         }
-    }
+  }
 }

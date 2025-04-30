@@ -60,31 +60,25 @@ plotScoreDist <- function(se,
     cluster_labels <- cluster_labels[clusters_to_plot]
   }
   
+  # Find all relevant OT enrichment columns once
+  start_with_abr_label <- grep(term, colnames(se@meta.data), value = TRUE)
+  if (length(start_with_abr_label) == 0) {
+    stop("No matching columns found for term")
+  }
+  
   for (cluster_label in cluster_labels) {
     message("\nProcessing cluster: ", cluster_label)
     
-    # Filter cells by metadata manually
-    cells_in_cluster <- colnames(se)[se@meta.data[[cluster_col]] == cluster_label]
+    # Get cells for this cluster
+    cells_in_cluster <- rownames(se@meta.data)[se@meta.data[[cluster_col]] == cluster_label]
     if (length(cells_in_cluster) == 0) {
       warning("No cells found for cluster: ", cluster_label)
       next
     }
     
-    se_subset <- subset(se, cells = cells_in_cluster)
-    meta_data_subset <- se_subset[[]]
-    
-    # Find all relevant OT enrichment columns
-    start_with_abr_label <- grep(term, colnames(meta_data_subset), value = TRUE)
-    if (length(start_with_abr_label) == 0) {
-      warning("No matching columns found for term in cluster: ", cluster_label)
-      next
-    }
-    
-    meta_data_abr_label <- subset(meta_data_subset, select = start_with_abr_label)
-    abr_label_structure_i <- data.frame(
-      Rank = as.character(1:ncol(meta_data_abr_label)),
-      Median = apply(meta_data_abr_label, 2, median)
-    )
+    # Calculate medians for all relevant columns for this cluster
+    meta_data_cluster <- se@meta.data[cells_in_cluster, start_with_abr_label, drop = FALSE]
+    cluster_medians <- apply(meta_data_cluster, 2, median, na.rm = TRUE)
     
     # Use plain cluster name
     cluster_name <- as.character(cluster_label)
@@ -98,12 +92,12 @@ plotScoreDist <- function(se,
     median_score_NULL <- data.frame(Median_scores = perm.mat[[cluster_name]])
     ot_name <- paste0("OpenTargets_", disease_abbr, "_", ot_gene_set_label, "_1")
     
-    if (!(ot_name %in% colnames(se_subset[[]]))) {
+    if (!(ot_name %in% colnames(se@meta.data))) {
       warning("Missing OT score column: ", ot_name, " in cluster: ", cluster_label)
       next
     }
     
-    actual_median <- median(as.numeric(unlist(se_subset[[ot_name]])))
+    actual_median <- median(se@meta.data[cells_in_cluster, ot_name], na.rm = TRUE)
     
     p <- ggplot(median_score_NULL, aes(x = Median_scores)) +
       geom_density(fill = "grey", alpha = 0.8) +

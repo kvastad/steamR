@@ -37,10 +37,6 @@ SpatialTraitEnrichmentAnalysis <- function(
     gene_list,
     cluster_col = "seurat_clusters"
 ) {
-  se_subset <- list()
-  meta_data_subset <- list()
-  meta_data_abr_label <- list()
-  
   # Check that clustering column exists
   if (!(cluster_col %in% colnames(se@meta.data))) {
     stop(paste("The specified cluster column", cluster_col, "is not found in the Seurat object metadata."))
@@ -52,33 +48,17 @@ SpatialTraitEnrichmentAnalysis <- function(
   }
   
   cluster_numbers <- sort(unique(se@meta.data[[cluster_col]]))
+  cluster_names <- paste0("cluster_", cluster_numbers)
   
-  for (i in cluster_numbers) {
-    subset_name <- paste0("se_", i)
-    
-    cells_i <- rownames(se@meta.data)[se@meta.data[[cluster_col]] == i]
-    se_subset[[subset_name]] <- subset(se, cells = cells_i)
-    
-    meta_data_subset[[subset_name]] <- se_subset[[subset_name]][[]]
-    matched_cols <- grep(gene_list, colnames(meta_data_subset[[subset_name]]), value = TRUE)
-    
-    if (length(matched_cols) == 0) {
-      warning(paste("No matching columns found for:", gene_list, "in cluster:", i))
-      next
-    }
-    
-    meta_data_abr_label[[subset_name]] <- subset(meta_data_subset[[subset_name]], select = matched_cols)
-  }
-  
+  # Initialize results matrix
   permutation_nr <- dim(perm.mat.label.data)[1]
   nr_of_tests <- length(cluster_numbers)
-  cluster_names <- paste0("cluster_", cluster_numbers)
   p_val_mat <- matrix(NA, nrow = 1, ncol = length(cluster_names),
                       dimnames = list("p.val", cluster_names))
   
+  # Process each cluster
   for (index in seq_along(cluster_numbers)) {
     i <- cluster_numbers[index]
-    subset_name <- paste0("se_", i)
     cluster_name <- as.character(i)
     
     if (!cluster_name %in% colnames(perm.mat.label.data)) {
@@ -86,23 +66,36 @@ SpatialTraitEnrichmentAnalysis <- function(
       next
     }
     
-    abr_label_structure_i <- data.frame()
-    for (k in 1:ncol(meta_data_abr_label[[subset_name]])) {
-      median_value <- median(meta_data_abr_label[[subset_name]][, k], na.rm = TRUE)
-      abr_label_structure_i <- rbind(abr_label_structure_i, data.frame(Rank = as.character(k), Median = median_value))
+    # Get cells for this cluster
+    cells_i <- rownames(se@meta.data)[se@meta.data[[cluster_col]] == i]
+    
+    # Calculate median for the gene list in this cluster
+    actual_median <- median(se@meta.data[cells_i, gene_list], na.rm = TRUE)
+    
+    # Get matched columns for this cluster
+    matched_cols <- grep(gene_list, colnames(se@meta.data), value = TRUE)
+    
+    if (length(matched_cols) == 0) {
+      warning(paste("No matching columns found for:", gene_list, "in cluster:", i))
+      next
     }
     
+    # Calculate medians for matched columns
+    cluster_medians <- sapply(matched_cols, function(col) {
+      median(se@meta.data[cells_i, col], na.rm = TRUE)
+    })
+    
+    # Process windows
     for (j in seq_along(window_rank_list_abr_label)) {
-      OT_label_window <- abr_label_structure_i[j, "Median"]
+      OT_label_window <- cluster_medians[j]
       
       perm_mat_window_cluster_bigger <- subset(perm.mat.window50.data,
-                                               perm.mat.window50.data[[cluster_name]] >= OT_label_window)
+                                             perm.mat.window50.data[[cluster_name]] >= OT_label_window)
       
       cluster_i_w_p_val <- (nrow(perm_mat_window_cluster_bigger) + 1) / (permutation_nr + 1)
       
-      actual_median <- median(as.numeric(unlist(se_subset[[subset_name]][[gene_list]])), na.rm = TRUE)
       perm_mat_label_bigger <- subset(perm.mat.label.data,
-                                      perm.mat.label.data[[cluster_name]] >= actual_median)
+                                    perm.mat.label.data[[cluster_name]] >= actual_median)
       
       cluster_i_p_val <- (nrow(perm_mat_label_bigger) + 1) / (permutation_nr + 1)
       

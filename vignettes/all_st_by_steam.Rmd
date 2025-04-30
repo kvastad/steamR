@@ -24,62 +24,58 @@ library(steam)
 
 Load ST data:
 ```{r}
-
-infoTable <- read.csv("data/Data_brain_example/spatial_data/infoTable.csv", 
-                     sep = ";", 
-                     fileEncoding = "UTF-8",
-                     check.names = FALSE)
-
-# se <- InputFromTable(infotable = infoTable, 
-#                       minUMICountsPerGene = 100, 
-#                       minSpotsPerGene = 5,
-#                       minUMICountsPerSpot = 500,
-#                       platform =  "Visium")
-# se <- LoadImages(se, time.resolve = FALSE)
-
-# Read the count matrix from h5 file
-counts <- Read10X_h5(infoTable$samples[1])
-
-# Create Seurat object
-se <- CreateSeuratObject(
-    counts = counts,
-    min.cells = 5,
-    min.features = 100,
-    project = "spatial"
-)
-
-# Filter cells based on UMI counts
-se <- subset(se, subset = nCount_RNA > 500) 
-
-#calculate mitochondrial and ribosomal percentages
-se$percent.mito <- calculate_gene_percentage(se, "^mt-")
-se$percent.ribo <- calculate_gene_percentage(se, "^Rpl|^Rps")
-#normalize it
-options(future.globals.maxSize = 4 * 1024^3)
-se <- SCTransform(se,return.only.var.genes = T)
-# add seurat cluster
-seurat_clusters <- read.csv(file = "data/Data_brain_example/spatial_structures/seurat_clusters.csv", 
-                           sep = ";",
-                           fileEncoding = "UTF-8",
-                           check.names = FALSE)
-# Clean up barcodes in the cluster annotations to match Seurat object
-seurat_clusters$Barcode <- gsub("_1$", "", seurat_clusters$Barcode)  # Remove _1 suffix if present
-
-# Add cluster annotations
-se <- addClusterAnnotations(se, 
-                           AnnoDataframe = seurat_clusters, 
-                           BarcodeName = "Barcode", 
-                           AnnoName = "seurat_clusters")
+# se <- Load10X_Spatial(
+#     data.dir = "data/Data_brain_example/spatial_data/",
+#     filename = "V1_Adult_Mouse_Brain_filtered_feature_bc_matrix.h5",
+#     filter.matrix = TRUE,
+#     slice = "slice1",
+#     assay = "Spatial"
+# )
+# 
+# filtered_counts <- CreateSeuratObject(
+#     counts = GetAssayData(se, layer = "counts"),
+#     min.cells = 5,
+#     min.features = 100,
+#     project = "spatial"
+# )
+# cells_to_keep <- intersect(
+#     colnames(filtered_counts),
+#     colnames(se)[se$nCount_Spatial > 500]
+# )
+# 
+# # filters to the original se object
+# se <- subset(se, cells = cells_to_keep)
+# 
+# # alculate mitochondrial and ribosomal percentages
+# se$percent.mito <- calculate_gene_percentage(se, "^mt-")
+# se$percent.ribo <- calculate_gene_percentage(se, "^Rpl|^Rps")
+# 
+# # normalize 
+# options(future.globals.maxSize = 4 * 1024^3)
+# se <- SCTransform(se, assay = "Spatial", return.only.var.genes = T)
+# # add seurat cluster
+# seurat_clusters <- read.csv(file = "data/Data_brain_example/spatial_structures/seurat_clusters.csv",
+#                            sep = ";",
+#                            fileEncoding = "UTF-8",
+#                            check.names = FALSE)
+# # Clean up barcodes in the cluster annotations to match Seurat object
+# seurat_clusters$Barcode <- gsub("_1$", "", seurat_clusters$Barcode)
+# 
+# se <- addClusterAnnotations(se,
+#                            AnnoDataframe = seurat_clusters,
+#                            BarcodeName = "Barcode",
+#                            AnnoName = "seurat_clusters",
+#                            slot_name = "cluster_anno")
+# 
+# options(future.globals.maxSize = 16 * 1024^3)
+# clusterMarkers <- findClusterMarkers(se, nfactors = 40, dims = c(1:22, 24:32, 34:39), M = 10)
+# saveRDS(clusterMarkers, file = "data/Data_brain_example/clusterMarkers_nf40_d22_24_32_34_39.rds")
 ```
 
 Find spatial structures and their top marker genes:
 Steps corresponding to `spatial_structure` notebook
 
 ```{r}
-# options(future.globals.maxSize = 16 * 1024^3)
-# clusterMarkers <- findClusterMarkers(se, nfactors = 40, dims = c(1:22, 24:32, 34:39), M = 10)
-# saveRDS(clusterMarkers, file = "data/Data_brain_example/clusterMarkers_nf40_d22_24_32_34_39.rds")
-
 clusterMarkers <- readRDS("data/Data_brain_example/clusterMarkers_nf40_d22_24_32_34_39.rds")
 se <- clusterMarkers$updated_se
 all_gene_sets_structure_markers <- clusterMarkers$marker_genes
@@ -271,10 +267,18 @@ for (cluster in clusters) {
 }
 ```
 
+
 ```{r}
-library(STutility)
-ST.FeaturePlot(object = se, features = "p.val.adj.g", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
-ST.FeaturePlot(object = se, features = "p.val.g", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
+SpatialFeaturePlot(se, 
+                  features = "p.val.g",
+                  pt.size.factor = 5,
+                  image.alpha = 0) +
+  scale_color_gradient(low = "white", high = "red")
+SpatialFeaturePlot(se, 
+                  features = "p.val.adj.g",
+                  pt.size.factor = 5,
+                  image.alpha = 0) +
+  scale_color_gradient(low = "white", high = "red")
 ```
 
 ```{r}
@@ -319,30 +323,19 @@ for (cluster in clusters) {
 ```
 
 ```{r}
-ST.FeaturePlot(object = se, features = "p.val.adj.d", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
-ST.FeaturePlot(object = se, features = "p.val.d", pt.size = 1.5, cols = viridis(length(unique(se$seurat_clusters))))
+SpatialFeaturePlot(se, 
+                  features = "p.val.d",
+                  pt.size.factor = 5,
+                  image.alpha = 0) +
+  scale_color_gradient(low = "white", high = "red")
+SpatialFeaturePlot(se, 
+                  features = "p.val.adj.d",
+                  pt.size.factor = 5,
+                  image.alpha = 0) +
+  scale_color_gradient(low = "white", high = "red")
 ```
 
 
-```{r, fig.width=5, fig.height=4}
-spot_alpha = 0.5
-point.size = 1
-
-FeatureOverlay(se, 
-               features = c("p.val.g"),
-               pt.alpha = spot_alpha,
-               pt.size = point.size,
-               add.alpha=T,
-               ncols = 1,
-               cols = viridis(length(unique(se$seurat_clusters))))
-FeatureOverlay(se, 
-               features = c("p.val.d"),
-               pt.alpha = spot_alpha,
-               pt.size = point.size,
-               add.alpha=T,
-               ncols = 1,
-               cols = viridis(length(unique(se$seurat_clusters))))
-```
 ```{r}
 window_results <- WindowRankEnrichmentAnalysis(
     se = se,
@@ -371,32 +364,19 @@ rankPlotForClusters(
 
 ```{r}
 featurePlotForRanks(se = se,
-                     perm.mat = perm.mat.genetic.data,
-                     perm.mat.window50 = perm.mat.window50.data,
-                     window_rank_list = window50_rank_list_ALZ_Genetic,
-                     ot_gene_set_label = "Genetic",
-                     disease_abbr = "ALZ",
-                     cluster_number = NULL, 
-                     ranks_per_plot = 1,
-                     spot_alpha = 0.5, 
-                     point_size = 0.5,
-                     all_clusters = TRUE)
-
+                   perm.mat = perm.mat.genetic.data,
+                   perm.mat.window50 = perm.mat.window50.data,
+                   window_rank_list = window50_rank_list_ALZ_Genetic,
+                   ot_gene_set_label = "Genetic",
+                   disease_abbr = "ALZ",
+                   cluster_number = NULL, 
+                   ranks_per_plot = 1,
+                   spot_alpha = 0.5, 
+                   point_size = 0.5,
+                   all_clusters = TRUE,
+                   cluster_col = "cluster_anno")
 ```
 
-```{r}
-featurePlotForRanks(se = se,
-                     perm.mat = perm.mat.drugs.data,
-                     perm.mat.window50 = perm.mat.window50.data,
-                     window_rank_list = window50_rank_list_ALZ_Drugs,
-                     ot_gene_set_label = "Drugs",
-                     disease_abbr = "ALZ",
-                     cluster_number = NULL, 
-                     ranks_per_plot = 6,
-                     spot_alpha = 0.5, 
-                     point_size = 1,
-                     all_clusters = TRUE)
-```
 
 ```{r}
 plotScoreDist(
