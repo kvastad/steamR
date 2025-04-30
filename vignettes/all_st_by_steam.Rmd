@@ -11,7 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Load libraries:
 ```{r, message=FALSE}
-library(STutility)
 library(dplyr)
 library(RColorBrewer)
 library(scales)
