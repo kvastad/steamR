@@ -15,6 +15,11 @@
 #'        to test for enrichment (e.g., "OpenTargets_SCZ_Genetic_1").
 #' @param cluster_col Column name in `se@meta.data` specifying the clustering to use 
 #'        (e.g., "seurat_clusters" or "supercluster_term").
+#' @param imputation Strategy for handling p-value calculation when no permutations exceed the observed value.
+#'        Options are:
+#'        - "all": Always add 1 to numerator and denominator (default)
+#'        - "none": No imputation, can result in p=0
+#'        - "dynamic": Only impute when no permutations exceed observed value
 #'
 #' @returns A data frame of unadjusted p-values for each cluster.
 #'
@@ -27,7 +32,8 @@
 #'   perm.mat.window50.data = perm.mat.window50.data,
 #'   window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
 #'   gene_list = "OpenTargets_SCZ_Genetic_1",
-#'   cluster_col = "supercluster_term"
+#'   cluster_col = "supercluster_term",
+#'   imputation = "dynamic"
 #' )
 SpatialTraitEnrichmentAnalysis <- function(
     se,
@@ -35,8 +41,14 @@ SpatialTraitEnrichmentAnalysis <- function(
     perm.mat.window50.data,
     window_rank_list_abr_label,
     gene_list,
-    cluster_col = "seurat_clusters"
+    cluster_col = "seurat_clusters",
+    imputation = "all"
 ) {
+  # Validate imputation parameter
+  if (!imputation %in% c("all", "none", "dynamic")) {
+    stop("imputation must be one of: 'all', 'none', 'dynamic'")
+  }
+  
   # Check that clustering column exists
   if (!(cluster_col %in% colnames(se@meta.data))) {
     stop(paste("The specified cluster column", cluster_col, "is not found in the Seurat object metadata."))
@@ -92,12 +104,40 @@ SpatialTraitEnrichmentAnalysis <- function(
       perm_mat_window_cluster_bigger <- subset(perm.mat.window50.data,
                                              perm.mat.window50.data[[cluster_name]] >= OT_label_window)
       
-      cluster_i_w_p_val <- (nrow(perm_mat_window_cluster_bigger) + 1) / (permutation_nr + 1)
+      # Calculate p-value with specified imputation strategy
+      n_bigger <- nrow(perm_mat_window_cluster_bigger)
+      if (imputation == "all") {
+        cluster_i_w_p_val <- (n_bigger + 1) / (permutation_nr + 1)
+      } else if (imputation == "none") {
+        cluster_i_w_p_val <- n_bigger / permutation_nr
+      } else { # dynamic
+        if (n_bigger == 0) {
+          cluster_i_w_p_val <- 1 / (permutation_nr + 1)
+          message(sprintf("Imputed p-value for cluster %s window %d: %.2e", 
+                         cluster_name, j, cluster_i_w_p_val))
+        } else {
+          cluster_i_w_p_val <- n_bigger / permutation_nr
+        }
+      }
       
       perm_mat_label_bigger <- subset(perm.mat.label.data,
                                     perm.mat.label.data[[cluster_name]] >= actual_median)
       
-      cluster_i_p_val <- (nrow(perm_mat_label_bigger) + 1) / (permutation_nr + 1)
+      # Calculate p-value with specified imputation strategy
+      n_bigger <- nrow(perm_mat_label_bigger)
+      if (imputation == "all") {
+        cluster_i_p_val <- (n_bigger + 1) / (permutation_nr + 1)
+      } else if (imputation == "none") {
+        cluster_i_p_val <- n_bigger / permutation_nr
+      } else { # dynamic
+        if (n_bigger == 0) {
+          cluster_i_p_val <- 1 / (permutation_nr + 1)
+          message(sprintf("Imputed p-value for cluster %s: %.2e", 
+                         cluster_name, cluster_i_p_val))
+        } else {
+          cluster_i_p_val <- n_bigger / permutation_nr
+        }
+      }
       
       p_val_mat[1, index] <- cluster_i_p_val
     }

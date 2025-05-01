@@ -11,6 +11,11 @@
 #' @param ot_gene_set_label A string identifying the gene set type (e.g., "Genetic" or "Drugs").
 #' @param disease_abbr A short abbreviation for the disease/trait (e.g., "SCZ" or "ALZ").
 #' @param cluster_col Column name in metadata specifying clusters (default: "seurat_clusters").
+#' @param imputation Strategy for handling p-value calculation when no permutations exceed the observed value.
+#'        Options are:
+#'        - "all": Always add 1 to numerator and denominator (default)
+#'        - "none": No imputation, can result in p=0
+#'        - "dynamic": Only impute when no permutations exceed observed value
 #'
 #' @returns A data frame containing for each cluster and window:
 #' \describe{
@@ -31,7 +36,8 @@
 #'   perm.mat.window50.data = perm.mat.window50.data,
 #'   window_rank_list = window50_rank_list_ALZ_Drugs,
 #'   ot_gene_set_label = "Drugs",
-#'   disease_abbr = "ALZ"
+#'   disease_abbr = "ALZ",
+#'   imputation = "dynamic"
 #' )
 WindowRankEnrichmentAnalysis <- function(
     se,
@@ -39,8 +45,14 @@ WindowRankEnrichmentAnalysis <- function(
     window_rank_list,
     ot_gene_set_label,
     disease_abbr,
-    cluster_col = "seurat_clusters"
+    cluster_col = "seurat_clusters",
+    imputation = "all"
 ) {
+    # Validate imputation parameter
+    if (!imputation %in% c("all", "none", "dynamic")) {
+        stop("imputation must be one of: 'all', 'none', 'dynamic'")
+    }
+    
     # Input validation
     if (!(cluster_col %in% colnames(se@meta.data))) {
         stop(paste("The specified cluster column", cluster_col, "is not found in the metadata."))
@@ -101,9 +113,23 @@ WindowRankEnrichmentAnalysis <- function(
         for (i in seq_along(observed_scores)) {
             observed <- observed_scores[i]
             
-            # Calculate p-value
+            # Calculate number of more extreme values
             n_more_extreme <- sum(null_dist >= observed)
-            p_value <- (n_more_extreme + 1) / (length(null_dist) + 1)
+            
+            # Calculate p-value with specified imputation strategy
+            if (imputation == "all") {
+                p_value <- (n_more_extreme + 1) / (length(null_dist) + 1)
+            } else if (imputation == "none") {
+                p_value <- n_more_extreme / length(null_dist)
+            } else { # dynamic
+                if (n_more_extreme == 0) {
+                    p_value <- 1 / (length(null_dist) + 1)
+                    message(sprintf("Imputed p-value for cluster %s window %d: %.2e", 
+                                  cluster_name, i, p_value))
+                } else {
+                    p_value <- n_more_extreme / length(null_dist)
+                }
+            }
             
             # Check if score is significant (outside 5-95% quantiles)
             is_significant <- !is.na(observed) && 
