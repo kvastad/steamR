@@ -5,11 +5,9 @@
 #' at a time.
 #'
 #' @param se A Seurat object with spatial transcriptomics data and precomputed enrichment scores.
-#' @param perm.mat A permutation matrix with baseline null distribution of median scores.
-#' @param perm.mat.window50 A window-level permutation matrix for enrichment score thresholds.
 #' @param window_rank_list A list of gene rank windows used for enrichment calculation.
-#' @param ot_gene_set_label Character. The gene set label (e.g., `"Genetic"`).
-#' @param disease_abbr Character. Abbreviation for the disease/trait (e.g., `"SCZ"`).
+#' @param ot_gene_set_label Character. The gene set label (e.g., "Genetic").
+#' @param disease_abbr Character. Abbreviation for the disease/trait (e.g., "SCZ").
 #' @param cluster_number Optional. A specific cluster to visualize (used when `all_clusters = FALSE`).
 #' @param ranks_per_plot Number of rank plots to show per panel (default is `6`).
 #' @param spot_alpha Alpha value for spot transparency in plots (default is `0.5`).
@@ -23,8 +21,6 @@
 #' @examples
 #' featurePlotForRanks(
 #'   se = se,
-#'   perm.mat = perm.mat.genetic.data,
-#'   perm.mat.window50 = perm.mat.window50.data,
 #'   window_rank_list = window50_rank_list_SCZ_Genetic,
 #'   ot_gene_set_label = "Genetic",
 #'   disease_abbr = "SCZ",
@@ -34,8 +30,6 @@
 #' )
 featurePlotForRanks <- function(
     se, 
-    perm.mat, 
-    perm.mat.window50, 
     window_rank_list, 
     ot_gene_set_label, 
     disease_abbr, 
@@ -76,13 +70,13 @@ featurePlotForRanks <- function(
     cluster_numbers <- cluster_number
     
     # Calculate number of plots needed
-    num_plots <- ceiling(length(window_rank_list) / ranks_per_plot)
-    
-    # Process each set of ranks
-    for (plot_idx in 1:num_plots) {
-      start_rank <- (plot_idx - 1) * ranks_per_plot + 1
-      end_rank <- min(plot_idx * ranks_per_plot, length(window_rank_list))
+      num_plots <- ceiling(length(window_rank_list) / ranks_per_plot)
       
+    # Process each set of ranks
+      for (plot_idx in 1:num_plots) {
+        start_rank <- (plot_idx - 1) * ranks_per_plot + 1
+        end_rank <- min(plot_idx * ranks_per_plot, length(window_rank_list))
+        
       # Create feature names for this set of ranks
       features <- sapply(start_rank:end_rank, function(rank) {
         paste(disease_abbr, ot_gene_set_label, paste("Rank", rank, sep = ""), "1", sep = "_")
@@ -92,7 +86,7 @@ featurePlotForRanks <- function(
       cells_use <- rownames(se@meta.data)[se@meta.data[[cluster_col]] %in% cluster_numbers]
       
       print(SpatialFeaturePlot(se, 
-                           features = features,
+                             features = features,
                            cells = cells_use,
                            pt.size.factor = point_size * 10,
                            ncol = min(4, length(features)),

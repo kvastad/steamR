@@ -364,8 +364,6 @@ rankPlotForClusters(
 
 ```{r}
 featurePlotForRanks(se = se,
-                   perm.mat = perm.mat.genetic.data,
-                   perm.mat.window50 = perm.mat.window50.data,
                    window_rank_list = window50_rank_list_ALZ_Genetic,
                    ot_gene_set_label = "Genetic",
                    disease_abbr = "ALZ",
