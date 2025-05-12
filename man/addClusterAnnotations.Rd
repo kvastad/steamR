@@ -4,26 +4,35 @@
 \alias{addClusterAnnotations}
 \title{Add Cluster Annotations to Seurat Object}
 \usage{
-addClusterAnnotations(se, AnnoDataframe, BarcodeName, AnnoName)
+addClusterAnnotations(
+  se,
+  AnnoDataframe,
+  BarcodeName,
+  AnnoName,
+  slot_name = "cluster_anno"
+)
 }
 \arguments{
-\item{se}{A Seurat object.}
+\item{se}{A Seurat object}
 
-\item{AnnoDataframe}{A dataframe containing cell or spatial barcodes and their corresponding annotations.}
+\item{AnnoDataframe}{A data frame containing cluster annotations}
 
-\item{BarcodeName}{Name of the column in \code{AnnoDataframe} containing barcodes (must match \code{colnames(se)}).}
+\item{BarcodeName}{Name of the column in AnnoDataframe containing cell barcodes}
 
-\item{AnnoName}{Name of the column in \code{AnnoDataframe} containing cluster annotations.}
+\item{AnnoName}{Name of the column in AnnoDataframe containing cluster annotations}
+
+\item{slot_name}{Name of the metadata slot to store the annotations (default: "cluster_anno")}
 }
 \value{
-A Seurat object with added metadata column \code{seurat_clusters}.
+Seurat object with added cluster annotations
 }
 \description{
-This function extracts barcode and annotation columns from a provided dataframe
-and adds them directly to the metadata of a Seurat object under the column \code{seurat_clusters}.
-It ensures that annotations are correctly aligned by barcode.
+Adds cluster annotations from a data frame to the Seurat object's metadata.
 }
 \examples{
-seurat_clusters <- read.csv("data/annotations/seurat_clusters.csv", sep = ";")
-se <- addClusterAnnotations(se, AnnoDataframe = seurat_clusters, BarcodeName = "Barcode", AnnoName = "seurat_clusters")
+seurat_clusters <- read.csv("path/to/clusters.csv", sep = ";")
+se <- addClusterAnnotations(se, 
+                           AnnoDataframe = seurat_clusters, 
+                           BarcodeName = "Barcode", 
+                           AnnoName = "seurat_clusters")
 }

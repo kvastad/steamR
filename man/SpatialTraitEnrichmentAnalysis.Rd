@@ -10,7 +10,9 @@ SpatialTraitEnrichmentAnalysis(
   perm.mat.window50.data,
   window_rank_list_abr_label,
   gene_list,
-  cluster_col = "seurat_clusters"
+  cluster_anno = "seurat_clusters",
+  imputation = "all",
+  log_file = NULL
 )
 }
 \arguments{
@@ -28,8 +30,16 @@ used to reference the rank-specific gene sets.}
 \item{gene_list}{A character string matching the name of the gene score column in \code{se@meta.data}
 to test for enrichment (e.g., "OpenTargets_SCZ_Genetic_1").}
 
-\item{cluster_col}{Column name in \code{se@meta.data} specifying the clustering to use
+\item{cluster_anno}{Column name in \code{se@meta.data} specifying the clustering to use
 (e.g., "seurat_clusters" or "supercluster_term").}
+
+\item{imputation}{Strategy for handling p-value calculation when no permutations exceed the observed value.
+Options are:
+- "all": Always add 1 to numerator and denominator (default)
+- "none": No imputation, can result in p=0
+- "dynamic": Only impute when no permutations exceed observed value}
+
+\item{log_file}{Path to the log file for imputed p-values}
 }
 \value{
 A data frame of unadjusted p-values for each cluster.
@@ -46,6 +56,7 @@ pval_mat <- SpatialTraitEnrichmentAnalysis(
   perm.mat.window50.data = perm.mat.window50.data,
   window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
   gene_list = "OpenTargets_SCZ_Genetic_1",
-  cluster_col = "supercluster_term"
+  cluster_anno = "supercluster_term",
+  imputation = "dynamic"
 )
 }

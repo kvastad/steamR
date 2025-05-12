@@ -10,7 +10,8 @@ WindowRankEnrichmentAnalysis(
   window_rank_list,
   ot_gene_set_label,
   disease_abbr,
-  cluster_col = "seurat_clusters"
+  cluster_anno = "seurat_clusters",
+  imputation = "all"
 )
 }
 \arguments{
@@ -26,14 +27,24 @@ used to reference the rank-specific gene sets.}
 
 \item{disease_abbr}{A short abbreviation for the disease/trait (e.g., "SCZ" or "ALZ").}
 
-\item{cluster_col}{Column name in metadata specifying clusters (default: "seurat_clusters").}
+\item{cluster_anno}{Column name in metadata specifying clusters (default: "seurat_clusters").}
+
+\item{imputation}{Strategy for handling p-value calculation when no permutations exceed the observed value.
+Options are:
+- "all": Always add 1 to numerator and denominator (default)
+- "none": No imputation, can result in p=0
+- "dynamic": Only impute when no permutations exceed observed value}
 }
 \value{
-A list with elements for each cluster containing:
+A data frame containing for each cluster and window:
 \describe{
-\item{observed_scores}{A numeric vector of median scores for each window}
-\item{p_values}{A numeric vector of p-values for each window}
-\item{quantiles}{A numeric vector of quantiles (0\%, 5\%, 50\%, 95\%, 100\%) from null distribution}
+\item{cluster}{Cluster identifier}
+\item{window}{Window rank number}
+\item{observed_score}{Observed median score for the window}
+\item{p_value}{Nominal p-value for the window}
+\item{q05}{5\% quantile from null distribution}
+\item{q95}{95\% quantile from null distribution}
+\item{is_significant}{Logical indicating if score is outside 5-95\% quantiles}
 }
 }
 \description{
@@ -46,6 +57,7 @@ window_results <- WindowRankEnrichmentAnalysis(
   perm.mat.window50.data = perm.mat.window50.data,
   window_rank_list = window50_rank_list_ALZ_Drugs,
   ot_gene_set_label = "Drugs",
-  disease_abbr = "ALZ"
+  disease_abbr = "ALZ",
+  imputation = "dynamic"
 )
 }

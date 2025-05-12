@@ -6,8 +6,6 @@
 \usage{
 featurePlotForRanks(
   se,
-  perm.mat,
-  perm.mat.window50,
   window_rank_list,
   ot_gene_set_label,
   disease_abbr,
@@ -15,21 +13,18 @@ featurePlotForRanks(
   ranks_per_plot = 6,
   spot_alpha = 0.5,
   point_size = 1,
-  all_clusters = FALSE
+  all_clusters = FALSE,
+  cluster_anno = "cluster_anno"
 )
 }
 \arguments{
 \item{se}{A Seurat object with spatial transcriptomics data and precomputed enrichment scores.}
 
-\item{perm.mat}{A permutation matrix with baseline null distribution of median scores.}
-
-\item{perm.mat.window50}{A window-level permutation matrix for enrichment score thresholds.}
-
 \item{window_rank_list}{A list of gene rank windows used for enrichment calculation.}
 
-\item{ot_gene_set_label}{Character. The gene set label (e.g., \code{"Genetic"}).}
+\item{ot_gene_set_label}{Character. The gene set label (e.g., "Genetic").}
 
-\item{disease_abbr}{Character. Abbreviation for the disease or trait (e.g., \code{"SCZ"}).}
+\item{disease_abbr}{Character. Abbreviation for the disease/trait (e.g., "SCZ").}
 
 \item{cluster_number}{Optional. A specific cluster to visualize (used when \code{all_clusters = FALSE}).}
 
@@ -37,23 +32,23 @@ featurePlotForRanks(
 
 \item{spot_alpha}{Alpha value for spot transparency in plots (default is \code{0.5}).}
 
-\item{point_size}{Point size for \code{ST.FeaturePlot()} (default is \code{1}).}
+\item{point_size}{Point size for \code{SpatialFeaturePlot()} (default is \code{1}).}
 
 \item{all_clusters}{Logical. Whether to visualize all clusters together (default is \code{FALSE}).}
+
+\item{cluster_anno}{Name of the metadata column to use for coloring (default: "cluster_anno").}
 }
 \value{
-No return value. Generates spatial enrichment plots using \code{ST.FeaturePlot()} per cluster/rank.
+No return value. Generates spatial enrichment plots using \code{SpatialFeaturePlot()} per cluster/rank.
 }
 \description{
-Generates spatial \code{ST.FeaturePlot()} visualizations for enrichment scores computed
+Generates spatial \code{SpatialFeaturePlot()} visualizations for enrichment scores computed
 over ranked gene windows. Allows plotting either all clusters together or one
 at a time.
 }
 \examples{
 featurePlotForRanks(
   se = se,
-  perm.mat = perm.mat.genetic.data,
-  perm.mat.window50 = perm.mat.window50.data,
   window_rank_list = window50_rank_list_SCZ_Genetic,
   ot_gene_set_label = "Genetic",
   disease_abbr = "SCZ",
