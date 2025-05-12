@@ -1,13 +1,13 @@
 #' Generate a permutation matrix of module scores
 #'
 #' This function computes a permutation matrix by generating random gene sets and scoring them
-#' using Seurat’s `AddModuleScore()`. Results are aggregated as median scores per cluster.
+#' using Seurat's `AddModuleScore()`. Results are aggregated as median scores per cluster.
 #' Supports both sequential and parallel computation for reproducibility and speed.
 #'
 #' @param se A Seurat object containing gene expression and metadata.
 #' @param gnum Number of genes to sample for each permutation (default: 50).
 #' @param permutation_nr Number of permutations to perform (default: 1000).
-#' @param cluster_col The name of the column in the metadata with cluster identities (default: `"seurat_clusters"`).
+#' @param cluster_anno The name of the column in the metadata with cluster identities (default: `"seurat_clusters"`).
 #' @param workers Optional. Number of parallel workers. If `NULL` or `workers <= 1`, runs sequentially.
 #'
 #' @return A data frame where rows represent permutations and columns represent clusters.
@@ -23,15 +23,15 @@
 generate_permutation_matrix <- function(se, 
                                         gnum = 50, 
                                         permutation_nr = 1000, 
-                                        cluster_col = "seurat_clusters", 
+                                        cluster_anno = "seurat_clusters", 
                                         workers = NULL) {
   parallel <- !is.null(workers) && workers > 1
   
-  if (!(cluster_col %in% colnames(se@meta.data))) {
-    stop(paste("The specified cluster column", cluster_col, "is not found in the Seurat object metadata."))
+  if (!(cluster_anno %in% colnames(se@meta.data))) {
+    stop(paste("The specified cluster column", cluster_anno, "is not found in the Seurat object metadata."))
   }
   
-  cluster_names <- unique(se@meta.data[[cluster_col]])
+  cluster_names <- unique(se@meta.data[[cluster_anno]])
   
   suppressWarnings({
     numeric_ids <- cluster_names[!is.na(as.numeric(as.character(cluster_names)))]
@@ -53,7 +53,7 @@ generate_permutation_matrix <- function(se,
     score_fun <- function(i) {
       genes <- gene_sets[[i]]
       se_temp <- AddModuleScore(se, list(genes), ctrl = 100, name = "NULL_gene_set")
-      df <- se_temp@meta.data[, c(cluster_col, "NULL_gene_set1")]
+      df <- se_temp@meta.data[, c(cluster_anno, "NULL_gene_set1")]
       colnames(df)[1] <- "cluster"
       df %>%
         group_by(cluster) %>%

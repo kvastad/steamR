@@ -10,7 +10,7 @@
 #'        used to reference the rank-specific gene sets.
 #' @param ot_gene_set_label A string identifying the gene set type (e.g., "Genetic" or "Drugs").
 #' @param disease_abbr A short abbreviation for the disease/trait (e.g., "SCZ" or "ALZ").
-#' @param cluster_col Column name in metadata specifying clusters (default: "seurat_clusters").
+#' @param cluster_anno Column name in metadata specifying clusters (default: "seurat_clusters").
 #' @param imputation Strategy for handling p-value calculation when no permutations exceed the observed value.
 #'        Options are:
 #'        - "all": Always add 1 to numerator and denominator (default)
@@ -45,7 +45,7 @@ WindowRankEnrichmentAnalysis <- function(
     window_rank_list,
     ot_gene_set_label,
     disease_abbr,
-    cluster_col = "seurat_clusters",
+    cluster_anno = "seurat_clusters",
     imputation = "all"
 ) {
     # Validate imputation parameter
@@ -54,15 +54,15 @@ WindowRankEnrichmentAnalysis <- function(
     }
     
     # Input validation
-    if (!(cluster_col %in% colnames(se@meta.data))) {
-        stop(paste("The specified cluster column", cluster_col, "is not found in the metadata."))
+    if (!(cluster_anno %in% colnames(se@meta.data))) {
+        stop(paste("The specified cluster column", cluster_anno, "is not found in the metadata."))
     }
     
     # Initialize results data frame
     results <- data.frame()
     
     # Get unique clusters
-    cluster_numbers <- unique(se@meta.data[[cluster_col]])
+    cluster_numbers <- unique(se@meta.data[[cluster_anno]])
     
     # Try to convert clusters to numeric, handling non-numeric gracefully
     numeric_clusters <- suppressWarnings(as.numeric(cluster_numbers))
@@ -90,7 +90,7 @@ WindowRankEnrichmentAnalysis <- function(
         cluster_key <- paste0("cluster_", cluster_name)
         
         # Get cells for this cluster
-        cells_in_cluster <- rownames(se@meta.data)[se@meta.data[[cluster_col]] == cluster_id]
+        cells_in_cluster <- rownames(se@meta.data)[se@meta.data[[cluster_anno]] == cluster_id]
         
         # Calculate observed median scores for each window using the metadata directly
         observed_scores <- sapply(all_window_cols, function(col) {

@@ -75,7 +75,7 @@ Normalize data: se <- SCTransform(se,return.only.var.genes = T) and Save filtere
 Generate metacell clusters
 
 ```{r}
-# clustered_metacells <- generateMetacellClusters(se, cluster_col = "subclass_label", verbose = FALSE)
+# clustered_metacells <- generateMetacellClusters(se, cluster_anno = "subclass_label", verbose = FALSE)
 ```
 
 Aggregate and save metacell clusters
@@ -165,7 +165,7 @@ for (i in 1:length(all_gene_sets)) {
 #   se = se,
 #   gnum = 50,
 #   permutation_nr = 1000,
-#   cluster_col = "supercluster_term"
+#   cluster_anno = "supercluster_term"
 # )
 # 
 # saveRDS(perm.mat_p1000_g50, file = "Permutation_matrices/perm.mat_p1000_g50.RDS")
@@ -175,7 +175,7 @@ for (i in 1:length(all_gene_sets)) {
 #   se = se,
 #   gnum = 218,
 #   permutation_nr = 1000,
-#   cluster_col = "supercluster_term"
+#   cluster_anno = "supercluster_term"
 # )
 # 
 # saveRDS(perm.mat_p1000_g218, file = "Permutation_matrices/perm.mat_p1000_g218.RDS")
@@ -185,7 +185,7 @@ for (i in 1:length(all_gene_sets)) {
 #   se = se,
 #   gnum = 1315,
 #   permutation_nr = 1000,
-#   cluster_col = "supercluster_term"
+#   cluster_anno = "supercluster_term"
 # )
 # 
 # saveRDS(perm.mat_p1000_g1315, file = "Data_brain_example/Permutation_matrices/perm.mat_p1000_g1315.RDS")
@@ -217,7 +217,7 @@ p.val.mat.g <- SpatialTraitEnrichmentAnalysis(
   perm.mat.window50.data = perm.mat.window50.data,
   window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
   gene_list = "OpenTargets_SCZ_Genetic_1",
-  cluster_col = "supercluster_term",
+  cluster_anno = "supercluster_term",
   imputation = "dynamic",
   log_file = "./SpatialTraitEnrichmentAnalysis_all_sc_log.txt"
 )
@@ -271,7 +271,7 @@ p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
   perm.mat.window50.data = perm.mat.window50.data,
   window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
   gene_list = "OpenTargets_SCZ_Drugs_1",
-  cluster_col = "supercluster_term",
+  cluster_anno = "supercluster_term",
   imputation = "dynamic"
 )
 
@@ -331,7 +331,7 @@ window_results.g <- WindowRankEnrichmentAnalysis(
     window_rank_list = window50_rank_list_SCZ_Genetic,
     ot_gene_set_label = "Genetic",
     disease_abbr = "SCZ",
-    cluster_col = "supercluster_term"
+    cluster_anno = "supercluster_term"
 )
 ```
 
@@ -351,7 +351,7 @@ plotScoreDist(
   perm.mat = perm.mat.genetic.data,
   perm.mat.window50 = perm.mat.window50.data,
   window_rank_list = window50_rank_list_SCZ_Genetic,
-  cluster_col = "supercluster_term",
+  cluster_anno = "supercluster_term",
   enrichment_score_col = "OpenTargets_SCZ_Genetic_1"
 )
 
@@ -375,7 +375,7 @@ window_results_drugs <- WindowRankEnrichmentAnalysis(
     window_rank_list = window50_rank_list_SCZ_Drugs,
     ot_gene_set_label = "Drugs",
     disease_abbr = "SCZ",
-    cluster_col = "supercluster_term"
+    cluster_anno = "supercluster_term"
 )
 ```
 
@@ -395,7 +395,7 @@ plotScoreDist(
   perm.mat = perm.mat.drugs.data,
   perm.mat.window50 = perm.mat.window50.data,
   window_rank_list = window50_rank_list_SCZ_Drugs,
-  cluster_col = "supercluster_term",
+  cluster_anno = "supercluster_term",
   enrichment_score_col = "OpenTargets_SCZ_Drugs_1"
 )
 

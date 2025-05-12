@@ -4,7 +4,7 @@
 #' within each cluster of each cell type. Preserves the most common cell type label as metadata.
 #'
 #' @param cell_type_clusters A list of clustered Seurat objects, typically output from `generate_metacell_clusters()`.
-#' @param cluster_col The metadata column used to track original cell type annotations (default: `"subclass_label"`).
+#' @param cluster_col The metadata column used to track original cell type annotations (default: `"cluster_anno"`).
 #'
 #' @returns A merged Seurat object representing all metacells with summed gene expression and assigned metadata.
 #' @export
@@ -12,7 +12,7 @@
 #' @examples
 #' clustered_se_list <- generate_metacell_clusters(se, cluster_col = "subclass_label")
 #' metacell_seurat <- aggregate_metacells(clustered_se_list)
-aggregate_metacells <- function(cell_type_clusters, cluster_col = "subclass_label") {
+aggregate_metacells <- function(cell_type_clusters, cluster_col = "cluster_anno") {
   
   aggregate_metacells_sum_with_metadata <- function(ct_subset) {
     clusters <- unique(ct_subset$seurat_clusters)

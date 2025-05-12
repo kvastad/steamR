@@ -13,7 +13,7 @@
 #' @param spot_alpha Alpha value for spot transparency in plots (default is `0.5`).
 #' @param point_size Point size for `SpatialFeaturePlot()` (default is `1`).
 #' @param all_clusters Logical. Whether to visualize all clusters together (default is `FALSE`).
-#' @param cluster_col Name of the metadata column to use for coloring (default: "cluster_anno").
+#' @param cluster_anno Name of the metadata column to use for coloring (default: "cluster_anno").
 #'
 #' @returns No return value. Generates spatial enrichment plots using `SpatialFeaturePlot()` per cluster/rank.
 #' @export
@@ -38,11 +38,11 @@ featurePlotForRanks <- function(
     spot_alpha = 0.5, 
     point_size = 1,
     all_clusters = FALSE,
-    cluster_col = "cluster_anno"
+    cluster_anno = "cluster_anno"
 ) {
   
   if (all_clusters) {
-    cluster_numbers <- unique(se@meta.data[[cluster_col]])
+    cluster_numbers <- unique(se@meta.data[[cluster_anno]])
     
     # Calculate number of plots needed
     num_plots <- ceiling(length(window_rank_list) / ranks_per_plot)
@@ -83,7 +83,7 @@ featurePlotForRanks <- function(
       })
       
       # Create a mask for the selected cluster
-      cells_use <- rownames(se@meta.data)[se@meta.data[[cluster_col]] %in% cluster_numbers]
+      cells_use <- rownames(se@meta.data)[se@meta.data[[cluster_anno]] %in% cluster_numbers]
       
       print(SpatialFeaturePlot(se, 
                              features = features,

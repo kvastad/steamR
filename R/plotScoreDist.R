@@ -9,7 +9,7 @@
 #' @param perm.mat A permutation matrix of enrichment scores per cluster (global medians).
 #' @param perm.mat.window50 A permutation matrix based on ranked gene windows (optional but preloaded).
 #' @param window_rank_list A list or vector of rank indices used to define the enrichment windows.
-#' @param cluster_col The column in the Seurat metadata that contains cluster labels (default is "seurat_clusters").
+#' @param cluster_anno The column in the Seurat metadata that contains cluster labels (default is "seurat_clusters").
 #' @param clusters_to_plot Optional vector of indices to subset and plot specific clusters only.
 #' @param enrichment_score_col A string specifying the enrichment score column to use.
 #'
@@ -22,19 +22,19 @@
 #'   perm.mat = perm.mat.genetic.data,
 #'   perm.mat.window50 = perm.mat.window50.data,
 #'   window_rank_list = window50_rank_list_SCZ_Genetic,
-#'   cluster_col = "supercluster_term"
+#'   cluster_anno = "supercluster_term"
 #' )
 plotScoreDist <- function(se, 
                           perm.mat, 
                           perm.mat.window50, 
                           window_rank_list, 
-                          cluster_col = "seurat_clusters",
+                          cluster_anno = "seurat_clusters",
                           clusters_to_plot = NULL,
                           enrichment_score_col) {
   
   theme_set(theme_classic())
   
-  cluster_labels <- unique(se@meta.data[[cluster_col]])
+  cluster_labels <- unique(se@meta.data[[cluster_anno]])
   
   # Separate numeric and non-numeric IDs
   suppressWarnings({
@@ -65,7 +65,7 @@ plotScoreDist <- function(se,
     message("\nProcessing cluster: ", cluster_label)
     
     # Get cells for this cluster
-    cells_in_cluster <- rownames(se@meta.data)[se@meta.data[[cluster_col]] == cluster_label]
+    cells_in_cluster <- rownames(se@meta.data)[se@meta.data[[cluster_anno]] == cluster_label]
     if (length(cells_in_cluster) == 0) {
       warning("No cells found for cluster: ", cluster_label)
       next

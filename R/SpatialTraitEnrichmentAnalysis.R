@@ -13,7 +13,7 @@
 #'        used to reference the rank-specific gene sets.
 #' @param gene_list A character string matching the name of the gene score column in `se@meta.data`
 #'        to test for enrichment (e.g., "OpenTargets_SCZ_Genetic_1").
-#' @param cluster_col Column name in `se@meta.data` specifying the clustering to use 
+#' @param cluster_anno Column name in `se@meta.data` specifying the clustering to use 
 #'        (e.g., "seurat_clusters" or "supercluster_term").
 #' @param imputation Strategy for handling p-value calculation when no permutations exceed the observed value.
 #'        Options are:
@@ -33,7 +33,7 @@
 #'   perm.mat.window50.data = perm.mat.window50.data,
 #'   window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
 #'   gene_list = "OpenTargets_SCZ_Genetic_1",
-#'   cluster_col = "supercluster_term",
+#'   cluster_anno = "supercluster_term",
 #'   imputation = "dynamic"
 #' )
 SpatialTraitEnrichmentAnalysis <- function(
@@ -42,7 +42,7 @@ SpatialTraitEnrichmentAnalysis <- function(
     perm.mat.window50.data,
     window_rank_list_abr_label,
     gene_list,
-    cluster_col = "seurat_clusters",
+    cluster_anno = "seurat_clusters",
     imputation = "all",
     log_file = NULL
 ) {
@@ -52,8 +52,8 @@ SpatialTraitEnrichmentAnalysis <- function(
   }
   
   # Check that clustering column exists
-  if (!(cluster_col %in% colnames(se@meta.data))) {
-    stop(paste("The specified cluster column", cluster_col, "is not found in the Seurat object metadata."))
+  if (!(cluster_anno %in% colnames(se@meta.data))) {
+    stop(paste("The specified cluster column", cluster_anno, "is not found in the Seurat object metadata."))
   }
   
   # Check gene list column exists
@@ -61,7 +61,7 @@ SpatialTraitEnrichmentAnalysis <- function(
     stop(paste("The specified gene list column", gene_list, "is not found in the metadata."))
   }
   
-  cluster_numbers <- sort(unique(se@meta.data[[cluster_col]]))
+  cluster_numbers <- sort(unique(se@meta.data[[cluster_anno]]))
   cluster_names <- paste0("cluster_", cluster_numbers)
   
   # Initialize results matrix
@@ -86,7 +86,7 @@ SpatialTraitEnrichmentAnalysis <- function(
     }
     
     # Get cells for this cluster
-    cells_i <- rownames(se@meta.data)[se@meta.data[[cluster_col]] == i]
+    cells_i <- rownames(se@meta.data)[se@meta.data[[cluster_anno]] == i]
     
     # Calculate median for the gene list in this cluster
     actual_median <- median(se@meta.data[cells_i, gene_list], na.rm = TRUE)

@@ -183,21 +183,21 @@ this chunk takes about 90 minutes for all on my local. Maybe we can further opti
 #   se = se,
 #   gnum = 50,
 #   permutation_nr = 1000,
-#   cluster_col = "seurat_clusters"
+#   cluster_anno = "seurat_clusters"
 # )
 # 
 # perm.mat.genetic.data <- generatePermutationMatrix(
 #   se = se,
 #   gnum = 281,
 #   permutation_nr = 1000,
-#   cluster_col = "seurat_clusters"
+#   cluster_anno = "seurat_clusters"
 # )
 # 
 # perm.mat.drugs.data <- generatePermutationMatrix(
 #   se = se,
 #   gnum = 132,
 #   permutation_nr = 1000,
-#   cluster_col = "seurat_clusters"
+#   cluster_anno = "seurat_clusters"
 # )
 ```
 
@@ -375,8 +375,7 @@ featurePlotForRanks(se = se,
                    ranks_per_plot = 1,
                    spot_alpha = 0.5, 
                    point_size = 0.5,
-                   all_clusters = TRUE,
-                   cluster_col = "cluster_anno")
+                   all_clusters = TRUE)
 ```
 
 
@@ -386,7 +385,7 @@ plotScoreDist(
   perm.mat = perm.mat.genetic.data,
   perm.mat.window50 = perm.mat.window50.data,
   window_rank_list = window50_rank_list_ALZ_Genetic,
-  cluster_col = "seurat_clusters",
+  cluster_anno = "seurat_clusters",
   enrichment_score_col = "OpenTargets_ALZ_Genetic_1"
 )
 ```
@@ -399,7 +398,7 @@ plotScoreDist(
   perm.mat = perm.mat.drugs.data,
   perm.mat.window50 = perm.mat.window50.data,
   window_rank_list = window50_rank_list_ALZ_Drugs,
-  cluster_col = "seurat_clusters",
+  cluster_anno = "seurat_clusters",
   enrichment_score_col = "OpenTargets_ALZ_Drugs_1"
 )
 ```
