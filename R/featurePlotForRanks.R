@@ -59,7 +59,7 @@ featurePlotForRanks <- function(
       
       print(SpatialFeaturePlot(se, 
                            features = features,
-                           pt.size.factor = point_size * 10,
+                           pt.size.factor = point_size,
                            ncol = min(4, length(features)),
                            image.alpha = 0) +
             scale_color_gradient(low = "blue", high = "red"))
@@ -88,7 +88,7 @@ featurePlotForRanks <- function(
       print(SpatialFeaturePlot(se, 
                              features = features,
                            cells = cells_use,
-                           pt.size.factor = point_size * 10,
+                           pt.size.factor = point_size,
                            ncol = min(4, length(features)),
                            image.alpha = 0) +
             scale_color_gradient(low = "blue", high = "red"))

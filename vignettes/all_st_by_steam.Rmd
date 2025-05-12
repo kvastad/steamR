@@ -24,27 +24,31 @@ library(steam)
 
 Load ST data:
 ```{r}
+# 1. Load spatial data (unfiltered)
 # se <- Load10X_Spatial(
-#     data.dir = "data/Data_brain_example/spatial_data/",
-#     filename = "V1_Adult_Mouse_Brain_filtered_feature_bc_matrix.h5",
-#     filter.matrix = TRUE,
-#     slice = "slice1",
-#     assay = "Spatial"
+#   data.dir = "data/Data_brain_example/spatial_data/",
+#   filename = "V1_Adult_Mouse_Brain_filtered_feature_bc_matrix.h5",
+#   slice = "slice1",
+#   assay = "Spatial"
 # )
 # 
-# filtered_counts <- CreateSeuratObject(
-#     counts = GetAssayData(se, layer = "counts"),
-#     min.cells = 5,
-#     min.features = 100,
-#     project = "spatial"
-# )
-# cells_to_keep <- intersect(
-#     colnames(filtered_counts),
-#     colnames(se)[se$nCount_Spatial > 500]
-# )
+# # 2. Get raw count matrix
+# counts <- GetAssayData(se, slot = "counts")
 # 
-# # filters to the original se object
-# se <- subset(se, cells = cells_to_keep)
+# # 3. Apply gene filters
+# genes_to_keep <- rownames(counts)[
+#   Matrix::rowSums(counts) >= 100 &     # Total UMI count per gene
+#   Matrix::rowSums(counts > 0) >= 5     # Expressed in ≥5 spots
+# ]
+# 
+# # 4. Apply spot (cell) filters
+# spots_to_keep <- colnames(counts)[
+#   Matrix::colSums(counts) >= 500       # Total UMIs per spot
+# ]
+# 
+# # 5. Subset the Seurat object with filtered genes and spots
+# se <- subset(se, features = genes_to_keep, cells = spots_to_keep)
+# se
 # 
 # # alculate mitochondrial and ribosomal percentages
 # se$percent.mito <- calculateGenePercentage(se, "^mt-")
