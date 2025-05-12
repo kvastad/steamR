@@ -289,7 +289,9 @@ p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
   perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window50.data = perm.mat.window50.data,
   window_rank_list_abr_label = window50_rank_list_ALZ_Genetic,
-  gene_list = "OpenTargets_ALZ_Drugs_1"
+  gene_list = "OpenTargets_ALZ_Drugs_1",
+  imputation = "dynamic",
+  log_file = "./SpatialTraitEnrichmentAnalysis_log_st_drugs.txt"
 )
 
 # Get all p-values
