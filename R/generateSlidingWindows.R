@@ -17,8 +17,8 @@
 #'
 #' @examples
 #' ranked_genes <- c("Gene1", "Gene2", "Gene3", "Gene4", "Gene5", "Gene6")
-#' generate_sliding_windows(ranked_genes, window_size = 3, step_size = 2, disease_abbr = "ALZ", ot_gene_set_label = "Genetic")
-generate_sliding_windows <- function(char_vector, window_size, step_size, disease_abbr, ot_gene_set_label) {
+#' generateSlidingWindows(ranked_genes, window_size = 3, step_size = 2, disease_abbr = "ALZ", ot_gene_set_label = "Genetic")
+generateSlidingWindows <- function(char_vector, window_size, step_size, disease_abbr, ot_gene_set_label) {
   windows <- list()
   
   for (i in seq(1, length(char_vector) - window_size + 1, by = step_size)) {

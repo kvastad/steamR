@@ -75,13 +75,13 @@ Normalize data: se <- SCTransform(se,return.only.var.genes = T) and Save filtere
 Generate metacell clusters
 
 ```{r}
-# clustered_metacells <- generate_metacell_clusters(se, cluster_col = "subclass_label", verbose = FALSE)
+# clustered_metacells <- generateMetacellClusters(se, cluster_col = "subclass_label", verbose = FALSE)
 ```
 
 Aggregate and save metacell clusters
 
 ```{r}
-# meta_cell_seurat_all_sum_with_metadata <- aggregate_metacells(clustered_metacells)
+# meta_cell_seurat_all_sum_with_metadata <- aggregateMetacells(clustered_metacells)
 # saveRDS(meta_cell_seurat_all_sum_with_metadata,file("data/Seurat_objects/MetaCell.rds"))
 ```
 
@@ -161,7 +161,7 @@ for (i in 1:length(all_gene_sets)) {
 ```{r, eval=FALSE}
 #generate permutation matrices (non-parallel, 1000 permutations)
 
-# perm.mat_p1000_g50 <- generate_permutation_matrix(
+# perm.mat_p1000_g50 <- generatePermutationMatrix(
 #   se = se,
 #   gnum = 50,
 #   permutation_nr = 1000,
@@ -171,7 +171,7 @@ for (i in 1:length(all_gene_sets)) {
 # saveRDS(perm.mat_p1000_g50, file = "Permutation_matrices/perm.mat_p1000_g50.RDS")
 # write.matrix(perm.mat_p1000_g50, file = "Permutation_matrices/perm.mat_p1000_g50.csv", sep = ";")
 # 
-# perm.mat_p1000_g218 <- generate_permutation_matrix(
+# perm.mat_p1000_g218 <- generatePermutationMatrix(
 #   se = se,
 #   gnum = 218,
 #   permutation_nr = 1000,
@@ -181,7 +181,7 @@ for (i in 1:length(all_gene_sets)) {
 # saveRDS(perm.mat_p1000_g218, file = "Permutation_matrices/perm.mat_p1000_g218.RDS")
 # write.matrix(perm.mat_p1000_g218, file = "Permutation_matrices/perm.mat_p1000_g218.csv", sep = ";")
 # 
-# perm.mat_p1000_g1315 <- generate_permutation_matrix(
+# perm.mat_p1000_g1315 <- generatePermutationMatrix(
 #   se = se,
 #   gnum = 1315,
 #   permutation_nr = 1000,
@@ -202,7 +202,7 @@ perm_files <- c(
   "data/Permutation_matrices/perm.mat_p10000_g218.RDS"
 )
 
-perm_matrices <- load_permutation_matrices(perm_files)
+perm_matrices <- loadPermutationMatices(perm_files)
 perm.mat.window50.data <- as.data.frame(perm_matrices[[1]])
 perm.mat.genetic.data <- as.data.frame(perm_matrices[[2]])
 perm.mat.drugs.data <- as.data.frame(perm_matrices[[3]])
@@ -624,7 +624,7 @@ OpenTargets_SCZ_Genetic <- OpenTargets_SCZ_Genetic_[1:290]
 
 ```{r}
 # View results
-fisher_results <- run_fisher_test_on_DEGs(se, DEG_genes = N.markers, OT_genes = OpenTargets_SCZ_Genetic)
+fisher_results <- runFisherTestDEGs(se, DEG_genes = N.markers, OT_genes = OpenTargets_SCZ_Genetic)
 print(fisher_results)
 ```
 
