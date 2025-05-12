@@ -9,10 +9,9 @@ plotScoreDist(
   perm.mat,
   perm.mat.window50,
   window_rank_list,
-  ot_gene_set_label = "Genetic",
-  disease_abbr = "ALZ",
-  cluster_col = "seurat_clusters",
-  clusters_to_plot = NULL
+  cluster_anno = "seurat_clusters",
+  clusters_to_plot = NULL,
+  enrichment_score_col
 )
 }
 \arguments{
@@ -24,13 +23,11 @@ plotScoreDist(
 
 \item{window_rank_list}{A list or vector of rank indices used to define the enrichment windows.}
 
-\item{ot_gene_set_label}{A string label for the gene set (e.g., \code{"Genetic"} or \code{"Drugs"}).}
-
-\item{disease_abbr}{A short string indicating the trait or disease (e.g., \code{"SCZ"} or \code{"ALZ"}).}
-
-\item{cluster_col}{The column in the Seurat metadata that contains cluster labels (default is \code{"seurat_clusters"}).}
+\item{cluster_anno}{The column in the Seurat metadata that contains cluster labels (default is "seurat_clusters").}
 
 \item{clusters_to_plot}{Optional vector of indices to subset and plot specific clusters only.}
+
+\item{enrichment_score_col}{A string specifying the enrichment score column to use.}
 }
 \value{
 No return value. Produces a series of ggplot2 density plots, one per cluster.
@@ -47,8 +44,6 @@ plotScoreDist(
   perm.mat = perm.mat.genetic.data,
   perm.mat.window50 = perm.mat.window50.data,
   window_rank_list = window50_rank_list_SCZ_Genetic,
-  ot_gene_set_label = "Genetic",
-  disease_abbr = "SCZ",
-  cluster_col = "supercluster_term"
+  cluster_anno = "supercluster_term"
 )
 }

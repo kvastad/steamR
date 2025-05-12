@@ -5,38 +5,20 @@
 \title{Rank Score Distribution Plots for Enrichment Structures}
 \usage{
 rankPlotForClusters(
-  se,
-  perm.mat,
+  window_results,
   perm.mat.window50,
-  window_rank_list,
-  ot_gene_set_label,
-  disease_abbr,
-  cluster_col = "seurat_clusters",
-  ylim = c(-0.3, 0.3),
-  clusters_to_plot = NULL
+  clusters_to_plot = NULL,
+  ylim = c(-0.3, 0.3)
 )
 }
 \arguments{
-\item{se}{A Seurat object containing cluster metadata and enrichment scores.}
+\item{window_results}{Output from WindowRankEnrichmentAnalysis containing pre-calculated scores and quantiles}
 
-\item{perm.mat}{A permutation matrix containing global median scores for each cluster.}
+\item{perm.mat.window50}{A permutation matrix for window-based median scores (only used for visualization)}
 
-\item{perm.mat.window50}{A permutation matrix for window-based (e.g., 50-gene) median scores.}
+\item{clusters_to_plot}{Optional numeric vector indicating specific clusters to plot. If NULL, all are plotted.}
 
-\item{window_rank_list}{A list or vector of window ranks used to generate enrichment scores.}
-
-\item{ot_gene_set_label}{A string identifying the gene set type (e.g., "Genetic").}
-
-\item{disease_abbr}{A short abbreviation for the disease or trait (e.g., "SCZ").}
-
-\item{cluster_col}{The name of the metadata column specifying clusters
-(default is \code{"seurat_clusters"}).}
-
-\item{ylim}{A numeric vector of length two specifying the y-axis limits for the plots
-(default is \code{c(-0.3, 0.3)}).}
-
-\item{clusters_to_plot}{Optional numeric or character vector indicating specific cluster
-indices (positions) to plot from the sorted list of cluster IDs. If \code{NULL}, all are plotted.}
+\item{ylim}{A numeric vector of length two specifying the y-axis limits (default: c(-0.3, 0.3))}
 }
 \value{
 Line plots per cluster showing the structure of rank-wise median scores.
@@ -47,15 +29,17 @@ for each cluster. This helps visualize how enrichment scores vary
 by window rank and how they compare to permutation null distributions.
 }
 \examples{
-rankPlotForClusters(
+window_results <- WindowRankEnrichmentAnalysis(
   se = se,
-  perm.mat = perm.mat.genetic.data,
+  perm.mat.window50.data = perm.mat.window50.data,
+  window_rank_list = window50_rank_list_ALZ_Drugs,
+  ot_gene_set_label = "Drugs",
+  disease_abbr = "ALZ"
+)
+
+rankPlotForClusters(
+  window_results = window_results,
   perm.mat.window50 = perm.mat.window50.data,
-  window_rank_list = window50_rank_list_SCZ_Genetic,
-  ot_gene_set_label = "Genetic",
-  disease_abbr = "SCZ",
-  cluster_col = "supercluster_term",
-  ylim = c(-0.2, 0.2),
-  clusters_to_plot = 1:5
+  ylim = c(-0.3, 0.3)
 )
 }
