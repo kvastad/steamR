@@ -9,10 +9,9 @@
 #' @param perm.mat A permutation matrix of enrichment scores per cluster (global medians).
 #' @param perm.mat.window50 A permutation matrix based on ranked gene windows (optional but preloaded).
 #' @param window_rank_list A list or vector of rank indices used to define the enrichment windows.
-#' @param ot_gene_set_label A string label for the gene set (e.g., `"Genetic"` or `"Drugs"`).
-#' @param disease_abbr A short string indicating the trait or disease (e.g., `"SCZ"` or `"ALZ"`).
-#' @param cluster_col The column in the Seurat metadata that contains cluster labels (default is `"seurat_clusters"`).
+#' @param cluster_col The column in the Seurat metadata that contains cluster labels (default is "seurat_clusters").
 #' @param clusters_to_plot Optional vector of indices to subset and plot specific clusters only.
+#' @param enrichment_score_col A string specifying the enrichment score column to use.
 #'
 #' @returns No return value. Produces a series of ggplot2 density plots, one per cluster.
 #' @export
@@ -23,22 +22,18 @@
 #'   perm.mat = perm.mat.genetic.data,
 #'   perm.mat.window50 = perm.mat.window50.data,
 #'   window_rank_list = window50_rank_list_SCZ_Genetic,
-#'   ot_gene_set_label = "Genetic",
-#'   disease_abbr = "SCZ",
 #'   cluster_col = "supercluster_term"
 #' )
 plotScoreDist <- function(se, 
                           perm.mat, 
                           perm.mat.window50, 
                           window_rank_list, 
-                          ot_gene_set_label = "Genetic", 
-                          disease_abbr = "ALZ",
                           cluster_col = "seurat_clusters",
-                          clusters_to_plot = NULL) {
+                          clusters_to_plot = NULL,
+                          enrichment_score_col) {
   
   theme_set(theme_classic())
   
-  term <- paste0("^", disease_abbr, "_", ot_gene_set_label)
   cluster_labels <- unique(se@meta.data[[cluster_col]])
   
   # Separate numeric and non-numeric IDs
@@ -61,7 +56,7 @@ plotScoreDist <- function(se,
   }
   
   # Find all relevant OT enrichment columns once
-  start_with_abr_label <- grep(term, colnames(se@meta.data), value = TRUE)
+  start_with_abr_label <- grep(enrichment_score_col, colnames(se@meta.data), value = TRUE)
   if (length(start_with_abr_label) == 0) {
     stop("No matching columns found for term")
   }
@@ -90,19 +85,18 @@ plotScoreDist <- function(se,
     
     # Plot global distribution
     median_score_NULL <- data.frame(Median_scores = perm.mat[[cluster_name]])
-    ot_name <- paste0("OpenTargets_", disease_abbr, "_", ot_gene_set_label, "_1")
     
-    if (!(ot_name %in% colnames(se@meta.data))) {
-      warning("Missing OT score column: ", ot_name, " in cluster: ", cluster_label)
+    if (!(enrichment_score_col %in% colnames(se@meta.data))) {
+      warning("Missing OT score column: ", enrichment_score_col, " in cluster: ", cluster_label)
       next
     }
     
-    actual_median <- median(se@meta.data[cells_in_cluster, ot_name], na.rm = TRUE)
+    actual_median <- median(se@meta.data[cells_in_cluster, enrichment_score_col], na.rm = TRUE)
     
     p <- ggplot(median_score_NULL, aes(x = Median_scores)) +
       geom_density(fill = "grey", alpha = 0.8) +
       geom_vline(xintercept = actual_median, color = "red", size = 1) +
-      ggtitle(paste(ot_gene_set_label, disease_abbr, "Cluster:", cluster_label)) +
+      ggtitle(paste("Cluster:", cluster_label)) +
       xlab("Median Score") +
       ylab("Density")
     

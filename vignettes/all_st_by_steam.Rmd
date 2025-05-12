@@ -384,18 +384,20 @@ plotScoreDist(
   perm.mat = perm.mat.genetic.data,
   perm.mat.window50 = perm.mat.window50.data,
   window_rank_list = window50_rank_list_ALZ_Genetic,
-  ot_gene_set_label = "Genetic",
-  disease_abbr = "ALZ"
+  cluster_col = "seurat_clusters",
+  enrichment_score_col = "OpenTargets_ALZ_Genetic_1"
 )
 ```
 
 ```{r}
 colnames(perm.mat.genetic.data) <- gsub("^cluster_", "", colnames(perm.mat.genetic.data))
 colnames(perm.mat.window50.data) <- gsub("^cluster_", "", colnames(perm.mat.window50.data))
-plotScoreDist(se = se,
-              perm.mat = perm.mat.drugs.data,
-              perm.mat.window50 = perm.mat.window50.data,
-              window_rank_list = window50_rank_list_ALZ_Drugs,
-              ot_gene_set_label = "Drugs",
-              disease_abbr = "ALZ")
+plotScoreDist(
+  se = se,
+  perm.mat = perm.mat.drugs.data,
+  perm.mat.window50 = perm.mat.window50.data,
+  window_rank_list = window50_rank_list_ALZ_Drugs,
+  cluster_col = "seurat_clusters",
+  enrichment_score_col = "OpenTargets_ALZ_Drugs_1"
+)
 ```
