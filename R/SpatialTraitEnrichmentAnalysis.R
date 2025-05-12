@@ -113,20 +113,16 @@ SpatialTraitEnrichmentAnalysis <- function(
       
       # Calculate p-value with specified imputation strategy
       n_bigger <- nrow(perm_mat_window_cluster_bigger)
-      if (imputation == "all") {
-        cluster_i_w_p_val <- (n_bigger + 1) / (permutation_nr + 1)
-      } else if (imputation == "none") {
-        cluster_i_w_p_val <- n_bigger / permutation_nr
-      } else { # dynamic
-        if (n_bigger == 0) {
-          cluster_i_w_p_val <- 1 / (permutation_nr + 1)
-          if (!is.null(log_file)) {
-            writeLines(sprintf("Imputed p-value for cluster %s window %d: %.2e", 
-                               cluster_name, j, cluster_i_w_p_val), log_con)
-          }
+      if (n_bigger == 0) {
+        warning_msg <- sprintf("No median scores in the null distribution were equal to or larger than the queried median score for cluster %s. Consider using imputation 'all' or 'dynamic'.", cluster_name)
+        if (!is.null(log_file)) {
+          writeLines(warning_msg, log_con)
         } else {
-          cluster_i_w_p_val <- n_bigger / permutation_nr
+          warning(warning_msg)
         }
+        cluster_i_w_p_val <- 1 / (permutation_nr + 1)
+      } else {
+        cluster_i_w_p_val <- n_bigger / permutation_nr
       }
       
       perm_mat_label_bigger <- subset(perm.mat.label.data,
@@ -134,20 +130,16 @@ SpatialTraitEnrichmentAnalysis <- function(
       
       # Calculate p-value with specified imputation strategy
       n_bigger <- nrow(perm_mat_label_bigger)
-      if (imputation == "all") {
-        cluster_i_p_val <- (n_bigger + 1) / (permutation_nr + 1)
-      } else if (imputation == "none") {
-        cluster_i_p_val <- n_bigger / permutation_nr
-      } else { # dynamic
-        if (n_bigger == 0) {
-          cluster_i_p_val <- 1 / (permutation_nr + 1)
-          if (!is.null(log_file)) {
-            writeLines(sprintf("Imputed p-value for cluster %s: %.2e", 
-                               cluster_name, cluster_i_p_val), log_con)
-          }
+      if (n_bigger == 0) {
+        warning_msg <- sprintf("No median scores in the null distribution were equal to or larger than the queried median score for cluster %s. Consider using imputation 'all' or 'dynamic'.", cluster_name)
+        if (!is.null(log_file)) {
+          writeLines(warning_msg, log_con)
         } else {
-          cluster_i_p_val <- n_bigger / permutation_nr
+          warning(warning_msg)
         }
+        cluster_i_p_val <- 1 / (permutation_nr + 1)
+      } else {
+        cluster_i_p_val <- n_bigger / permutation_nr
       }
       
       p_val_mat[1, index] <- cluster_i_p_val
