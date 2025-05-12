@@ -20,6 +20,7 @@
 #'        - "all": Always add 1 to numerator and denominator (default)
 #'        - "none": No imputation, can result in p=0
 #'        - "dynamic": Only impute when no permutations exceed observed value
+#' @param log_file Path to the log file for imputed p-values
 #'
 #' @returns A data frame of unadjusted p-values for each cluster.
 #'
@@ -42,7 +43,8 @@ SpatialTraitEnrichmentAnalysis <- function(
     window_rank_list_abr_label,
     gene_list,
     cluster_col = "seurat_clusters",
-    imputation = "all"
+    imputation = "all",
+    log_file = NULL
 ) {
   # Validate imputation parameter
   if (!imputation %in% c("all", "none", "dynamic")) {
@@ -67,6 +69,11 @@ SpatialTraitEnrichmentAnalysis <- function(
   nr_of_tests <- length(cluster_numbers)
   p_val_mat <- matrix(NA, nrow = 1, ncol = length(cluster_names),
                       dimnames = list("p.val", cluster_names))
+  
+  # Open a connection to the log file if it's provided
+  if (!is.null(log_file)) {
+    log_con <- file(log_file, open = "wt")
+  }
   
   # Process each cluster
   for (index in seq_along(cluster_numbers)) {
@@ -102,7 +109,7 @@ SpatialTraitEnrichmentAnalysis <- function(
       OT_label_window <- cluster_medians[j]
       
       perm_mat_window_cluster_bigger <- subset(perm.mat.window50.data,
-                                             perm.mat.window50.data[[cluster_name]] >= OT_label_window)
+                                               perm.mat.window50.data[[cluster_name]] >= OT_label_window)
       
       # Calculate p-value with specified imputation strategy
       n_bigger <- nrow(perm_mat_window_cluster_bigger)
@@ -113,15 +120,17 @@ SpatialTraitEnrichmentAnalysis <- function(
       } else { # dynamic
         if (n_bigger == 0) {
           cluster_i_w_p_val <- 1 / (permutation_nr + 1)
-          message(sprintf("Imputed p-value for cluster %s window %d: %.2e", 
-                         cluster_name, j, cluster_i_w_p_val))
+          if (!is.null(log_file)) {
+            writeLines(sprintf("Imputed p-value for cluster %s window %d: %.2e", 
+                               cluster_name, j, cluster_i_w_p_val), log_con)
+          }
         } else {
           cluster_i_w_p_val <- n_bigger / permutation_nr
         }
       }
       
       perm_mat_label_bigger <- subset(perm.mat.label.data,
-                                    perm.mat.label.data[[cluster_name]] >= actual_median)
+                                      perm.mat.label.data[[cluster_name]] >= actual_median)
       
       # Calculate p-value with specified imputation strategy
       n_bigger <- nrow(perm_mat_label_bigger)
@@ -132,8 +141,10 @@ SpatialTraitEnrichmentAnalysis <- function(
       } else { # dynamic
         if (n_bigger == 0) {
           cluster_i_p_val <- 1 / (permutation_nr + 1)
-          message(sprintf("Imputed p-value for cluster %s: %.2e", 
-                         cluster_name, cluster_i_p_val))
+          if (!is.null(log_file)) {
+            writeLines(sprintf("Imputed p-value for cluster %s: %.2e", 
+                               cluster_name, cluster_i_p_val), log_con)
+          }
         } else {
           cluster_i_p_val <- n_bigger / permutation_nr
         }
@@ -141,6 +152,11 @@ SpatialTraitEnrichmentAnalysis <- function(
       
       p_val_mat[1, index] <- cluster_i_p_val
     }
+  }
+  
+  # Close the connection to the log file
+  if (!is.null(log_file)) {
+    close(log_con)
   }
   
   return(as.data.frame(p_val_mat))

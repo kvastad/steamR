@@ -27,5 +27,4 @@ Imports:
     Seurat,
     SeuratObject,
     stats,
-    STutility,
     viridis
