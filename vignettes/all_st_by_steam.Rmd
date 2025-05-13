@@ -364,7 +364,7 @@ window_results$p_value_adj <- p.adjust(window_results$p_value, method = "bonferr
 ```{r}
 rankPlotForClusters(
     window_results = window_results,
-    perm.mat.window50 = perm.mat.window50.data,
+    perm.mat.window = perm.mat.window50.data,
     ylim = c(-0.3, 0.3)
 )
 ```

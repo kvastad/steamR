@@ -339,7 +339,7 @@ window_results.g <- WindowRankEnrichmentAnalysis(
 ```{r}
 rankPlotForClusters(
     window_results = window_results.g,
-    perm.mat.window50 = perm.mat.window50.data,
+    perm.mat.window = perm.mat.window50.data,
     ylim = c(-0.3, 0.3),
     clusters_to_plot = NULL
 )
@@ -382,7 +382,7 @@ window_results_drugs <- WindowRankEnrichmentAnalysis(
 ```{r}
 rankPlotForClusters(
     window_results = window_results_drugs,
-    perm.mat.window50 = perm.mat.window50.data,
+    perm.mat.window = perm.mat.window50.data,
     ylim = c(-0.3, 0.3),
     clusters_to_plot = NULL
 )

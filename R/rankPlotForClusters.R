@@ -4,8 +4,8 @@
 #' for each cluster. This helps visualize how enrichment scores vary 
 #' by window rank and how they compare to permutation null distributions.
 #'
-#' @param window_results Output from WindowRankEnrichmentAnalysis containing pre-calculated scores and quantiles
-#' @param perm.mat.window50 A permutation matrix for window-based median scores (only used for visualization)
+#' @param window_results Output from WindowRankEnrichmentAnalysis containing pre-calculated median scores and quantiles
+#' @param perm.mat.window A null distribution permutation matrix for window-based median scores, used to calculate and visualize the null distribution's min, median and max values. This permutation matrix must be generated from random gene lists of the same size as the window size being tested.
 #' @param clusters_to_plot Optional numeric vector indicating specific clusters to plot. If NULL, all are plotted.
 #' @param ylim A numeric vector of length two specifying the y-axis limits (default: c(-0.3, 0.3))
 #'
@@ -15,19 +15,19 @@
 #' @examples
 #' window_results <- WindowRankEnrichmentAnalysis(
 #'   se = se,
-#'   perm.mat.window50.data = perm.mat.window50.data,
-#'   window_rank_list = window50_rank_list_ALZ_Drugs,
+#'   perm.mat.window.data = perm.mat.window.data,
+#'   window_rank_list = window_rank_list_ALZ_Drugs,
 #'   ot_gene_set_label = "Drugs",
 #'   disease_abbr = "ALZ"
 #' )
 #' 
 #' rankPlotForClusters(
 #'   window_results = window_results,
-#'   perm.mat.window50 = perm.mat.window50.data,
+#'   perm.mat.window = perm.mat.window.data,
 #'   ylim = c(-0.3, 0.3)
 #' )
 rankPlotForClusters <- function(window_results, 
-                               perm.mat.window50, 
+                               perm.mat.window, 
                                clusters_to_plot = NULL,
                                ylim = c(-0.3, 0.3)) {
     
@@ -64,8 +64,8 @@ rankPlotForClusters <- function(window_results,
         abline(h = cluster_data$q95[1], col = "red", lwd = 2, lty = 2)
         abline(h = cluster_data$q05[1], col = "red", lwd = 2, lty = 2)
         
-        if (!is.null(perm.mat.window50)) {
-            null_dist <- perm.mat.window50[[gsub("cluster_", "", cluster)]]
+        if (!is.null(perm.mat.window)) {
+            null_dist <- perm.mat.window[[gsub("cluster_", "", cluster)]]
             if (!is.null(null_dist)) {
                 abline(h = max(null_dist), col = "darkred", lwd = 2, lty = 2)
                 abline(h = min(null_dist), col = "darkred", lwd = 2, lty = 2)
