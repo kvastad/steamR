@@ -7,7 +7,7 @@
 #' @param se A Seurat object containing gene scores and clustering metadata.
 #' @param perm.mat.label.data A data frame of null median scores for the full gene list,
 #'        where columns correspond to cluster names.
-#' @param perm.mat.window50.data A data frame of null median scores for ranked gene sets
+#' @param perm.mat.window.data A data frame of null median scores for ranked gene sets
 #'        (e.g., sliding windows), with columns corresponding to cluster names.
 #' @param window_rank_list_abr_label A list or vector of window rank identifiers 
 #'        used to reference the rank-specific gene sets.
@@ -30,8 +30,8 @@
 #' pval_mat <- SpatialTraitEnrichmentAnalysis(
 #'   se = se,
 #'   perm.mat.label.data = perm.mat.genetic.data,
-#'   perm.mat.window50.data = perm.mat.window50.data,
-#'   window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
+#'   perm.mat.window.data = perm.mat.window.data,
+#'   window_rank_list_abr_label = window_rank_list_SCZ_Genetic,
 #'   gene_list = "OpenTargets_SCZ_Genetic_1",
 #'   cluster_anno = "supercluster_term",
 #'   imputation = "dynamic"
@@ -39,7 +39,7 @@
 SpatialTraitEnrichmentAnalysis <- function(
     se,
     perm.mat.label.data,
-    perm.mat.window50.data,
+    perm.mat.window.data,
     window_rank_list_abr_label,
     gene_list,
     cluster_anno = "seurat_clusters",
@@ -108,8 +108,8 @@ SpatialTraitEnrichmentAnalysis <- function(
     for (j in seq_along(window_rank_list_abr_label)) {
       OT_label_window <- cluster_medians[j]
       
-      perm_mat_window_cluster_bigger <- subset(perm.mat.window50.data,
-                                               perm.mat.window50.data[[cluster_name]] >= OT_label_window)
+      perm_mat_window_cluster_bigger <- subset(perm.mat.window.data,
+                                               perm.mat.window.data[[cluster_name]] >= OT_label_window)
       
       # Calculate p-value with specified imputation strategy
       n_bigger <- nrow(perm_mat_window_cluster_bigger)

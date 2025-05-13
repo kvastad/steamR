@@ -4,7 +4,7 @@
 #' comparing observed median scores to a null distribution from permutations.
 #'
 #' @param se A Seurat object containing gene scores and clustering metadata.
-#' @param perm.mat.window50.data A data frame of null median scores for ranked gene sets
+#' @param perm.mat.window.data A data frame of null median scores for ranked gene sets
 #'        (e.g., sliding windows), with columns corresponding to cluster names.
 #' @param window_rank_list A list or vector of window rank identifiers 
 #'        used to reference the rank-specific gene sets.
@@ -33,15 +33,15 @@
 #' @examples
 #' window_results <- WindowRankEnrichmentAnalysis(
 #'   se = se,
-#'   perm.mat.window50.data = perm.mat.window50.data,
-#'   window_rank_list = window50_rank_list_ALZ_Drugs,
+#'   perm.mat.window.data = perm.mat.window.data,
+#'   window_rank_list = window_rank_list_ALZ_Drugs,
 #'   ot_gene_set_label = "Drugs",
 #'   disease_abbr = "ALZ",
 #'   imputation = "dynamic"
 #' )
 WindowRankEnrichmentAnalysis <- function(
     se,
-    perm.mat.window50.data,
+    perm.mat.window.data,
     window_rank_list,
     ot_gene_set_label,
     disease_abbr,
@@ -98,7 +98,7 @@ WindowRankEnrichmentAnalysis <- function(
         })
         
         # Get null distribution for this cluster
-        null_dist <- perm.mat.window50.data[[cluster_name]]
+        null_dist <- perm.mat.window.data[[cluster_name]]
         if (is.null(null_dist)) {
             warning(paste("No null distribution found for cluster:", cluster_name))
             next

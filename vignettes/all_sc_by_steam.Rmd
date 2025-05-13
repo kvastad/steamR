@@ -214,7 +214,7 @@ Genetics:
 p.val.mat.g <- SpatialTraitEnrichmentAnalysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
-  perm.mat.window50.data = perm.mat.window50.data,
+  perm.mat.window.data = perm.mat.window50.data,
   window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
   gene_list = "OpenTargets_SCZ_Genetic_1",
   cluster_anno = "supercluster_term",
@@ -268,7 +268,7 @@ Drugs:
 p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
-  perm.mat.window50.data = perm.mat.window50.data,
+  perm.mat.window.data = perm.mat.window50.data,
   window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
   gene_list = "OpenTargets_SCZ_Drugs_1",
   cluster_anno = "supercluster_term",
@@ -328,7 +328,7 @@ VlnPlot(se, features = c("SCZ_Genetic_Rank5_1"), ncol = 1, group.by = "superclus
 ```{r}
 window_results.g <- WindowRankEnrichmentAnalysis(
     se = se,
-    perm.mat.window50.data = perm.mat.window50.data,
+    perm.mat.window.data = perm.mat.window50.data,
     window_rank_list = window50_rank_list_SCZ_Genetic,
     ot_gene_set_label = "Genetic",
     disease_abbr = "SCZ",
@@ -370,7 +370,7 @@ VlnPlot(se, features = c("SCZ_Drugs_Rank5_1"), ncol = 1, group.by = "supercluste
 ```{r}
 window_results_drugs <- WindowRankEnrichmentAnalysis(
     se = se,
-    perm.mat.window50.data = perm.mat.window50.data,
+    perm.mat.window.data = perm.mat.window50.data,
     window_rank_list = window50_rank_list_SCZ_Drugs,
     ot_gene_set_label = "Drugs",
     disease_abbr = "SCZ",

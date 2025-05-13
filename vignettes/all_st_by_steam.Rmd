@@ -232,7 +232,7 @@ Enrichment analysis:
 p.val.mat.g <- SpatialTraitEnrichmentAnalysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
-  perm.mat.window50.data = perm.mat.window50.data,
+  perm.mat.window.data = perm.mat.window50.data,
   window_rank_list_abr_label = window50_rank_list_ALZ_Genetic,
   gene_list = "OpenTargets_ALZ_Genetic_1",
   imputation = "all",
@@ -291,7 +291,7 @@ SpatialFeaturePlot(se,
 p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
-  perm.mat.window50.data = perm.mat.window50.data,
+  perm.mat.window.data = perm.mat.window50.data,
   window_rank_list_abr_label = window50_rank_list_ALZ_Genetic,
   gene_list = "OpenTargets_ALZ_Drugs_1",
   imputation = "dynamic",
@@ -347,7 +347,7 @@ SpatialFeaturePlot(se,
 ```{r}
 window_results <- WindowRankEnrichmentAnalysis(
     se = se,
-    perm.mat.window50.data = perm.mat.window50.data,
+    perm.mat.window.data = perm.mat.window50.data,
     window_rank_list = window50_rank_list_ALZ_Drugs,
     ot_gene_set_label = "Drugs",
     disease_abbr = "ALZ"
