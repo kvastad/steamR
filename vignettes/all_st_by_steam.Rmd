@@ -379,11 +379,26 @@ featurePlotForRanks(se = se,
                    ranks_per_plot = 1,
                    spot_alpha = 1, 
                    point_size = 5,
-                   #seurat_type = "seurat",
-                   all_clusters = TRUE)
+                   seurat_type = "seurat",
+                   all_clusters = TRUE
+                   )
 
 ```
 
+```{r}
+featurePlotForRanks(se = se,
+                   window_rank_list = window50_rank_list_ALZ_Genetic,
+                   ot_gene_set_label = "Genetic",
+                   disease_abbr = "ALZ",
+                   ranks_per_plot = 1,
+                   spot_alpha = 1.5, 
+                   point_size = 5,
+                   seurat_type = "seurat",
+                   cluster_number = 3,
+                   all_clusters = FALSE
+                   )
+
+```
 
 ```{r}
 plotScoreDist(

@@ -120,13 +120,15 @@ featurePlotForRanks <- function(
                            cols = c("black", "darkblue", "cyan", "yellow", "red", "darkred"),
                            value.scale = "all"))
       } else {
-        print(SpatialFeaturePlot(se, 
-                               features = features,
-                               cells = cells_use,
-                               pt.size.factor = point_size,
-                               ncol = min(4, length(features)),
-                               image.alpha = 0) +
-              scale_color_gradient(low = "blue", high = "red"))
+        se_subset <- suppressWarnings(subset(se, cells = cells_use))
+        suppressWarnings(print(
+          SpatialFeaturePlot(se_subset, 
+            features = features,
+            pt.size.factor = point_size,
+            ncol = min(4, length(features)),
+            image.alpha = 0
+          ) + scale_color_gradient(low = "blue", high = "red")
+        ))
       }
     }
   }
