@@ -1,14 +1,14 @@
 #' Plot Enrichment Score Distributions for Clusters
 #'
-#' Generates density plots of NULL distribution scores for each cluster
+#' Generates density plots of null distribution scores for each cluster
 #' and overlays the actual enrichment score to visually compare significance.
 #' This function is useful for assessing whether observed enrichment scores
 #' deviate from a random background.
 #'
 #' @param se A Seurat object containing enrichment scores in the metadata.
-#' @param perm.mat A permutation matrix of enrichment scores per cluster (global medians).
-#' @param perm.mat.window50 A permutation matrix based on ranked gene windows (optional but preloaded).
-#' @param window_rank_list A list or vector of rank indices used to define the enrichment windows.
+#' @param perm.mat A null distribution permutation matrix of enrichment scores per cluster (global medians). 
+#' The permutation matrix is generated using the generatePermutationMatrix function and must be generated 
+#' from a gene list of equal size as the gene list score given in 'enrichment_score_col'.
 #' @param cluster_anno The column in the Seurat metadata that contains cluster labels (default is "seurat_clusters").
 #' @param clusters_to_plot Optional vector of indices to subset and plot specific clusters only.
 #' @param enrichment_score_col A string specifying the enrichment score column to use.
@@ -20,14 +20,11 @@
 #' plotScoreDist(
 #'   se = se,
 #'   perm.mat = perm.mat.genetic.data,
-#'   perm.mat.window50 = perm.mat.window50.data,
-#'   window_rank_list = window50_rank_list_SCZ_Genetic,
-#'   cluster_anno = "supercluster_term"
+#'   cluster_anno = "supercluster_term",
+#'   enrichment_score_col = "OpenTargets_SCZ_Genetic_1"
 #' )
 plotScoreDist <- function(se, 
                           perm.mat, 
-                          perm.mat.window50, 
-                          window_rank_list, 
                           cluster_anno = "seurat_clusters",
                           clusters_to_plot = NULL,
                           enrichment_score_col) {
@@ -84,7 +81,7 @@ plotScoreDist <- function(se,
     }
     
     # Plot global distribution
-    median_score_NULL <- data.frame(Median_scores = perm.mat[[cluster_name]])
+    median_score_null <- data.frame(Median_scores = perm.mat[[cluster_name]])
     
     if (!(enrichment_score_col %in% colnames(se@meta.data))) {
       warning("Missing OT score column: ", enrichment_score_col, " in cluster: ", cluster_label)
@@ -93,7 +90,7 @@ plotScoreDist <- function(se,
     
     actual_median <- median(se@meta.data[cells_in_cluster, enrichment_score_col], na.rm = TRUE)
     
-    p <- ggplot(median_score_NULL, aes(x = Median_scores)) +
+    p <- ggplot(median_score_null, aes(x = Median_scores)) +
       geom_density(fill = "grey", alpha = 0.8) +
       geom_vline(xintercept = actual_median, color = "red", size = 1) +
       ggtitle(paste("Cluster:", cluster_label)) +

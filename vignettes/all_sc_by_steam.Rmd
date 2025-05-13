@@ -272,7 +272,8 @@ p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
   window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
   gene_list = "OpenTargets_SCZ_Drugs_1",
   cluster_anno = "supercluster_term",
-  imputation = "dynamic"
+  imputation = "dynamic",
+  log_file = "./SpatialTraitEnrichmentAnalysis_all_sc_drugs.txt"
 )
 
 # Get all p-values
@@ -349,8 +350,6 @@ rankPlotForClusters(
 plotScoreDist(
   se = se,
   perm.mat = perm.mat.genetic.data,
-  perm.mat.window50 = perm.mat.window50.data,
-  window_rank_list = window50_rank_list_SCZ_Genetic,
   cluster_anno = "supercluster_term",
   enrichment_score_col = "OpenTargets_SCZ_Genetic_1"
 )
@@ -393,8 +392,6 @@ rankPlotForClusters(
 plotScoreDist(
   se = se,
   perm.mat = perm.mat.drugs.data,
-  perm.mat.window50 = perm.mat.window50.data,
-  window_rank_list = window50_rank_list_SCZ_Drugs,
   cluster_anno = "supercluster_term",
   enrichment_score_col = "OpenTargets_SCZ_Drugs_1"
 )

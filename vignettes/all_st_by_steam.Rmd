@@ -387,8 +387,6 @@ featurePlotForRanks(se = se,
 plotScoreDist(
   se = se,
   perm.mat = perm.mat.genetic.data,
-  perm.mat.window50 = perm.mat.window50.data,
-  window_rank_list = window50_rank_list_ALZ_Genetic,
   cluster_anno = "seurat_clusters",
   enrichment_score_col = "OpenTargets_ALZ_Genetic_1"
 )
@@ -400,8 +398,6 @@ colnames(perm.mat.window50.data) <- gsub("^cluster_", "", colnames(perm.mat.wind
 plotScoreDist(
   se = se,
   perm.mat = perm.mat.drugs.data,
-  perm.mat.window50 = perm.mat.window50.data,
-  window_rank_list = window50_rank_list_ALZ_Drugs,
   cluster_anno = "seurat_clusters",
   enrichment_score_col = "OpenTargets_ALZ_Drugs_1"
 )
