@@ -40,6 +40,9 @@ featurePlotForRanks <- function(
     all_clusters = FALSE,
     cluster_anno = "cluster_anno"
 ) {
+  if (!requireNamespace("STUtility", quietly = TRUE)) {
+    warning("Package 'STUtility' is required for spatial visualization of STUtility generated Seurat objects. Some features may not work as expected.")
+  }
   
   if (all_clusters) {
     cluster_numbers <- unique(se@meta.data[[cluster_anno]])
