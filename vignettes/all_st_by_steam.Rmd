@@ -377,9 +377,11 @@ featurePlotForRanks(se = se,
                    disease_abbr = "ALZ",
                    cluster_number = NULL, 
                    ranks_per_plot = 1,
-                   spot_alpha = 0.5, 
-                   point_size = 0.5,
+                   spot_alpha = 1, 
+                   point_size = 5,
+                   #seurat_type = "seurat",
                    all_clusters = TRUE)
+
 ```
 
 
