@@ -56,7 +56,8 @@ featurePlotForRanks(
     ranks_per_plot = 1,
     spot_alpha = 0.5,
     point_size = 1,
-    all_clusters = TRUE,
+    all_clusters = FALSE,
+    cluster_number = 2,
     cluster_anno = "cluster_anno",
     seurat_type = "stutility"
 )

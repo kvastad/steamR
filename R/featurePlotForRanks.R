@@ -111,14 +111,14 @@ featurePlotForRanks <- function(
       cells_use <- rownames(se@meta.data)[se@meta.data[[cluster_anno]] %in% cluster_numbers]
       
       if (seurat_type == "stutility") {
-        print(ST.FeaturePlot(se, 
-                           features = features,
-                           cells = cells_use,
-                           pt.alpha = spot_alpha,
-                           pt.size = point_size,
-                           grid.ncol = 4,
-                           cols = c("black", "darkblue", "cyan", "yellow", "red", "darkred"),
-                           value.scale = "all"))
+        se_subset <- suppressWarnings(subset(se, cells = cells_use))
+        print(ST.FeaturePlot(se_subset, 
+          features = features,
+          pt.alpha = spot_alpha,
+          pt.size = point_size,
+          grid.ncol = 4,
+          cols = c("black", "darkblue", "cyan", "yellow", "red", "darkred"),
+          value.scale = "all"))
       } else {
         se_subset <- suppressWarnings(subset(se, cells = cells_use))
         suppressWarnings(print(
