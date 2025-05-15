@@ -211,19 +211,21 @@ perm.mat.drugs.data <- as.data.frame(perm_matrices[[3]])
 Genetics:
 
 ```{r}
-p.val.mat.g <- SpatialTraitEnrichmentAnalysis(
+results.g <- SpatialTraitEnrichmentAnalysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window.data = perm.mat.window50.data,
   window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
-  gene_list = "OpenTargets_SCZ_Genetic_1",
+  gene_list_score = "OpenTargets_SCZ_Genetic_1",
   cluster_anno = "supercluster_term",
   imputation = "dynamic",
   log_file = "./SpatialTraitEnrichmentAnalysis_all_sc_log.txt"
 )
 
 # Get all p-values
+p.val.mat.g = results.g$p_val_mat
 all_pvals.g <- as.numeric(p.val.mat.g[1, ])
+
 
 # Adjust p-values (using Bonferroni correction)
 adjusted_pvals.g <- p.adjust(all_pvals.g, method = "bonferroni")
@@ -265,18 +267,19 @@ for (cluster in clusters) {
 Drugs:
 
 ```{r}
-p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
+results.d <- SpatialTraitEnrichmentAnalysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window.data = perm.mat.window50.data,
   window_rank_list_abr_label = window50_rank_list_SCZ_Genetic,
-  gene_list = "OpenTargets_SCZ_Drugs_1",
+  gene_list_score = "OpenTargets_SCZ_Drugs_1",
   cluster_anno = "supercluster_term",
   imputation = "dynamic",
   log_file = "./SpatialTraitEnrichmentAnalysis_all_sc_drugs.txt"
 )
 
 # Get all p-values
+p.val.mat.d = results.d$p_val_mat
 all_pvals.d <- as.numeric(p.val.mat.d[1, ])
 
 # Adjust p-values (using Bonferroni correction)
@@ -332,7 +335,9 @@ window_results.g <- WindowRankEnrichmentAnalysis(
     window_rank_list = window50_rank_list_SCZ_Genetic,
     ot_gene_set_label = "Genetic",
     disease_abbr = "SCZ",
-    cluster_anno = "supercluster_term"
+    cluster_anno = "supercluster_term",
+    imputation = "dynamic",
+    log_file = "WindowRankEnrichmentAnalysis_SCZ_Genetic_log.txt"
 )
 ```
 
@@ -374,8 +379,12 @@ window_results_drugs <- WindowRankEnrichmentAnalysis(
     window_rank_list = window50_rank_list_SCZ_Drugs,
     ot_gene_set_label = "Drugs",
     disease_abbr = "SCZ",
-    cluster_anno = "supercluster_term"
+    cluster_anno = "supercluster_term",
+    imputation = "dynamic",
+    log_file = "WindowRankEnrichmentAnalysis_SCZ_Drugs_log.txt"
 )
+imputed_rows <- window_results_drugs[window_results_drugs$was_imputed, ]
+print(imputed_rows)
 ```
 
 

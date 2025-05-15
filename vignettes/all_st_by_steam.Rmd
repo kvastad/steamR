@@ -229,15 +229,19 @@ Enrichment analysis:
 
 
 ```{r}
-p.val.mat.g <- SpatialTraitEnrichmentAnalysis(
+results.g <- SpatialTraitEnrichmentAnalysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window.data = perm.mat.window50.data,
   window_rank_list_abr_label = window50_rank_list_ALZ_Genetic,
-  gene_list = "OpenTargets_ALZ_Genetic_1",
-  imputation = "all",
-  log_file = "./SpatialTraitEnrichmentAnalysis_log.txt"
+  gene_list_score = "OpenTargets_ALZ_Genetic_1",
+  imputation = "dynamic",
+  log_file = "./SpatialTraitEnrichmentAnalysis_g_dynamic_log.txt"
 )
+p.val.mat.g = results.g$p_val_mat
+print(results.g$imputation_details)
+imputed_pvals.g <- results.g$imputation_details[results.g$imputation_details$was_imputed, ]
+
 ```
 
 ```{r}
@@ -288,16 +292,16 @@ SpatialFeaturePlot(se,
 ```
 
 ```{r}
-p.val.mat.d <- SpatialTraitEnrichmentAnalysis(
+results.d <- SpatialTraitEnrichmentAnalysis(
   se = se,
-  perm.mat.label.data = perm.mat.genetic.data,
+  perm.mat.label.data = perm.mat.drugs.data,
   perm.mat.window.data = perm.mat.window50.data,
-  window_rank_list_abr_label = window50_rank_list_ALZ_Genetic,
-  gene_list = "OpenTargets_ALZ_Drugs_1",
+  window_rank_list_abr_label = window50_rank_list_ALZ_Drugs,
+  gene_list_score = "OpenTargets_ALZ_Drugs_1",
   imputation = "dynamic",
   log_file = "./SpatialTraitEnrichmentAnalysis_log_st_drugs.txt"
 )
-
+p.val.mat.d = results.d$p_val_mat
 # Get all p-values
 all_pvals.d <- as.numeric(p.val.mat.d[1, ])
 
@@ -335,12 +339,12 @@ SpatialFeaturePlot(se,
                   features = "p.val.d",
                   pt.size.factor = 5,
                   image.alpha = 0) +
-  scale_color_gradient(low = "white", high = "red")
+                  scale_color_gradient(low = "white", high = "red")
 SpatialFeaturePlot(se, 
                   features = "p.val.adj.d",
                   pt.size.factor = 5,
                   image.alpha = 0) +
-  scale_color_gradient(low = "white", high = "red")
+                  scale_color_gradient(low = "white", high = "red")
 ```
 
 
@@ -350,7 +354,9 @@ window_results <- WindowRankEnrichmentAnalysis(
     perm.mat.window.data = perm.mat.window50.data,
     window_rank_list = window50_rank_list_ALZ_Drugs,
     ot_gene_set_label = "Drugs",
-    disease_abbr = "ALZ"
+    disease_abbr = "ALZ",
+    imputation = "dynamic",
+    log_file = "WindowRankEnrichmentAnalysis_ALZ_Drugs_log.txt"
 )
 
 # adjust p-values

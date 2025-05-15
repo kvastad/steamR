@@ -51,7 +51,7 @@ rankPlotForClusters <- function(window_results,
         cluster_data <- cluster_data[order(cluster_data$window), ]
         
         plot(cluster_data$window,
-             cluster_data$observed_score,
+             cluster_data$median_score,
              main = paste("Cluster:", gsub("cluster_", "", cluster)),
       xlab = "Window Rank",
       ylab = "Median Score",

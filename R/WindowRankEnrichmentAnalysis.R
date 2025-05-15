@@ -16,16 +16,19 @@
 #'        - "all": Always add 1 to numerator and denominator (default)
 #'        - "none": No imputation, can result in p=0
 #'        - "dynamic": Only impute when no permutations exceed observed value
+#' @param log_file Path to the log file for imputed p-values
 #'
 #' @returns A data frame containing for each cluster and window:
 #' \describe{
 #'   \item{cluster}{Cluster identifier}
 #'   \item{window}{Window rank number}
-#'   \item{observed_score}{Observed median score for the window}
+#'   \item{median_score}{Observed median score for the window}
 #'   \item{p_value}{Nominal p-value for the window}
 #'   \item{q05}{5% quantile from null distribution}
 #'   \item{q95}{95% quantile from null distribution}
 #'   \item{is_significant}{Logical indicating if score is outside 5-95% quantiles}
+#'   \item{was_imputed}{Logical indicating if p-value was imputed}
+#'   \item{imputation_type}{Type of imputation used}
 #' }
 #'
 #' @export
@@ -37,7 +40,8 @@
 #'   window_rank_list = window_rank_list_ALZ_Drugs,
 #'   ot_gene_set_label = "Drugs",
 #'   disease_abbr = "ALZ",
-#'   imputation = "dynamic"
+#'   imputation = "dynamic",
+#'   log_file = "window_analysis_log.txt"
 #' )
 WindowRankEnrichmentAnalysis <- function(
     se,
@@ -46,7 +50,8 @@ WindowRankEnrichmentAnalysis <- function(
     ot_gene_set_label,
     disease_abbr,
     cluster_anno = "seurat_clusters",
-    imputation = "all"
+    imputation = "all",
+    log_file = NULL
 ) {
     # Validate imputation parameter
     if (!imputation %in% c("all", "none", "dynamic")) {
@@ -56,6 +61,11 @@ WindowRankEnrichmentAnalysis <- function(
     # Input validation
     if (!(cluster_anno %in% colnames(se@meta.data))) {
         stop(paste("The specified cluster column", cluster_anno, "is not found in the metadata."))
+    }
+    
+    # Open a connection to the log file if it's provided
+    if (!is.null(log_file)) {
+        log_con <- file(log_file, open = "wt")
     }
     
     # Initialize results data frame
@@ -93,7 +103,7 @@ WindowRankEnrichmentAnalysis <- function(
         cells_in_cluster <- rownames(se@meta.data)[se@meta.data[[cluster_anno]] == cluster_id]
         
         # Calculate observed median scores for each window using the metadata directly
-        observed_scores <- sapply(all_window_cols, function(col) {
+        median_scores <- sapply(all_window_cols, function(col) {
             median(se@meta.data[cells_in_cluster, col], na.rm = TRUE)
         })
         
@@ -110,43 +120,77 @@ WindowRankEnrichmentAnalysis <- function(
         q95 <- quantiles[2]
         
         # Calculate p-values and create results for this cluster
-        for (i in seq_along(observed_scores)) {
-            observed <- observed_scores[i]
+        for (i in seq_along(median_scores)) {
+            median_score <- median_scores[i]
             
             # Calculate number of more extreme values
-            n_more_extreme <- sum(null_dist >= observed)
+            n_more_extreme <- sum(null_dist >= median_score)
+            
+            # Track imputation
+            was_imputed <- FALSE
+            imputation_type <- "none"
             
             # Calculate p-value with specified imputation strategy
-            if (imputation == "all") {
-                p_value <- (n_more_extreme + 1) / (length(null_dist) + 1)
-            } else if (imputation == "none") {
-                p_value <- n_more_extreme / length(null_dist)
-            } else { # dynamic
-                if (n_more_extreme == 0) {
+            if (n_more_extreme == 0) {
+                warning_msg <- sprintf("No median scores in the null distribution were equal to or larger than the queried median score for cluster %s window %d. Consider using imputation 'all' or 'dynamic'.", cluster_name, i)
+                if (!is.null(log_file)) {
+                    writeLines(warning_msg, log_con)
+                } else {
+                    warning(warning_msg)
+                }
+                
+                if (imputation == "all") {
                     p_value <- 1 / (length(null_dist) + 1)
-                    message(sprintf("Imputed p-value for cluster %s window %d: %.2e", 
-                                  cluster_name, i, p_value))
+                    was_imputed <- TRUE
+                    imputation_type <- "all"
+                } else if (imputation == "dynamic") {
+                    p_value <- 1 / (length(null_dist) + 1)
+                    was_imputed <- TRUE
+                    imputation_type <- "dynamic"
+                } else { # imputation == "none"
+                    p_value <- 0
+                    was_imputed <- TRUE
+                    imputation_type <- "none"
+                }
+            } else {
+                if (imputation == "all") {
+                    p_value <- (n_more_extreme + 1) / (length(null_dist) + 1)
+                    was_imputed <- TRUE
+                    imputation_type <- "all"
                 } else {
                     p_value <- n_more_extreme / length(null_dist)
+                    was_imputed <- FALSE
+                    imputation_type <- "none"
                 }
             }
             
             # Check if score is significant (outside 5-95% quantiles)
-            is_significant <- !is.na(observed) && 
-                            (observed < q05 || observed > q95)
+            is_significant <- !is.na(median_score) && 
+                            (median_score < q05 || median_score > q95)
             
             # Add to results
             results <- rbind(results, data.frame(
                 cluster = cluster_key,
                 window = i,
-                observed_score = observed,
+                median_score = median_score,
                 p_value = p_value,
                 q05 = q05,
                 q95 = q95,
                 is_significant = is_significant,
+                was_imputed = was_imputed,
+                imputation_type = imputation_type,
                 stringsAsFactors = FALSE
             ))
+            
+            if (!is.null(log_file)) {
+                writeLines(sprintf("Checked cluster %s window %d", cluster_name, i), log_con)
+            }
         }
+    }
+    
+    # Close the connection to the log file
+    if (!is.null(log_file)) {
+        close(log_con)
     }
     
     # Set unique row names by combining cluster and window information

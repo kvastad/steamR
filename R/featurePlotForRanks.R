@@ -30,13 +30,13 @@
 #' )
 featurePlotForRanks <- function(
     se, 
-    window_rank_list, 
-    ot_gene_set_label, 
-    disease_abbr, 
-    cluster_number = NULL, 
-    ranks_per_plot = 6,
-    spot_alpha = 0.5, 
-    point_size = 1,
+                                window_rank_list, 
+                                ot_gene_set_label, 
+                                disease_abbr, 
+                                cluster_number = NULL, 
+                                ranks_per_plot = 6,
+                                spot_alpha = 0.5, 
+                                point_size = 1,
     all_clusters = FALSE,
     cluster_anno = "cluster_anno",
     seurat_type = NULL
@@ -77,7 +77,7 @@ featurePlotForRanks <- function(
       features <- paste(disease_abbr, ot_gene_set_label, paste("Rank", start_rank:end_rank, sep = ""), "1", sep = "_")
       
       if (seurat_type == "stutility") {
-        print(ST.FeaturePlot(se, 
+      print(ST.FeaturePlot(se, 
                            features = features,
                            pt.alpha = spot_alpha,
                            pt.size = point_size,
@@ -99,26 +99,26 @@ featurePlotForRanks <- function(
     cluster_numbers <- cluster_number
     
     # Calculate number of plots needed
-    num_plots <- ceiling(length(window_rank_list) / ranks_per_plot)
-    
-    for (plot_idx in 1:num_plots) {
-      start_rank <- (plot_idx - 1) * ranks_per_plot + 1
-      end_rank <- min(plot_idx * ranks_per_plot, length(window_rank_list))
+      num_plots <- ceiling(length(window_rank_list) / ranks_per_plot)
       
-      features <- paste(disease_abbr, ot_gene_set_label, paste("Rank", start_rank:end_rank, sep = ""), "1", sep = "_")
-      
+      for (plot_idx in 1:num_plots) {
+        start_rank <- (plot_idx - 1) * ranks_per_plot + 1
+        end_rank <- min(plot_idx * ranks_per_plot, length(window_rank_list))
+        
+        features <- paste(disease_abbr, ot_gene_set_label, paste("Rank", start_rank:end_rank, sep = ""), "1", sep = "_")
+        
       # Create a mask for the selected cluster
       cells_use <- rownames(se@meta.data)[se@meta.data[[cluster_anno]] %in% cluster_numbers]
       
       if (seurat_type == "stutility") {
         se_subset <- suppressWarnings(subset(se, cells = cells_use))
         print(ST.FeaturePlot(se_subset, 
-          features = features,
-          pt.alpha = spot_alpha,
-          pt.size = point_size,
-          grid.ncol = 4,
-          cols = c("black", "darkblue", "cyan", "yellow", "red", "darkred"),
-          value.scale = "all"))
+                             features = features,
+                             pt.alpha = spot_alpha,
+                             pt.size = point_size,
+                             grid.ncol = 4,
+                             cols = c("black", "darkblue", "cyan", "yellow", "red", "darkred"),
+                             value.scale = "all"))
       } else {
         se_subset <- suppressWarnings(subset(se, cells = cells_use))
         suppressWarnings(print(

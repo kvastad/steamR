@@ -5,14 +5,11 @@
 #' observed medians to a null distribution.
 #'
 #' @param se A Seurat object containing gene scores and clustering metadata.
-#' @param perm.mat.label.data A data frame of null median scores for the full gene list,
-#'        where columns correspond to cluster names.
-#' @param perm.mat.window.data A data frame of null median scores for ranked gene sets
-#'        (e.g., sliding windows), with columns corresponding to cluster names.
+#' @param perm.mat.label.data A data frame of null median scores generated from random gene lists of the same size as the gene list being tested, where columns correspond to cluster names.
+#' @param perm.mat.window.data A data frame of null median scores for ranked gene sets (e.g., sliding windows), with columns corresponding to cluster names.
 #' @param window_rank_list_abr_label A list or vector of window rank identifiers 
 #'        used to reference the rank-specific gene sets.
-#' @param gene_list A character string matching the name of the gene score column in `se@meta.data`
-#'        to test for enrichment (e.g., "OpenTargets_SCZ_Genetic_1").
+#' @param gene_list_score A character string matching the name of the gene score column in `se@meta.data` to test for enrichment (e.g., "OpenTargets_SCZ_Genetic_1").
 #' @param cluster_anno Column name in `se@meta.data` specifying the clustering to use 
 #'        (e.g., "seurat_clusters" or "supercluster_term").
 #' @param imputation Strategy for handling p-value calculation when no permutations exceed the observed value.
@@ -22,7 +19,9 @@
 #'        - "dynamic": Only impute when no permutations exceed observed value
 #' @param log_file Path to the log file for imputed p-values
 #'
-#' @returns A data frame of unadjusted p-values for each cluster.
+#' @returns A list containing two data frames:
+#'          - "p_val_mat": Nominal (unadjusted) p-values for each cluster
+#'          - "impute": Information about imputed p-values
 #'
 #' @export
 #'
@@ -32,7 +31,7 @@
 #'   perm.mat.label.data = perm.mat.genetic.data,
 #'   perm.mat.window.data = perm.mat.window.data,
 #'   window_rank_list_abr_label = window_rank_list_SCZ_Genetic,
-#'   gene_list = "OpenTargets_SCZ_Genetic_1",
+#'   gene_list_score = "OpenTargets_SCZ_Genetic_1",
 #'   cluster_anno = "supercluster_term",
 #'   imputation = "dynamic"
 #' )
@@ -41,7 +40,7 @@ SpatialTraitEnrichmentAnalysis <- function(
     perm.mat.label.data,
     perm.mat.window.data,
     window_rank_list_abr_label,
-    gene_list,
+    gene_list_score,
     cluster_anno = "seurat_clusters",
     imputation = "all",
     log_file = NULL
@@ -57,8 +56,8 @@ SpatialTraitEnrichmentAnalysis <- function(
   }
   
   # Check gene list column exists
-  if (!(gene_list %in% colnames(se@meta.data))) {
-    stop(paste("The specified gene list column", gene_list, "is not found in the metadata."))
+  if (!(gene_list_score %in% colnames(se@meta.data))) {
+    stop(paste("The specified gene list column", gene_list_score, "is not found in the metadata."))
   }
   
   cluster_numbers <- sort(unique(se@meta.data[[cluster_anno]]))
@@ -70,9 +69,14 @@ SpatialTraitEnrichmentAnalysis <- function(
   p_val_mat <- matrix(NA, nrow = 1, ncol = length(cluster_names),
                       dimnames = list("p.val", cluster_names))
   
+  # Initialize matrix to track imputed p-values
+  imputed_mat <- matrix(FALSE, nrow = 1, ncol = length(cluster_names),
+                       dimnames = list("imputed", cluster_names))
+  
   # Open a connection to the log file if it's provided
   if (!is.null(log_file)) {
     log_con <- file(log_file, open = "wt")
+    on.exit(close(log_con), add = TRUE)
   }
   
   # Process each cluster
@@ -89,13 +93,13 @@ SpatialTraitEnrichmentAnalysis <- function(
     cells_i <- rownames(se@meta.data)[se@meta.data[[cluster_anno]] == i]
     
     # Calculate median for the gene list in this cluster
-    actual_median <- median(se@meta.data[cells_i, gene_list], na.rm = TRUE)
+    actual_median <- median(se@meta.data[cells_i, gene_list_score], na.rm = TRUE)
     
     # Get matched columns for this cluster
-    matched_cols <- grep(gene_list, colnames(se@meta.data), value = TRUE)
+    matched_cols <- grep(gene_list_score, colnames(se@meta.data), value = TRUE)
     
     if (length(matched_cols) == 0) {
-      warning(paste("No matching columns found for:", gene_list, "in cluster:", i))
+      warning(paste("No matching columns found for:", gene_list_score, "in cluster:", i))
       next
     }
     
@@ -103,53 +107,153 @@ SpatialTraitEnrichmentAnalysis <- function(
     cluster_medians <- sapply(matched_cols, function(col) {
       median(se@meta.data[cells_i, col], na.rm = TRUE)
     })
+    names(cluster_medians) <- matched_cols
     
     # Process windows
     for (j in seq_along(window_rank_list_abr_label)) {
-      OT_label_window <- cluster_medians[j]
+      # Use the actual median value for this window
+      OT_label_window <- cluster_medians[1]
       
-      perm_mat_window_cluster_bigger <- subset(perm.mat.window.data,
-                                               perm.mat.window.data[[cluster_name]] >= OT_label_window)
+      # Debug prints to log file
+      debug_msg <- sprintf("\nDebug for cluster %s window %d:\n", cluster_name, j)
+      debug_msg <- paste0(debug_msg, "OT_label_window: ", OT_label_window, "\n")
+      debug_msg <- paste0(debug_msg, "Null distribution summary:\n")
+      debug_msg <- paste0(debug_msg, paste(capture.output(print(summary(perm.mat.window.data[, cluster_name]))), collapse = "\n"), "\n")
       
-      # Calculate p-value with specified imputation strategy
-      n_bigger <- nrow(perm_mat_window_cluster_bigger)
-      if (n_bigger == 0) {
-        warning_msg <- sprintf("No median scores in the null distribution were equal to or larger than the queried median score for cluster %s. Consider using imputation 'all' or 'dynamic'.", cluster_name)
-        if (!is.null(log_file)) {
-          writeLines(warning_msg, log_con)
-        } else {
-          warning(warning_msg)
-        }
-        cluster_i_w_p_val <- 1 / (permutation_nr + 1)
-      } else {
-        cluster_i_w_p_val <- n_bigger / permutation_nr
+      if (!is.null(log_file)) {
+        writeLines(debug_msg, log_con)
       }
       
-      perm_mat_label_bigger <- subset(perm.mat.label.data,
-                                      perm.mat.label.data[[cluster_name]] >= actual_median)
+      # Get null distribution for this cluster and window
+      if (!cluster_name %in% colnames(perm.mat.window.data)) {
+        warning(paste("Cluster", cluster_name, "not found in permutation matrix. Skipping."))
+        next
+      }
       
-      # Calculate p-value with specified imputation strategy
-      n_bigger <- nrow(perm_mat_label_bigger)
-      if (n_bigger == 0) {
-        warning_msg <- sprintf("No median scores in the null distribution were equal to or larger than the queried median score for cluster %s. Consider using imputation 'all' or 'dynamic'.", cluster_name)
+      null_dist <- perm.mat.window.data[, cluster_name]
+      
+      # Remove NA values from null distribution
+      null_dist <- null_dist[!is.na(null_dist)]
+      if (length(null_dist) == 0) {
+        warning(paste("Null distribution for cluster", cluster_name, "contains only NA values. Skipping."))
+        next
+      }
+      
+      # Calculate number of more extreme values
+      n_more_extreme <- sum(null_dist > OT_label_window, na.rm = TRUE)
+      
+      # Only log if there's an issue
+      if (n_more_extreme == 0 || is.na(OT_label_window)) {
+        debug_msg <- sprintf("\nDebug for cluster %s window %d:\n", cluster_name, j)
+        debug_msg <- paste0(debug_msg, "OT_label_window: ", OT_label_window, "\n")
+        debug_msg <- paste0(debug_msg, "Null distribution summary:\n")
+        debug_msg <- paste0(debug_msg, paste(capture.output(print(summary(null_dist))), collapse = "\n"), "\n")
+        debug_msg <- paste0(debug_msg, "Number of more extreme values: ", n_more_extreme, "\n")
+        
+        if (!is.null(log_file)) {
+          writeLines(debug_msg, log_con)
+        }
+        
+        warning_msg <- sprintf("No median scores in the null distribution were larger than the queried median score for cluster %s window %d. Consider using imputation 'all' or 'dynamic'.", cluster_name, j)
         if (!is.null(log_file)) {
           writeLines(warning_msg, log_con)
         } else {
           warning(warning_msg)
         }
-        cluster_i_p_val <- 1 / (permutation_nr + 1)
+        
+        if (imputation == "all") {
+          cluster_i_w_p_val <- 1 / (length(null_dist) + 1)
+          imputed_mat[1, index] <- TRUE
+        } else if (imputation == "dynamic") {
+          cluster_i_w_p_val <- 1 / (length(null_dist) + 1)
+          imputed_mat[1, index] <- TRUE
+        } else { # imputation == "none"
+          cluster_i_w_p_val <- 0
+          imputed_mat[1, index] <- TRUE
+        }
       } else {
-        cluster_i_p_val <- n_bigger / permutation_nr
+        if (imputation == "all") {
+          cluster_i_w_p_val <- (n_more_extreme + 1) / (length(null_dist) + 1)
+          imputed_mat[1, index] <- TRUE
+        } else {
+          cluster_i_w_p_val <- n_more_extreme / length(null_dist)
+          imputed_mat[1, index] <- FALSE
+        }
+      }
+      
+      # Get null distribution for the full gene list
+      if (!cluster_name %in% colnames(perm.mat.label.data)) {
+        warning(paste("Cluster", cluster_name, "not found in permutation matrix. Skipping."))
+        next
+      }
+      null_dist_full <- perm.mat.label.data[, cluster_name]
+      
+      # Remove NA values from null distribution
+      null_dist_full <- null_dist_full[!is.na(null_dist_full)]
+      if (length(null_dist_full) == 0) {
+        warning(paste("Null distribution for cluster", cluster_name, "contains only NA values. Skipping."))
+        next
+      }
+      
+      # Calculate number of more extreme values for full gene list
+      n_more_extreme_full <- sum(null_dist_full > actual_median, na.rm = TRUE)
+      
+      # Calculate p-value with specified imputation strategy
+      if (n_more_extreme_full == 0) {
+        warning_msg <- sprintf("No median scores in the null distribution were larger than the queried median score for cluster %s full gene list. Consider using imputation 'all' or 'dynamic'.", cluster_name)
+        if (!is.null(log_file)) {
+          writeLines(warning_msg, log_con)
+        } else {
+          warning(warning_msg)
+        }
+        
+        if (imputation == "all") {
+          cluster_i_p_val <- 1 / (length(null_dist_full) + 1)
+          imputed_mat[1, index] <- TRUE
+        } else if (imputation == "dynamic") {
+          cluster_i_p_val <- 1 / (length(null_dist_full) + 1)
+          imputed_mat[1, index] <- TRUE
+        } else { # imputation == "none"
+          cluster_i_p_val <- 0
+          imputed_mat[1, index] <- TRUE
+        }
+      } else {
+        if (imputation == "all") {
+          cluster_i_p_val <- (n_more_extreme_full + 1) / (length(null_dist_full) + 1)
+          imputed_mat[1, index] <- TRUE
+        } else {
+          cluster_i_p_val <- n_more_extreme_full / length(null_dist_full)
+          imputed_mat[1, index] <- FALSE
+        }
+      }
+      
+      # Add debug output to log file
+      debug_msg <- sprintf("\nDebug for cluster %s:\n", cluster_name)
+      debug_msg <- paste0(debug_msg, "n_more_extreme: ", n_more_extreme, "\n")
+      debug_msg <- paste0(debug_msg, "n_more_extreme_full: ", n_more_extreme_full, "\n")
+      debug_msg <- paste0(debug_msg, "imputed: ", imputed_mat[1, index], "\n")
+      debug_msg <- paste0(debug_msg, "p-value: ", cluster_i_p_val, "\n")
+      
+      if (!is.null(log_file)) {
+        writeLines(debug_msg, log_con)
       }
       
       p_val_mat[1, index] <- cluster_i_p_val
     }
   }
   
-  # Close the connection to the log file
-  if (!is.null(log_file)) {
-    close(log_con)
-  }
+  # Combine p-values and imputation information
+  result <- list(
+    p_val_mat = as.data.frame(p_val_mat),
+    impute = as.data.frame(imputed_mat),
+    imputation_details = data.frame(
+      cluster = cluster_names,
+      p_value = as.numeric(p_val_mat[1,]),
+      was_imputed = as.logical(imputed_mat[1,]),
+      imputation_type = ifelse(imputed_mat[1,], imputation, "none"),
+      stringsAsFactors = FALSE
+    )
+  )
   
-  return(as.data.frame(p_val_mat))
+  return(result)
 }
