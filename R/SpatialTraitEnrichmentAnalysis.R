@@ -19,9 +19,23 @@
 #'        - "dynamic": Only impute when no permutations exceed observed value
 #' @param log_file Path to the log file for imputed p-values
 #'
-#' @returns A list containing two data frames:
+#' @returns A list containing three data frames:
 #'          - "p_val_mat": Nominal (unadjusted) p-values for each cluster
 #'          - "impute": Information about imputed p-values
+#'          - "imputation_details": A list of data frames, one per cluster, containing detailed imputation metrics:
+#'            - n_more_extreme: Number of null median scores that are as extreme or more extreme than the observed median score
+#'            - n_more_extreme_full: Total number of null median scores (used for p-value calculation)
+#'            - imputed: Logical indicating whether the p-value was imputed
+#'            - p-value: The calculated nominal p-value
+#'
+#' @section Debug Log:
+#' The log file (if provided) contains detailed debug information for each cluster and window:
+#' - OT_label_window: The observed median score for the window
+#' - Null distribution summary: Summary statistics (Min, 1st Qu, Median, Mean, 3rd Qu, Max) of the null distribution
+#' - n_more_extreme: Number of null median scores that are as extreme or more extreme than the observed median score
+#' - n_more_extreme_full: Total number of null median scores (used for p-value calculation)
+#' - imputed: Logical indicating whether the p-value was imputed
+#' - p-value: The calculated nominal p-value
 #'
 #' @export
 #'
@@ -154,11 +168,13 @@ SpatialTraitEnrichmentAnalysis <- function(
           writeLines(debug_msg, log_con)
         }
         
-        warning_msg <- sprintf("No median scores in the null distribution were larger than the queried median score for cluster %s window %d. Consider using imputation 'all' or 'dynamic'.", cluster_name, j)
-        if (!is.null(log_file)) {
-          writeLines(warning_msg, log_con)
-        } else {
-          warning(warning_msg)
+        if (imputation == "none") {
+          warning_msg <- sprintf("No median scores in the null distribution were larger than the queried median score for cluster %s window %d. Consider using imputation 'all' or 'dynamic'.", cluster_name, j)
+          if (!is.null(log_file)) {
+            writeLines(warning_msg, log_con)
+          } else {
+            warning(warning_msg)
+          }
         }
         
         if (imputation == "all") {
@@ -169,7 +185,7 @@ SpatialTraitEnrichmentAnalysis <- function(
           imputed_mat[1, index] <- TRUE
         } else { # imputation == "none"
           cluster_i_w_p_val <- 0
-          imputed_mat[1, index] <- TRUE
+          imputed_mat[1, index] <- FALSE
         }
       } else {
         if (imputation == "all") {
@@ -200,11 +216,13 @@ SpatialTraitEnrichmentAnalysis <- function(
       
       # Calculate p-value with specified imputation strategy
       if (n_more_extreme_full == 0) {
-        warning_msg <- sprintf("No median scores in the null distribution were larger than the queried median score for cluster %s full gene list. Consider using imputation 'all' or 'dynamic'.", cluster_name)
-        if (!is.null(log_file)) {
-          writeLines(warning_msg, log_con)
-        } else {
-          warning(warning_msg)
+        if (imputation == "none") {
+          warning_msg <- sprintf("No median scores in the null distribution were larger than the queried median score for cluster %s full gene list. Consider using imputation 'all' or 'dynamic'.", cluster_name)
+          if (!is.null(log_file)) {
+            writeLines(warning_msg, log_con)
+          } else {
+            warning(warning_msg)
+          }
         }
         
         if (imputation == "all") {
@@ -215,7 +233,7 @@ SpatialTraitEnrichmentAnalysis <- function(
           imputed_mat[1, index] <- TRUE
         } else { # imputation == "none"
           cluster_i_p_val <- 0
-          imputed_mat[1, index] <- TRUE
+          imputed_mat[1, index] <- FALSE
         }
       } else {
         if (imputation == "all") {
