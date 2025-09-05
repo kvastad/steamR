@@ -1,4 +1,4 @@
-test_that("addClusterAnnotations correctly adds annotations to Seurat object", {
+test_that("add_cluster_annotations correctly adds annotations to Seurat object", {
   # Load required packages
   library(Seurat)
   library(steam)
@@ -19,7 +19,7 @@ test_that("addClusterAnnotations correctly adds annotations to Seurat object", {
     stringsAsFactors = FALSE
   )
   
-  se_annotated <- addClusterAnnotations(
+  se_annotated <- add_cluster_annotations(
     se = se_mock,
     AnnoDataframe = annotations,
     BarcodeName = "Barcode",

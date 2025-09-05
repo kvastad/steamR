@@ -20,77 +20,120 @@ library(lawstat)
 library(MASS)
 library(viridis)
 library(steam)
+library(Seurat)
+library(SeuratObject)
+library(ggplot2)
 ```
 
 Load ST data:
+
 ```{r}
 # 1. Load spatial data (unfiltered)
-# se <- Load10X_Spatial(
-#   data.dir = "data/Data_brain_example/spatial_data/",
-#   filename = "V1_Adult_Mouse_Brain_filtered_feature_bc_matrix.h5",
-#   slice = "slice1",
-#   assay = "Spatial"
+se <- Load10X_Spatial(
+  data.dir = "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/Data_brain_example/spatial_data",
+  filename = "V1_Adult_Mouse_Brain_filtered_feature_bc_matrix.h5",
+  slice = "slice1",
+  assay = "Spatial"
+)
+
+# 2. Get raw count matrix
+counts <- GetAssayData(se, layer = "counts")
+
+# 3. Apply gene filters
+genes_to_keep <- rownames(counts)[
+  Matrix::rowSums(counts) >= 100 &     # Total UMI count per gene
+  Matrix::rowSums(counts > 0) >= 5     # Expressed in ≥5 spots
+]
+
+# 4. Apply spot (cell) filters
+spots_to_keep <- colnames(counts)[
+  Matrix::colSums(counts) >= 500       # Total UMIs per spot
+]
+
+# 5. Subset the Seurat object with filtered genes and spots
+se <- subset(se, features = genes_to_keep, cells = spots_to_keep)
+se
+
+# alculate mitochondrial and ribosomal percentages
+se$percent.mito <- calculate_gene_percentage(se, "^mt-")
+se$percent.ribo <- calculate_gene_percentage(se, "^Rpl|^Rps")
+
+# normalize
+se <- NormalizeData(se, assay = "Spatial")
+se <- FindVariableFeatures(se, assay = "Spatial")
+se <- ScaleData(se, assay = "Spatial")# add seurat cluster
+seurat_clusters <- read.csv(file = "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/Data_brain_example/spatial_structures/seurat_clusters.csv",
+                           sep = ";",
+                           fileEncoding = "UTF-8",
+                           check.names = FALSE)
+# Clean up barcodes in the cluster annotations to match Seurat object
+seurat_clusters$Barcode <- gsub("_1$", "", seurat_clusters$Barcode)
+
+se <- add_cluster_annotations(se,
+                           AnnoDataframe = seurat_clusters,
+                           BarcodeName = "Barcode",
+                           AnnoName = "seurat_clusters",
+                           slot_name = "cluster_anno")
+```
+
+
+```{r}
+# # Set identity to your cluster column
+# se <- SetIdent(se, value = "cluster_anno")
+# 
+# # Run PCA with your specific dimensions
+# se <- RunPCA(se, features = VariableFeatures(se))
+# 
+# # Find neighbors using your specific dimensions
+# se <- FindNeighbors(se, dims = c(1:22, 24:32, 34:39))
+# 
+# # Find clusters
+# se <- FindClusters(se, resolution = 0.7)
+# 
+# # Find markers for the clusters you want
+# clusterMarkers <- FindAllMarkers(se, 
+#                                 only.pos = TRUE, 
+#                                 min.pct = 0.25, 
+#                                 logfc.threshold = 0.25, 
+#                                 layer = "data")
+# 
+# # Get top 10 markers per cluster
+# topMarkers <- clusterMarkers %>% 
+#   group_by(cluster) %>% 
+#   arrange(p_val_adj) %>%
+#   slice_head(n = 10)
+# 
+# # Create marker genes list for each cluster
+# marker_genes <- split(topMarkers$gene, topMarkers$cluster)
+# names(marker_genes) <- paste0("cluster_", names(marker_genes), "_markers")
+# 
+# # Save results
+# clusterMarkers_list <- list(
+#   updated_se = se,
+#   marker_genes = marker_genes,
+#   all_markers = clusterMarkers,
+#   top_markers = topMarkers
 # )
 # 
-# # 2. Get raw count matrix
-# counts <- GetAssayData(se, slot = "counts")
-# 
-# # 3. Apply gene filters
-# genes_to_keep <- rownames(counts)[
-#   Matrix::rowSums(counts) >= 100 &     # Total UMI count per gene
-#   Matrix::rowSums(counts > 0) >= 5     # Expressed in ≥5 spots
-# ]
-# 
-# # 4. Apply spot (cell) filters
-# spots_to_keep <- colnames(counts)[
-#   Matrix::colSums(counts) >= 500       # Total UMIs per spot
-# ]
-# 
-# # 5. Subset the Seurat object with filtered genes and spots
-# se <- subset(se, features = genes_to_keep, cells = spots_to_keep)
-# se
-# 
-# # alculate mitochondrial and ribosomal percentages
-# se$percent.mito <- calculate_gene_percentage(se, "^mt-")
-# se$percent.ribo <- calculate_gene_percentage(se, "^Rpl|^Rps")
-# 
-# # normalize 
-# options(future.globals.maxSize = 4 * 1024^3)
-# se <- SCTransform(se, assay = "Spatial", return.only.var.genes = T)
-# # add seurat cluster
-# seurat_clusters <- read.csv(file = "data/Data_brain_example/spatial_structures/seurat_clusters.csv",
-#                            sep = ";",
-#                            fileEncoding = "UTF-8",
-#                            check.names = FALSE)
-# # Clean up barcodes in the cluster annotations to match Seurat object
-# seurat_clusters$Barcode <- gsub("_1$", "", seurat_clusters$Barcode)
-# 
-# se <- add_cluster_annotations(se,
-#                            AnnoDataframe = seurat_clusters,
-#                            BarcodeName = "Barcode",
-#                            AnnoName = "seurat_clusters",
-#                            slot_name = "cluster_anno")
-# 
-# options(future.globals.maxSize = 16 * 1024^3)
-# clusterMarkers <- findClusterMarkers(se, nfactors = 40, dims = c(1:22, 24:32, 34:39), M = 10)
-# saveRDS(clusterMarkers, file = "data/Data_brain_example/clusterMarkers_nf40_d22_24_32_34_39.rds")
+# saveRDS(clusterMarkers_list, file = "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Data_brain_example/clusterMarkers_nf40_d22_24_32_34_39.rds")
+
 ```
 
 Find spatial structures and their top marker genes:
 Steps corresponding to `spatial_structure` notebook
 
 ```{r}
-clusterMarkers <- readRDS("data/Data_brain_example/clusterMarkers_nf40_d22_24_32_34_39.rds")
-se <- clusterMarkers$updated_se
+clusterMarkers <- readRDS("/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Data_brain_example/clusterMarkers_nf40_d22_24_32_34_39.rds")
+se_clustered <- clusterMarkers$updated_se
+se$seurat_clusters <- se_clustered$seurat_clusters
 all_gene_sets_structure_markers <- clusterMarkers$marker_genes
 ```
-
 
 loading OpenTargets gene sets:
 Steps corresponding to `OpenTargets_gene_sets` notebook
 
 ```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
-OpenTargets.path <- "data/Data_brain_example/OpenTargets/brain_mouse_10X/MONDO_0004975-associated-diseases_alzheimer_disease_v23.06.tsv"
+OpenTargets.path <- "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Data_brain_example/OpenTargets/brain_mouse_10X/MONDO_0004975-associated-diseases_alzheimer_disease_v23.06.tsv"
 df <- read.table(paste(OpenTargets.path, sep= "/"),
                      sep= "\t",
                      header=TRUE,
@@ -99,7 +142,7 @@ column.names <- c("Gene_symbol","Overall_assoc.score","Genetic_assoc.","Somatic_
 df[df == "No data"] <- NA
 names(df) <- column.names
 
-mouse_genes = "data/Data_brain_example/OpenTargets_gene_sets/mouse_human_genes_feb_23.tsv"
+mouse_genes = "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Data_brain_example/OpenTargets_gene_sets/mouse_human_genes_feb_23.tsv"
 conversion.table <- read.table(mouse_genes, sep = "\t", header = TRUE)
 
 df$Gene_symbol <- conversion.table[match(df$Gene_symbol,conversion.table$hgnc_symbol),]$mgi_symbol
@@ -209,9 +252,9 @@ let's load it for now
 
 ```{r}
 perm_files <- c(
-  "data/Data_brain_example/Permutation_matrices/perm.mat_p10000_g50.RDS",
-  "data/Data_brain_example/Permutation_matrices/perm.mat_p10000_g281.RDS",
-  "data/Data_brain_example/Permutation_matrices/perm.mat_p10000_g132.RDS"
+  "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Data_brain_example/Permutation_matrices/perm.mat_p10000_g50.RDS",
+  "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Data_brain_example/Permutation_matrices/perm.mat_p10000_g281.RDS",
+  "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Data_brain_example/Permutation_matrices/perm.mat_p10000_g132.RDS"
 )
 
 perm_matrices <- load_permutation_matrices(perm_files)

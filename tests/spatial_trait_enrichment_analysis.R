@@ -26,7 +26,7 @@
 #' @export
 #'
 #' @examples
-#' pval_mat <- SpatialTraitEnrichmentAnalysis(
+#' pval_mat <- spatial_trait_enrichment_analysis(
 #'   se = se,
 #'   perm.mat.label.data = perm.mat.genetic.data,
 #'   perm.mat.window50.data = perm.mat.window50.data,
@@ -34,7 +34,7 @@
 #'   gene_list = "OpenTargets_SCZ_Genetic_1",
 #'   cluster_col = "supercluster_term"
 #' )
-SpatialTraitEnrichmentAnalysis <- function(
+spatial_trait_enrichment_analysis <- function(
     se,
     perm.mat.label.data,
     perm.mat.window50.data,
