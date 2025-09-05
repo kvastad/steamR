@@ -75,13 +75,13 @@ Normalize data: se <- SCTransform(se,return.only.var.genes = T) and Save filtere
 Generate metacell clusters
 
 ```{r}
-# clustered_metacells <- generateMetacellClusters(se, cluster_anno = "subclass_label", verbose = FALSE)
+# clustered_metacells <- generate_metacell_clusters(se, cluster_anno = "subclass_label", verbose = FALSE)
 ```
 
 Aggregate and save metacell clusters
 
 ```{r}
-# meta_cell_seurat_all_sum_with_metadata <- aggregateMetacells(clustered_metacells)
+# meta_cell_seurat_all_sum_with_metadata <- aggregate_metacells(clustered_metacells)
 # saveRDS(meta_cell_seurat_all_sum_with_metadata,file("data/Seurat_objects/MetaCell.rds"))
 ```
 
@@ -161,7 +161,7 @@ for (i in 1:length(all_gene_sets)) {
 ```{r, eval=FALSE}
 #generate permutation matrices (non-parallel, 1000 permutations)
 
-# perm.mat_p1000_g50 <- generatePermutationMatrix(
+# perm.mat_p1000_g50 <- generate_permutation_matrix(
 #   se = se,
 #   gnum = 50,
 #   permutation_nr = 1000,
@@ -171,7 +171,7 @@ for (i in 1:length(all_gene_sets)) {
 # saveRDS(perm.mat_p1000_g50, file = "Permutation_matrices/perm.mat_p1000_g50.RDS")
 # write.matrix(perm.mat_p1000_g50, file = "Permutation_matrices/perm.mat_p1000_g50.csv", sep = ";")
 # 
-# perm.mat_p1000_g218 <- generatePermutationMatrix(
+# perm.mat_p1000_g218 <- generate_permutation_matrix(
 #   se = se,
 #   gnum = 218,
 #   permutation_nr = 1000,
@@ -181,7 +181,7 @@ for (i in 1:length(all_gene_sets)) {
 # saveRDS(perm.mat_p1000_g218, file = "Permutation_matrices/perm.mat_p1000_g218.RDS")
 # write.matrix(perm.mat_p1000_g218, file = "Permutation_matrices/perm.mat_p1000_g218.csv", sep = ";")
 # 
-# perm.mat_p1000_g1315 <- generatePermutationMatrix(
+# perm.mat_p1000_g1315 <- generate_permutation_matrix(
 #   se = se,
 #   gnum = 1315,
 #   permutation_nr = 1000,
@@ -202,7 +202,7 @@ perm_files <- c(
   "data/Permutation_matrices/perm.mat_p10000_g218.RDS"
 )
 
-perm_matrices <- loadPermutationMatices(perm_files)
+perm_matrices <- load_permutation_matrices(perm_files)
 perm.mat.window50.data <- as.data.frame(perm_matrices[[1]])
 perm.mat.genetic.data <- as.data.frame(perm_matrices[[2]])
 perm.mat.drugs.data <- as.data.frame(perm_matrices[[3]])
@@ -211,7 +211,7 @@ perm.mat.drugs.data <- as.data.frame(perm_matrices[[3]])
 Genetics:
 
 ```{r}
-results.g <- SpatialTraitEnrichmentAnalysis(
+results.g <- spatial_trait_enrichment_analysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window.data = perm.mat.window50.data,
@@ -267,7 +267,7 @@ for (cluster in clusters) {
 Drugs:
 
 ```{r}
-results.d <- SpatialTraitEnrichmentAnalysis(
+results.d <- spatial_trait_enrichment_analysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window.data = perm.mat.window50.data,
@@ -329,7 +329,7 @@ VlnPlot(se, features = c("SCZ_Genetic_Rank5_1"), ncol = 1, group.by = "superclus
 ```
 
 ```{r}
-window_results.g <- WindowRankEnrichmentAnalysis(
+window_results.g <- window_rank_enrichment_analysis(
     se = se,
     perm.mat.window.data = perm.mat.window50.data,
     window_rank_list = window50_rank_list_SCZ_Genetic,
@@ -342,7 +342,7 @@ window_results.g <- WindowRankEnrichmentAnalysis(
 ```
 
 ```{r}
-rankPlotForClusters(
+rank_plot_for_clusters(
     window_results = window_results.g,
     perm.mat.window = perm.mat.window50.data,
     ylim = c(-0.3, 0.3),
@@ -352,7 +352,7 @@ rankPlotForClusters(
 
 
 ```{r}
-plotScoreDist(
+plot_score_dist(
   se = se,
   perm.mat = perm.mat.genetic.data,
   cluster_anno = "supercluster_term",
@@ -373,7 +373,7 @@ VlnPlot(se, features = c("SCZ_Drugs_Rank5_1"), ncol = 1, group.by = "supercluste
 ```
 
 ```{r}
-window_results_drugs <- WindowRankEnrichmentAnalysis(
+window_results_drugs <- window_rank_enrichment_analysis(
     se = se,
     perm.mat.window.data = perm.mat.window50.data,
     window_rank_list = window50_rank_list_SCZ_Drugs,
@@ -389,7 +389,7 @@ print(imputed_rows)
 
 
 ```{r}
-rankPlotForClusters(
+rank_plot_for_clusters(
     window_results = window_results_drugs,
     perm.mat.window = perm.mat.window50.data,
     ylim = c(-0.3, 0.3),
@@ -398,7 +398,7 @@ rankPlotForClusters(
 ```
 
 ```{r}
-plotScoreDist(
+plot_score_dist(
   se = se,
   perm.mat = perm.mat.drugs.data,
   cluster_anno = "supercluster_term",
@@ -630,7 +630,7 @@ OpenTargets_SCZ_Genetic <- OpenTargets_SCZ_Genetic_[1:290]
 
 ```{r}
 # View results
-fisher_results <- runFisherTestDEGs(se, DEG_genes = N.markers, OT_genes = OpenTargets_SCZ_Genetic)
+fisher_results <- run_fisher_test_degs(se, DEG_genes = N.markers, OT_genes = OpenTargets_SCZ_Genetic)
 print(fisher_results)
 ```
 

@@ -23,7 +23,7 @@
 #'   cluster_anno = "supercluster_term",
 #'   enrichment_score_col = "OpenTargets_SCZ_Genetic_1"
 #' )
-plotScoreDist <- function(se, 
+plot_score_dist <- function(se, 
                           perm.mat, 
                           cluster_anno = "seurat_clusters",
                           clusters_to_plot = NULL,

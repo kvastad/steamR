@@ -37,7 +37,7 @@
 #' @export
 #'
 #' @examples
-#' window_results <- WindowRankEnrichmentAnalysis(
+#' window_results <- window_rank_enrichment_analysis(
 #'   se = se,
 #'   perm.mat.window.data = perm.mat.window.data,
 #'   window_rank_list = window_rank_list_ALZ_Drugs,
@@ -46,7 +46,7 @@
 #'   imputation = "dynamic",
 #'   log_file = "window_analysis_log.txt"
 #' )
-WindowRankEnrichmentAnalysis <- function(
+window_rank_enrichment_analysis <- function(
     se,
     perm.mat.window.data,
     window_rank_list,
@@ -122,6 +122,13 @@ WindowRankEnrichmentAnalysis <- function(
         q05 <- quantiles[1]
         q95 <- quantiles[2]
         
+        # Print null distribution summary once per cluster
+        if (!is.null(log_file)) {
+            summary_msg <- sprintf("\nNull distribution summary for cluster %s:\n", cluster_name)
+            summary_msg <- paste0(summary_msg, paste(capture.output(print(summary(null_dist))), collapse = "\n"), "\n")
+            writeLines(summary_msg, log_con)
+        }
+        
         # Calculate p-values and create results for this cluster
         for (i in seq_along(median_scores)) {
             median_score <- median_scores[i]
@@ -129,16 +136,10 @@ WindowRankEnrichmentAnalysis <- function(
             # Calculate number of more extreme values
             n_more_extreme <- sum(null_dist >= median_score)
             
-            # Track imputation
-            was_imputed <- FALSE
-            imputation_type <- "none"
-            
             # Calculate p-value with specified imputation strategy
             if (n_more_extreme == 0 || is.na(median_score)) {
                 debug_msg <- sprintf("\nDebug for cluster %s window %d:\n", cluster_name, i)
                 debug_msg <- paste0(debug_msg, "OT_label_window: ", median_score, "\n")
-                debug_msg <- paste0(debug_msg, "Null distribution summary:\n")
-                debug_msg <- paste0(debug_msg, paste(capture.output(print(summary(null_dist))), collapse = "\n"), "\n")
                 debug_msg <- paste0(debug_msg, "Number of more extreme values: ", n_more_extreme, "\n")
                 
                 if (!is.null(log_file)) {
@@ -152,25 +153,35 @@ WindowRankEnrichmentAnalysis <- function(
                     } else {
                         warning(warning_msg)
                     }
+                    p_value <- 0
+                    was_imputed <- FALSE
+                    imputation_type <- "none"
+                } else if (imputation == "all") {
+                    p_value <- 1 / (length(null_dist) + 1)
+                    was_imputed <- TRUE
+                    imputation_type <- "all"
+                } else { # imputation == "dynamic"
+                    p_value <- 1 / (length(null_dist) + 1)
+                    was_imputed <- TRUE
+                    imputation_type <- "dynamic"
+                }
+            } else {
+                debug_msg <- sprintf("\nDebug for cluster %s window %d:\n", cluster_name, i)
+                debug_msg <- paste0(debug_msg, "OT_label_window: ", median_score, "\n")
+                debug_msg <- paste0(debug_msg, "Number of more extreme values: ", n_more_extreme, "\n")
+                
+                if (!is.null(log_file)) {
+                    writeLines(debug_msg, log_con)
                 }
                 
                 if (imputation == "all") {
-                    p_value <- 1 / (length(null_dist) + 1)
-                    was_imputed <- TRUE
-                } else if (imputation == "dynamic") {
-                    p_value <- 1 / (length(null_dist) + 1)
-                    was_imputed <- TRUE
-                } else { # imputation == "none"
-                    p_value <- 0
-                    was_imputed <- FALSE
-                }
-            } else {
-                if (imputation == "all") {
                     p_value <- (n_more_extreme + 1) / (length(null_dist) + 1)
                     was_imputed <- TRUE
+                    imputation_type <- "all"
                 } else {
                     p_value <- n_more_extreme / length(null_dist)
                     was_imputed <- FALSE
+                    imputation_type <- "none"
                 }
             }
             

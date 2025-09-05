@@ -13,11 +13,11 @@
 #'
 #' @examples
 #' seurat_clusters <- read.csv("path/to/clusters.csv", sep = ";")
-#' se <- addClusterAnnotations(se, 
+#' se <- add_cluster_annotations(se, 
 #'                            AnnoDataframe = seurat_clusters, 
 #'                            BarcodeName = "Barcode", 
 #'                            AnnoName = "seurat_clusters")
-addClusterAnnotations <- function(se, 
+add_cluster_annotations <- function(se, 
                                 AnnoDataframe, 
                                 BarcodeName, 
                                 AnnoName,

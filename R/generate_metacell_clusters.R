@@ -20,54 +20,48 @@
 #'   cluster_anno = "subclass_label",
 #'   num_cells_per_metacell = 10
 #' )
-generate_metacell_clusters <- function(se, 
-                                       cluster_anno = "subclass_label",
-                                       min_cells_per_type = 50,
-                                       num_cells_per_metacell = 10,
-                                       pca_dims = 10,
-                                       initial_resolution = 0.1,
-                                       verbose = FALSE) {
-  
+generate_metacell_clusters <- function(se, cluster_anno = "subclass_label", min_cells_per_type = 50, 
+  num_cells_per_metacell = 10, pca_dims = 10, initial_resolution = 0.1, 
+  verbose = FALSE) 
+{
   label_counts <- table(se@meta.data[[cluster_anno]])
   valid_labels <- names(label_counts[label_counts >= min_cells_per_type])
   removed_labels <- setdiff(names(label_counts), valid_labels)
   print("Removed cell types with too few cells:")
   print(removed_labels)
-  se <- subset(se, cells = colnames(se)[se@meta.data[[cluster_anno]] %in% valid_labels])
-  
+  se <- subset(se, cells = colnames(se)[se@meta.data[[cluster_anno]] %in% 
+    valid_labels])
   cell_types <- unique(se@meta.data[[cluster_anno]])
-  
   cell_type_subsets <- lapply(cell_types, function(ct) {
-    subset(se, cells = colnames(se)[se@meta.data[[cluster_anno]] == ct])
+    subset(se, cells = colnames(se)[se@meta.data[[cluster_anno]] == 
+      ct])
   })
-  
   cell_type_clusters <- lapply(cell_type_subsets, function(ct_subset) {
     cell_type <- unique(ct_subset@meta.data[[cluster_anno]])[1]
     message("\nProcessing cell type: ", cell_type)
-    
-    ct_subset <- SCTransform(ct_subset, verbose = verbose)
+    ct_subset <- NormalizeData(ct_subset, verbose = verbose)
     ct_subset <- FindVariableFeatures(ct_subset, verbose = verbose)
+    ct_subset <- ScaleData(ct_subset, verbose = verbose)
     ct_subset <- RunPCA(ct_subset, verbose = verbose)
     ct_subset <- FindNeighbors(ct_subset, dims = 1:pca_dims)
-    
-    desired_clusters <- floor(ncol(ct_subset) / num_cells_per_metacell)
+    desired_clusters <- floor(ncol(ct_subset)/num_cells_per_metacell)
     resolution <- initial_resolution
-    ct_subset <- FindClusters(ct_subset, resolution = resolution, verbose = verbose)
+    ct_subset <- FindClusters(ct_subset, resolution = resolution, 
+      verbose = verbose)
     num_clusters <- length(unique(ct_subset$seurat_clusters))
-    
     while (num_clusters < desired_clusters) {
       resolution <- resolution + 0.1
-      ct_subset <- FindClusters(ct_subset, resolution = resolution, verbose = verbose)
+      ct_subset <- FindClusters(ct_subset, resolution = resolution, 
+        verbose = verbose)
       num_clusters <- length(unique(ct_subset$seurat_clusters))
     }
     while (num_clusters > desired_clusters) {
       resolution <- resolution - 0.1
-      ct_subset <- FindClusters(ct_subset, resolution = resolution, verbose = verbose)
+      ct_subset <- FindClusters(ct_subset, resolution = resolution, 
+        verbose = verbose)
       num_clusters <- length(unique(ct_subset$seurat_clusters))
     }
-    
     return(ct_subset)
   })
-  
   return(cell_type_clusters)
 }

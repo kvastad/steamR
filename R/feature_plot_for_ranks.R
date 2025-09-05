@@ -19,7 +19,7 @@
 #' @export
 #'
 #' @examples
-#' featurePlotForRanks(
+#' feature_plot_for_ranks(
 #'   se = se,
 #'   window_rank_list = window50_rank_list_SCZ_Genetic,
 #'   ot_gene_set_label = "Genetic",
@@ -28,7 +28,7 @@
 #'   ranks_per_plot = 4,
 #'   all_clusters = FALSE
 #' )
-featurePlotForRanks <- function(
+feature_plot_for_ranks <- function(
     se, 
                                 window_rank_list, 
                                 ot_gene_set_label, 

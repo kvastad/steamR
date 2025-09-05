@@ -9,8 +9,8 @@
 #'
 #' @examples
 #' file_paths <- list.files("data/permutations", pattern = "\\.rds$", full.names = TRUE)
-#' permutation_matrices <- loadPermutationMatices(file_paths)
-loadPermutationMatices <- function(file_paths) {
+#' permutation_matrices <- load_permutation_matrices(file_paths)
+load_permutation_matrices <- function(file_paths) {
   matrices <- lapply(file_paths, readRDS)
   names(matrices) <- basename(file_paths)
   return(matrices)

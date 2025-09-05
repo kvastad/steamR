@@ -21,12 +21,12 @@
 #'   disease_abbr = "ALZ"
 #' )
 #' 
-#' rankPlotForClusters(
+#' rank_plot_for_clusters(
 #'   window_results = window_results,
 #'   perm.mat.window = perm.mat.window.data,
 #'   ylim = c(-0.3, 0.3)
 #' )
-rankPlotForClusters <- function(window_results, 
+rank_plot_for_clusters <- function(window_results, 
                                perm.mat.window, 
                                clusters_to_plot = NULL,
                                ylim = c(-0.3, 0.3)) {

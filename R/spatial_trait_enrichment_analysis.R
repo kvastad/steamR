@@ -40,7 +40,7 @@
 #' @export
 #'
 #' @examples
-#' pval_mat <- SpatialTraitEnrichmentAnalysis(
+#' pval_mat <- spatial_trait_enrichment_analysis(
 #'   se = se,
 #'   perm.mat.label.data = perm.mat.genetic.data,
 #'   perm.mat.window.data = perm.mat.window.data,
@@ -49,7 +49,7 @@
 #'   cluster_anno = "supercluster_term",
 #'   imputation = "dynamic"
 #' )
-SpatialTraitEnrichmentAnalysis <- function(
+spatial_trait_enrichment_analysis <- function(
     se,
     perm.mat.label.data,
     perm.mat.window.data,

@@ -13,8 +13,8 @@
 #' @export
 #'
 #' @examples
-#' fisher_results <- runFisherTestDEGs(se, DEG_genes = N.markers, OT_genes = OpenTargets_SCZ_Genetic)
-runFisherTestDEGs <- function(se, DEG_genes, OT_genes, adjust_method = "bonferroni", test_alternative = "greater") {
+#' fisher_results <- run_fisher_test_degs(se, DEG_genes = N.markers, OT_genes = OpenTargets_SCZ_Genetic)
+run_fisher_test_degs <- function(se, DEG_genes, OT_genes, adjust_method = "bonferroni", test_alternative = "greater") {
   
   total_genes <- rownames(se)
   contingency_results <- data.frame(cluster = character(), A = integer(), B = integer(), C = integer(), D = integer())

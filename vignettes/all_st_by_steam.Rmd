@@ -51,8 +51,8 @@ Load ST data:
 # se
 # 
 # # alculate mitochondrial and ribosomal percentages
-# se$percent.mito <- calculateGenePercentage(se, "^mt-")
-# se$percent.ribo <- calculateGenePercentage(se, "^Rpl|^Rps")
+# se$percent.mito <- calculate_gene_percentage(se, "^mt-")
+# se$percent.ribo <- calculate_gene_percentage(se, "^Rpl|^Rps")
 # 
 # # normalize 
 # options(future.globals.maxSize = 4 * 1024^3)
@@ -65,7 +65,7 @@ Load ST data:
 # # Clean up barcodes in the cluster annotations to match Seurat object
 # seurat_clusters$Barcode <- gsub("_1$", "", seurat_clusters$Barcode)
 # 
-# se <- addClusterAnnotations(se,
+# se <- add_cluster_annotations(se,
 #                            AnnoDataframe = seurat_clusters,
 #                            BarcodeName = "Barcode",
 #                            AnnoName = "seurat_clusters",
@@ -143,9 +143,9 @@ OpenTargets_ALZ_Drugs_ <- all_gene_sets[[grep("Drugs", names(all_gene_sets))]]
 
 
 ```{r}
-window50_rank_list_ALZ_Genetic <- generateSlidingWindows(OpenTargets_ALZ_Genetic_, window_size = 50, step_size = 10, disease_abbr = "ALZ", ot_gene_set_label = "Genetic")
+window50_rank_list_ALZ_Genetic <- generate_sliding_windows(OpenTargets_ALZ_Genetic_, window_size = 50, step_size = 10, disease_abbr = "ALZ", ot_gene_set_label = "Genetic")
 
-window50_rank_list_ALZ_Drugs <- generateSlidingWindows(OpenTargets_ALZ_Drugs_, window_size = 50, step_size = 10, disease_abbr = "ALZ", ot_gene_set_label = "Drugs")
+window50_rank_list_ALZ_Drugs <- generate_sliding_windows(OpenTargets_ALZ_Drugs_, window_size = 50, step_size = 10, disease_abbr = "ALZ", ot_gene_set_label = "Drugs")
 ```
 
 
@@ -183,21 +183,21 @@ this chunk takes about 90 minutes for all on my local. Maybe we can further opti
 ```{r}
 # Generate permutation matrices (non-parallel, 1000 permutations)
 
-# perm.mat.window50.data <- generatePermutationMatrix(
+# perm.mat.window50.data <- generate_permutation_matrix(
 #   se = se,
 #   gnum = 50,
 #   permutation_nr = 1000,
 #   cluster_anno = "seurat_clusters"
 # )
 # 
-# perm.mat.genetic.data <- generatePermutationMatrix(
+# perm.mat.genetic.data <- generate_permutation_matrix(
 #   se = se,
 #   gnum = 281,
 #   permutation_nr = 1000,
 #   cluster_anno = "seurat_clusters"
 # )
 # 
-# perm.mat.drugs.data <- generatePermutationMatrix(
+# perm.mat.drugs.data <- generate_permutation_matrix(
 #   se = se,
 #   gnum = 132,
 #   permutation_nr = 1000,
@@ -214,7 +214,7 @@ perm_files <- c(
   "data/Data_brain_example/Permutation_matrices/perm.mat_p10000_g132.RDS"
 )
 
-perm_matrices <- loadPermutationMatices(perm_files)
+perm_matrices <- load_permutation_matrices(perm_files)
 perm.mat.window50.data <- as.data.frame(perm_matrices[[1]])
 perm.mat.genetic.data <- as.data.frame(perm_matrices[[2]])
 perm.mat.drugs.data <- as.data.frame(perm_matrices[[3]])
@@ -229,7 +229,7 @@ Enrichment analysis:
 
 
 ```{r}
-results.g <- SpatialTraitEnrichmentAnalysis(
+results.g <- spatial_trait_enrichment_analysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
   perm.mat.window.data = perm.mat.window50.data,
@@ -292,7 +292,7 @@ SpatialFeaturePlot(se,
 ```
 
 ```{r}
-results.d <- SpatialTraitEnrichmentAnalysis(
+results.d <- spatial_trait_enrichment_analysis(
   se = se,
   perm.mat.label.data = perm.mat.drugs.data,
   perm.mat.window.data = perm.mat.window50.data,
@@ -349,7 +349,7 @@ SpatialFeaturePlot(se,
 
 
 ```{r}
-window_results <- WindowRankEnrichmentAnalysis(
+window_results <- window_rank_enrichment_analysis(
     se = se,
     perm.mat.window.data = perm.mat.window50.data,
     window_rank_list = window50_rank_list_ALZ_Drugs,
@@ -368,7 +368,7 @@ window_results$p_value_adj <- p.adjust(window_results$p_value, method = "bonferr
 
 
 ```{r}
-rankPlotForClusters(
+rank_plot_for_clusters(
     window_results = window_results,
     perm.mat.window = perm.mat.window50.data,
     ylim = c(-0.3, 0.3)
@@ -377,7 +377,7 @@ rankPlotForClusters(
 
 
 ```{r}
-featurePlotForRanks(se = se,
+feature_plot_for_ranks(se = se,
                    window_rank_list = window50_rank_list_ALZ_Genetic,
                    ot_gene_set_label = "Genetic",
                    disease_abbr = "ALZ",
@@ -392,7 +392,7 @@ featurePlotForRanks(se = se,
 ```
 
 ```{r}
-featurePlotForRanks(se = se,
+feature_plot_for_ranks(se = se,
                    window_rank_list = window50_rank_list_ALZ_Genetic,
                    ot_gene_set_label = "Genetic",
                    disease_abbr = "ALZ",
@@ -407,7 +407,7 @@ featurePlotForRanks(se = se,
 ```
 
 ```{r}
-plotScoreDist(
+plot_score_dist(
   se = se,
   perm.mat = perm.mat.genetic.data,
   cluster_anno = "seurat_clusters",
@@ -418,7 +418,7 @@ plotScoreDist(
 ```{r}
 colnames(perm.mat.genetic.data) <- gsub("^cluster_", "", colnames(perm.mat.genetic.data))
 colnames(perm.mat.window50.data) <- gsub("^cluster_", "", colnames(perm.mat.window50.data))
-plotScoreDist(
+plot_score_dist(
   se = se,
   perm.mat = perm.mat.drugs.data,
   cluster_anno = "seurat_clusters",
