@@ -1,6 +1,6 @@
 Package: steam
 Title: STEAM is a R package for Spatial Trait Enrichment Analysis with perMutation testing.
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     c(
       person("Linda", "Kvastad", , "linda.kvastad@scilifelab.se", role = c("aut")),
