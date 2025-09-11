@@ -138,14 +138,6 @@ window_rank_enrichment_analysis <- function(
             
             # Calculate p-value with specified imputation strategy
             if (n_more_extreme == 0 || is.na(median_score)) {
-                debug_msg <- sprintf("\nDebug for cluster %s window %d:\n", cluster_name, i)
-                debug_msg <- paste0(debug_msg, "OT_label_window: ", median_score, "\n")
-                debug_msg <- paste0(debug_msg, "Number of more extreme values: ", n_more_extreme, "\n")
-                
-                if (!is.null(log_file)) {
-                    writeLines(debug_msg, log_con)
-                }
-                
                 if (imputation == "none") {
                     warning_msg <- sprintf("No median scores in the null distribution were equal to or larger than the queried median score for cluster %s window %d. Consider using imputation 'all' or 'dynamic'.", cluster_name, i)
                     if (!is.null(log_file)) {
@@ -166,14 +158,6 @@ window_rank_enrichment_analysis <- function(
                     imputation_type <- "dynamic"
                 }
             } else {
-                debug_msg <- sprintf("\nDebug for cluster %s window %d:\n", cluster_name, i)
-                debug_msg <- paste0(debug_msg, "OT_label_window: ", median_score, "\n")
-                debug_msg <- paste0(debug_msg, "Number of more extreme values: ", n_more_extreme, "\n")
-                
-                if (!is.null(log_file)) {
-                    writeLines(debug_msg, log_con)
-                }
-                
                 if (imputation == "all") {
                     p_value <- (n_more_extreme + 1) / (length(null_dist) + 1)
                     was_imputed <- TRUE
@@ -183,6 +167,18 @@ window_rank_enrichment_analysis <- function(
                     was_imputed <- FALSE
                     imputation_type <- "none"
                 }
+            }
+            
+            # Create debug message with all information
+            debug_msg <- sprintf("\nDebug for cluster %s window %d:\n", cluster_name, i)
+            debug_msg <- paste0(debug_msg, "OT_label_window: ", median_score, "\n")
+            debug_msg <- paste0(debug_msg, "Number of more extreme values: ", n_more_extreme, "\n")
+            debug_msg <- paste0(debug_msg, "Imputation: ", imputation_type, "\n")
+            debug_msg <- paste0(debug_msg, "P-value: ", p_value, "\n")
+            debug_msg <- paste0(debug_msg, "Was imputed: ", was_imputed, "\n")
+            
+            if (!is.null(log_file)) {
+                writeLines(debug_msg, log_con)
             }
             
             # Check if score is significant (outside 5-95% quantiles)

@@ -128,15 +128,7 @@ spatial_trait_enrichment_analysis <- function(
       # Use the actual median value for this window
       OT_label_window <- cluster_medians[1]
       
-      # Debug prints to log file
-      debug_msg <- sprintf("\nDebug for cluster %s window %d:\n", cluster_name, j)
-      debug_msg <- paste0(debug_msg, "OT_label_window: ", OT_label_window, "\n")
-      debug_msg <- paste0(debug_msg, "Null distribution summary:\n")
-      debug_msg <- paste0(debug_msg, paste(capture.output(print(summary(perm.mat.window.data[, cluster_name]))), collapse = "\n"), "\n")
-      
-      if (!is.null(log_file)) {
-        writeLines(debug_msg, log_con)
-      }
+      # Skip individual window logging - will log cluster summary at the end
       
       # Get null distribution for this cluster and window
       if (!cluster_name %in% colnames(perm.mat.window.data)) {
@@ -156,18 +148,8 @@ spatial_trait_enrichment_analysis <- function(
       # Calculate number of more extreme values
       n_more_extreme <- sum(null_dist > OT_label_window, na.rm = TRUE)
       
-      # Only log if there's an issue
+      # Only log warnings if there's an issue
       if (n_more_extreme == 0 || is.na(OT_label_window)) {
-        debug_msg <- sprintf("\nDebug for cluster %s window %d:\n", cluster_name, j)
-        debug_msg <- paste0(debug_msg, "OT_label_window: ", OT_label_window, "\n")
-        debug_msg <- paste0(debug_msg, "Null distribution summary:\n")
-        debug_msg <- paste0(debug_msg, paste(capture.output(print(summary(null_dist))), collapse = "\n"), "\n")
-        debug_msg <- paste0(debug_msg, "Number of more extreme values: ", n_more_extreme, "\n")
-        
-        if (!is.null(log_file)) {
-          writeLines(debug_msg, log_con)
-        }
-        
         if (imputation == "none") {
           warning_msg <- sprintf("No median scores in the null distribution were larger than the queried median score for cluster %s window %d. Consider using imputation 'all' or 'dynamic'.", cluster_name, j)
           if (!is.null(log_file)) {
@@ -245,15 +227,17 @@ spatial_trait_enrichment_analysis <- function(
         }
       }
       
-      # Add debug output to log file
-      debug_msg <- sprintf("\nDebug for cluster %s:\n", cluster_name)
-      debug_msg <- paste0(debug_msg, "n_more_extreme: ", n_more_extreme, "\n")
-      debug_msg <- paste0(debug_msg, "n_more_extreme_full: ", n_more_extreme_full, "\n")
-      debug_msg <- paste0(debug_msg, "imputed: ", imputed_mat[1, index], "\n")
-      debug_msg <- paste0(debug_msg, "p-value: ", cluster_i_p_val, "\n")
-      
+      # Add cluster-level summary to log file
       if (!is.null(log_file)) {
-        writeLines(debug_msg, log_con)
+        cluster_summary <- sprintf("\nCluster: %s\n", cluster_name)
+        cluster_summary <- paste0(cluster_summary, sprintf("Gene set: %s\n", gene_list_score))
+        cluster_summary <- paste0(cluster_summary, sprintf("Median score: %.3f\n", actual_median))
+        cluster_summary <- paste0(cluster_summary, sprintf("P-value: %.6f\n", cluster_i_p_val))
+        cluster_summary <- paste0(cluster_summary, sprintf("Imputation: %s\n", imputation))
+        cluster_summary <- paste0(cluster_summary, sprintf("Was imputed: %s\n", imputed_mat[1, index]))
+        cluster_summary <- paste0(cluster_summary, sprintf("Number of windows: %d\n", length(window_rank_list_abr_label)))
+        
+        writeLines(cluster_summary, log_con)
       }
       
       p_val_mat[1, index] <- cluster_i_p_val

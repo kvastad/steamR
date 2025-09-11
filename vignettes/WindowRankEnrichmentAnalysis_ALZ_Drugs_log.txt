@@ -1,0 +1,1548 @@
+
+Null distribution summary for cluster 0:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.0978418 -0.0218390 -0.0044232 -0.0001474  0.0160979  0.2378809 
+
+
+Debug for cluster 0 window 1:
+OT_label_window: 0.00219271575172378
+Number of more extreme values: 4104
+Imputation: none
+P-value: 0.4104
+Was imputed: FALSE
+
+Checked cluster 0 window 1
+
+Debug for cluster 0 window 2:
+OT_label_window: -0.00542834249079838
+Number of more extreme values: 5142
+Imputation: none
+P-value: 0.5142
+Was imputed: FALSE
+
+Checked cluster 0 window 2
+
+Debug for cluster 0 window 3:
+OT_label_window: 0.0173667671692095
+Number of more extreme values: 2387
+Imputation: none
+P-value: 0.2387
+Was imputed: FALSE
+
+Checked cluster 0 window 3
+
+Debug for cluster 0 window 4:
+OT_label_window: 0.0162027495499555
+Number of more extreme values: 2492
+Imputation: none
+P-value: 0.2492
+Was imputed: FALSE
+
+Checked cluster 0 window 4
+
+Debug for cluster 0 window 5:
+OT_label_window: 0.0067482197071978
+Number of more extreme values: 3530
+Imputation: none
+P-value: 0.353
+Was imputed: FALSE
+
+Checked cluster 0 window 5
+
+Debug for cluster 0 window 6:
+OT_label_window: 0.00675703183130522
+Number of more extreme values: 3530
+Imputation: none
+P-value: 0.353
+Was imputed: FALSE
+
+Checked cluster 0 window 6
+
+Debug for cluster 0 window 7:
+OT_label_window: 0.00602416577314496
+Number of more extreme values: 3617
+Imputation: none
+P-value: 0.3617
+Was imputed: FALSE
+
+Checked cluster 0 window 7
+
+Debug for cluster 0 window 8:
+OT_label_window: -0.0140464264505661
+Number of more extreme values: 6439
+Imputation: none
+P-value: 0.6439
+Was imputed: FALSE
+
+Checked cluster 0 window 8
+
+Debug for cluster 0 window 9:
+OT_label_window: -0.0262821674066666
+Number of more extreme values: 8032
+Imputation: none
+P-value: 0.8032
+Was imputed: FALSE
+
+Checked cluster 0 window 9
+
+Null distribution summary for cluster 1:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.0909664 -0.0212652 -0.0051589 -0.0004721  0.0142595  0.2413941 
+
+
+Debug for cluster 1 window 1:
+OT_label_window: -0.0084168897456989
+Number of more extreme values: 5515
+Imputation: none
+P-value: 0.5515
+Was imputed: FALSE
+
+Checked cluster 1 window 1
+
+Debug for cluster 1 window 2:
+OT_label_window: -0.0126621284668591
+Number of more extreme values: 6243
+Imputation: none
+P-value: 0.6243
+Was imputed: FALSE
+
+Checked cluster 1 window 2
+
+Debug for cluster 1 window 3:
+OT_label_window: 0.00623623110534886
+Number of more extreme values: 3339
+Imputation: none
+P-value: 0.3339
+Was imputed: FALSE
+
+Checked cluster 1 window 3
+
+Debug for cluster 1 window 4:
+OT_label_window: -0.00497463693008168
+Number of more extreme values: 4978
+Imputation: none
+P-value: 0.4978
+Was imputed: FALSE
+
+Checked cluster 1 window 4
+
+Debug for cluster 1 window 5:
+OT_label_window: 0.00308466697835755
+Number of more extreme values: 3756
+Imputation: none
+P-value: 0.3756
+Was imputed: FALSE
+
+Checked cluster 1 window 5
+
+Debug for cluster 1 window 6:
+OT_label_window: 0.00442574253033998
+Number of more extreme values: 3578
+Imputation: none
+P-value: 0.3578
+Was imputed: FALSE
+
+Checked cluster 1 window 6
+
+Debug for cluster 1 window 7:
+OT_label_window: 0.000833863203626745
+Number of more extreme values: 4078
+Imputation: none
+P-value: 0.4078
+Was imputed: FALSE
+
+Checked cluster 1 window 7
+
+Debug for cluster 1 window 8:
+OT_label_window: 0.00465524173482981
+Number of more extreme values: 3537
+Imputation: none
+P-value: 0.3537
+Was imputed: FALSE
+
+Checked cluster 1 window 8
+
+Debug for cluster 1 window 9:
+OT_label_window: 0.0052768507607263
+Number of more extreme values: 3475
+Imputation: none
+P-value: 0.3475
+Was imputed: FALSE
+
+Checked cluster 1 window 9
+
+Null distribution summary for cluster 2:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.0820429 -0.0219411 -0.0057718 -0.0006443  0.0140969  0.2614340 
+
+
+Debug for cluster 2 window 1:
+OT_label_window: 0.0517532715116215
+Number of more extreme values: 681
+Imputation: none
+P-value: 0.0681
+Was imputed: FALSE
+
+Checked cluster 2 window 1
+
+Debug for cluster 2 window 2:
+OT_label_window: 0.0479297268974601
+Number of more extreme values: 753
+Imputation: none
+P-value: 0.0753
+Was imputed: FALSE
+
+Checked cluster 2 window 2
+
+Debug for cluster 2 window 3:
+OT_label_window: 0.0329997298289541
+Number of more extreme values: 1250
+Imputation: none
+P-value: 0.125
+Was imputed: FALSE
+
+Checked cluster 2 window 3
+
+Debug for cluster 2 window 4:
+OT_label_window: -0.00309119372465666
+Number of more extreme values: 4623
+Imputation: none
+P-value: 0.4623
+Was imputed: FALSE
+
+Checked cluster 2 window 4
+
+Debug for cluster 2 window 5:
+OT_label_window: -0.0369604990903108
+Number of more extreme values: 9109
+Imputation: none
+P-value: 0.9109
+Was imputed: FALSE
+
+Checked cluster 2 window 5
+
+Debug for cluster 2 window 6:
+OT_label_window: -0.0234490134541002
+Number of more extreme values: 7686
+Imputation: none
+P-value: 0.7686
+Was imputed: FALSE
+
+Checked cluster 2 window 6
+
+Debug for cluster 2 window 7:
+OT_label_window: -0.0110042342735631
+Number of more extreme values: 5865
+Imputation: none
+P-value: 0.5865
+Was imputed: FALSE
+
+Checked cluster 2 window 7
+
+Debug for cluster 2 window 8:
+OT_label_window: -0.0122541100247799
+Number of more extreme values: 6063
+Imputation: none
+P-value: 0.6063
+Was imputed: FALSE
+
+Checked cluster 2 window 8
+
+Debug for cluster 2 window 9:
+OT_label_window: 0.00206940619270955
+Number of more extreme values: 3850
+Imputation: none
+P-value: 0.385
+Was imputed: FALSE
+
+Checked cluster 2 window 9
+
+Null distribution summary for cluster 3:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.1290645 -0.0307293 -0.0064754 -0.0009237  0.0229479  0.2895778 
+
+
+Debug for cluster 3 window 1:
+OT_label_window: -0.0593095409186505
+Number of more extreme values: 9424
+Imputation: none
+P-value: 0.9424
+Was imputed: FALSE
+
+Checked cluster 3 window 1
+
+Debug for cluster 3 window 2:
+OT_label_window: -0.0474049491382302
+Number of more extreme values: 8831
+Imputation: none
+P-value: 0.8831
+Was imputed: FALSE
+
+Checked cluster 3 window 2
+
+Debug for cluster 3 window 3:
+OT_label_window: -0.015280209372935
+Number of more extreme values: 5935
+Imputation: none
+P-value: 0.5935
+Was imputed: FALSE
+
+Checked cluster 3 window 3
+
+Debug for cluster 3 window 4:
+OT_label_window: -0.0471314151537734
+Number of more extreme values: 8816
+Imputation: none
+P-value: 0.8816
+Was imputed: FALSE
+
+Checked cluster 3 window 4
+
+Debug for cluster 3 window 5:
+OT_label_window: -0.070769632361816
+Number of more extreme values: 9757
+Imputation: none
+P-value: 0.9757
+Was imputed: FALSE
+
+Checked cluster 3 window 5
+
+Debug for cluster 3 window 6:
+OT_label_window: -0.0932291177864269
+Number of more extreme values: 9980
+Imputation: none
+P-value: 0.998
+Was imputed: FALSE
+
+Checked cluster 3 window 6
+
+Debug for cluster 3 window 7:
+OT_label_window: -0.094810516347279
+Number of more extreme values: 9985
+Imputation: none
+P-value: 0.9985
+Was imputed: FALSE
+
+Checked cluster 3 window 7
+
+Debug for cluster 3 window 8:
+OT_label_window: -0.0743956253245504
+Number of more extreme values: 9831
+Imputation: none
+P-value: 0.9831
+Was imputed: FALSE
+
+Checked cluster 3 window 8
+
+Debug for cluster 3 window 9:
+OT_label_window: -0.0358362642151457
+Number of more extreme values: 7974
+Imputation: none
+P-value: 0.7974
+Was imputed: FALSE
+
+Checked cluster 3 window 9
+
+Null distribution summary for cluster 4:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.1145737 -0.0229565 -0.0043488 -0.0002459  0.0174389  0.2388707 
+
+
+Debug for cluster 4 window 1:
+OT_label_window: 0.00117040435832999
+Number of more extreme values: 4275
+Imputation: none
+P-value: 0.4275
+Was imputed: FALSE
+
+Checked cluster 4 window 1
+
+Debug for cluster 4 window 2:
+OT_label_window: -0.00124302299425072
+Number of more extreme values: 4592
+Imputation: none
+P-value: 0.4592
+Was imputed: FALSE
+
+Checked cluster 4 window 2
+
+Debug for cluster 4 window 3:
+OT_label_window: 0.0179201943572765
+Number of more extreme values: 2447
+Imputation: none
+P-value: 0.2447
+Was imputed: FALSE
+
+Checked cluster 4 window 3
+
+Debug for cluster 4 window 4:
+OT_label_window: 0.0120397228380266
+Number of more extreme values: 3002
+Imputation: none
+P-value: 0.3002
+Was imputed: FALSE
+
+Checked cluster 4 window 4
+
+Debug for cluster 4 window 5:
+OT_label_window: 0.00702886687141219
+Number of more extreme values: 3550
+Imputation: none
+P-value: 0.355
+Was imputed: FALSE
+
+Checked cluster 4 window 5
+
+Debug for cluster 4 window 6:
+OT_label_window: 0.00297991220949129
+Number of more extreme values: 4042
+Imputation: none
+P-value: 0.4042
+Was imputed: FALSE
+
+Checked cluster 4 window 6
+
+Debug for cluster 4 window 7:
+OT_label_window: 0.00461859977777523
+Number of more extreme values: 3857
+Imputation: none
+P-value: 0.3857
+Was imputed: FALSE
+
+Checked cluster 4 window 7
+
+Debug for cluster 4 window 8:
+OT_label_window: -0.0059650093813774
+Number of more extreme values: 5211
+Imputation: none
+P-value: 0.5211
+Was imputed: FALSE
+
+Checked cluster 4 window 8
+
+Debug for cluster 4 window 9:
+OT_label_window: -0.00449607623397696
+Number of more extreme values: 5020
+Imputation: none
+P-value: 0.502
+Was imputed: FALSE
+
+Checked cluster 4 window 9
+
+Null distribution summary for cluster 5:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.1153176 -0.0255909 -0.0035960 -0.0002572  0.0208411  0.2633095 
+
+
+Debug for cluster 5 window 1:
+OT_label_window: -0.0428408944348016
+Number of more extreme values: 8876
+Imputation: none
+P-value: 0.8876
+Was imputed: FALSE
+
+Checked cluster 5 window 1
+
+Debug for cluster 5 window 2:
+OT_label_window: -0.0330456468609698
+Number of more extreme values: 8146
+Imputation: none
+P-value: 0.8146
+Was imputed: FALSE
+
+Checked cluster 5 window 2
+
+Debug for cluster 5 window 3:
+OT_label_window: -0.00910363175987672
+Number of more extreme values: 5631
+Imputation: none
+P-value: 0.5631
+Was imputed: FALSE
+
+Checked cluster 5 window 3
+
+Debug for cluster 5 window 4:
+OT_label_window: -0.012052208695481
+Number of more extreme values: 5927
+Imputation: none
+P-value: 0.5927
+Was imputed: FALSE
+
+Checked cluster 5 window 4
+
+Debug for cluster 5 window 5:
+OT_label_window: -0.033114375145806
+Number of more extreme values: 8152
+Imputation: none
+P-value: 0.8152
+Was imputed: FALSE
+
+Checked cluster 5 window 5
+
+Debug for cluster 5 window 6:
+OT_label_window: -0.0425123302007686
+Number of more extreme values: 8855
+Imputation: none
+P-value: 0.8855
+Was imputed: FALSE
+
+Checked cluster 5 window 6
+
+Debug for cluster 5 window 7:
+OT_label_window: -0.0325007385402729
+Number of more extreme values: 8108
+Imputation: none
+P-value: 0.8108
+Was imputed: FALSE
+
+Checked cluster 5 window 7
+
+Debug for cluster 5 window 8:
+OT_label_window: -0.0177087436792752
+Number of more extreme values: 6585
+Imputation: none
+P-value: 0.6585
+Was imputed: FALSE
+
+Checked cluster 5 window 8
+
+Debug for cluster 5 window 9:
+OT_label_window: -0.0233402421613117
+Number of more extreme values: 7254
+Imputation: none
+P-value: 0.7254
+Was imputed: FALSE
+
+Checked cluster 5 window 9
+
+Null distribution summary for cluster 6:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.1029695 -0.0225466 -0.0037201  0.0001392  0.0174322  0.2289227 
+
+
+Debug for cluster 6 window 1:
+OT_label_window: 0.000486590225933559
+Number of more extreme values: 4426
+Imputation: none
+P-value: 0.4426
+Was imputed: FALSE
+
+Checked cluster 6 window 1
+
+Debug for cluster 6 window 2:
+OT_label_window: -0.00465872543418594
+Number of more extreme values: 5113
+Imputation: none
+P-value: 0.5113
+Was imputed: FALSE
+
+Checked cluster 6 window 2
+
+Debug for cluster 6 window 3:
+OT_label_window: -0.00158445994593785
+Number of more extreme values: 4710
+Imputation: none
+P-value: 0.471
+Was imputed: FALSE
+
+Checked cluster 6 window 3
+
+Debug for cluster 6 window 4:
+OT_label_window: -0.0149307113978672
+Number of more extreme values: 6472
+Imputation: none
+P-value: 0.6472
+Was imputed: FALSE
+
+Checked cluster 6 window 4
+
+Debug for cluster 6 window 5:
+OT_label_window: -0.0348132720320811
+Number of more extreme values: 8787
+Imputation: none
+P-value: 0.8787
+Was imputed: FALSE
+
+Checked cluster 6 window 5
+
+Debug for cluster 6 window 6:
+OT_label_window: -0.0313994079223391
+Number of more extreme values: 8483
+Imputation: none
+P-value: 0.8483
+Was imputed: FALSE
+
+Checked cluster 6 window 6
+
+Debug for cluster 6 window 7:
+OT_label_window: -0.0303238426152838
+Number of more extreme values: 8391
+Imputation: none
+P-value: 0.8391
+Was imputed: FALSE
+
+Checked cluster 6 window 7
+
+Debug for cluster 6 window 8:
+OT_label_window: -0.0207222957452316
+Number of more extreme values: 7264
+Imputation: none
+P-value: 0.7264
+Was imputed: FALSE
+
+Checked cluster 6 window 8
+
+Debug for cluster 6 window 9:
+OT_label_window: -0.022842778353484
+Number of more extreme values: 7534
+Imputation: none
+P-value: 0.7534
+Was imputed: FALSE
+
+Checked cluster 6 window 9
+
+Null distribution summary for cluster 7:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.1011036 -0.0233896 -0.0048148 -0.0003543  0.0172296  0.2698604 
+
+
+Debug for cluster 7 window 1:
+OT_label_window: -0.0160966253932722
+Number of more extreme values: 6555
+Imputation: none
+P-value: 0.6555
+Was imputed: FALSE
+
+Checked cluster 7 window 1
+
+Debug for cluster 7 window 2:
+OT_label_window: -0.00694706862410327
+Number of more extreme values: 5310
+Imputation: none
+P-value: 0.531
+Was imputed: FALSE
+
+Checked cluster 7 window 2
+
+Debug for cluster 7 window 3:
+OT_label_window: 0.0136954327098023
+Number of more extreme values: 2846
+Imputation: none
+P-value: 0.2846
+Was imputed: FALSE
+
+Checked cluster 7 window 3
+
+Debug for cluster 7 window 4:
+OT_label_window: 0.0101823520132683
+Number of more extreme values: 3227
+Imputation: none
+P-value: 0.3227
+Was imputed: FALSE
+
+Checked cluster 7 window 4
+
+Debug for cluster 7 window 5:
+OT_label_window: 0.00748238727841288
+Number of more extreme values: 3517
+Imputation: none
+P-value: 0.3517
+Was imputed: FALSE
+
+Checked cluster 7 window 5
+
+Debug for cluster 7 window 6:
+OT_label_window: 0.00576786053139533
+Number of more extreme values: 3705
+Imputation: none
+P-value: 0.3705
+Was imputed: FALSE
+
+Checked cluster 7 window 6
+
+Debug for cluster 7 window 7:
+OT_label_window: -0.0068696864562407
+Number of more extreme values: 5303
+Imputation: none
+P-value: 0.5303
+Was imputed: FALSE
+
+Checked cluster 7 window 7
+
+Debug for cluster 7 window 8:
+OT_label_window: -0.0183874325067996
+Number of more extreme values: 6865
+Imputation: none
+P-value: 0.6865
+Was imputed: FALSE
+
+Checked cluster 7 window 8
+
+Debug for cluster 7 window 9:
+OT_label_window: -0.0306683809868394
+Number of more extreme values: 8293
+Imputation: none
+P-value: 0.8293
+Was imputed: FALSE
+
+Checked cluster 7 window 9
+
+Null distribution summary for cluster 8:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.1377079 -0.0271349 -0.0043415 -0.0002868  0.0218130  0.2640535 
+
+
+Debug for cluster 8 window 1:
+OT_label_window: 0.00265982046514779
+Number of more extreme values: 4259
+Imputation: none
+P-value: 0.4259
+Was imputed: FALSE
+
+Checked cluster 8 window 1
+
+Debug for cluster 8 window 2:
+OT_label_window: -0.00583713830349331
+Number of more extreme values: 5179
+Imputation: none
+P-value: 0.5179
+Was imputed: FALSE
+
+Checked cluster 8 window 2
+
+Debug for cluster 8 window 3:
+OT_label_window: 0.0209371357934036
+Number of more extreme values: 2562
+Imputation: none
+P-value: 0.2562
+Was imputed: FALSE
+
+Checked cluster 8 window 3
+
+Debug for cluster 8 window 4:
+OT_label_window: 0.0228251419457826
+Number of more extreme values: 2413
+Imputation: none
+P-value: 0.2413
+Was imputed: FALSE
+
+Checked cluster 8 window 4
+
+Debug for cluster 8 window 5:
+OT_label_window: 0.0167242651621824
+Number of more extreme values: 2901
+Imputation: none
+P-value: 0.2901
+Was imputed: FALSE
+
+Checked cluster 8 window 5
+
+Debug for cluster 8 window 6:
+OT_label_window: 0.0309403443120223
+Number of more extreme values: 1866
+Imputation: none
+P-value: 0.1866
+Was imputed: FALSE
+
+Checked cluster 8 window 6
+
+Debug for cluster 8 window 7:
+OT_label_window: 0.0263182728403338
+Number of more extreme values: 2139
+Imputation: none
+P-value: 0.2139
+Was imputed: FALSE
+
+Checked cluster 8 window 7
+
+Debug for cluster 8 window 8:
+OT_label_window: -0.00219187927034564
+Number of more extreme values: 4778
+Imputation: none
+P-value: 0.4778
+Was imputed: FALSE
+
+Checked cluster 8 window 8
+
+Debug for cluster 8 window 9:
+OT_label_window: -0.008636654236858
+Number of more extreme values: 5493
+Imputation: none
+P-value: 0.5493
+Was imputed: FALSE
+
+Checked cluster 8 window 9
+
+Null distribution summary for cluster 9:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.1172103 -0.0257412 -0.0050205 -0.0005407  0.0188645  0.2499334 
+
+
+Debug for cluster 9 window 1:
+OT_label_window: -0.0208228194831091
+Number of more extreme values: 6948
+Imputation: none
+P-value: 0.6948
+Was imputed: FALSE
+
+Checked cluster 9 window 1
+
+Debug for cluster 9 window 2:
+OT_label_window: -0.0204901596172048
+Number of more extreme values: 6921
+Imputation: none
+P-value: 0.6921
+Was imputed: FALSE
+
+Checked cluster 9 window 2
+
+Debug for cluster 9 window 3:
+OT_label_window: 0.0033588315710549
+Number of more extreme values: 4106
+Imputation: none
+P-value: 0.4106
+Was imputed: FALSE
+
+Checked cluster 9 window 3
+
+Debug for cluster 9 window 4:
+OT_label_window: -0.0106493669371707
+Number of more extreme values: 5679
+Imputation: none
+P-value: 0.5679
+Was imputed: FALSE
+
+Checked cluster 9 window 4
+
+Debug for cluster 9 window 5:
+OT_label_window: -0.0342989895887074
+Number of more extreme values: 8322
+Imputation: none
+P-value: 0.8322
+Was imputed: FALSE
+
+Checked cluster 9 window 5
+
+Debug for cluster 9 window 6:
+OT_label_window: -0.0472802736277257
+Number of more extreme values: 9197
+Imputation: none
+P-value: 0.9197
+Was imputed: FALSE
+
+Checked cluster 9 window 6
+
+Debug for cluster 9 window 7:
+OT_label_window: -0.0402942639997492
+Number of more extreme values: 8792
+Imputation: none
+P-value: 0.8792
+Was imputed: FALSE
+
+Checked cluster 9 window 7
+
+Debug for cluster 9 window 8:
+OT_label_window: -0.0356675455299631
+Number of more extreme values: 8416
+Imputation: none
+P-value: 0.8416
+Was imputed: FALSE
+
+Checked cluster 9 window 8
+
+Debug for cluster 9 window 9:
+OT_label_window: -0.0295304419580227
+Number of more extreme values: 7896
+Imputation: none
+P-value: 0.7896
+Was imputed: FALSE
+
+Checked cluster 9 window 9
+
+Null distribution summary for cluster 10:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.0983879 -0.0246320 -0.0043404 -0.0004403  0.0183274  0.2764395 
+
+
+Debug for cluster 10 window 1:
+OT_label_window: -0.00316831849024501
+Number of more extreme values: 4872
+Imputation: none
+P-value: 0.4872
+Was imputed: FALSE
+
+Checked cluster 10 window 1
+
+Debug for cluster 10 window 2:
+OT_label_window: -0.0112799294256339
+Number of more extreme values: 5876
+Imputation: none
+P-value: 0.5876
+Was imputed: FALSE
+
+Checked cluster 10 window 2
+
+Debug for cluster 10 window 3:
+OT_label_window: 0.0241187621893741
+Number of more extreme values: 2037
+Imputation: none
+P-value: 0.2037
+Was imputed: FALSE
+
+Checked cluster 10 window 3
+
+Debug for cluster 10 window 4:
+OT_label_window: 0.0356959219777188
+Number of more extreme values: 1374
+Imputation: none
+P-value: 0.1374
+Was imputed: FALSE
+
+Checked cluster 10 window 4
+
+Debug for cluster 10 window 5:
+OT_label_window: 0.0366671337744677
+Number of more extreme values: 1337
+Imputation: none
+P-value: 0.1337
+Was imputed: FALSE
+
+Checked cluster 10 window 5
+
+Debug for cluster 10 window 6:
+OT_label_window: 0.0402009960962357
+Number of more extreme values: 1191
+Imputation: none
+P-value: 0.1191
+Was imputed: FALSE
+
+Checked cluster 10 window 6
+
+Debug for cluster 10 window 7:
+OT_label_window: 0.0323851947151381
+Number of more extreme values: 1534
+Imputation: none
+P-value: 0.1534
+Was imputed: FALSE
+
+Checked cluster 10 window 7
+
+Debug for cluster 10 window 8:
+OT_label_window: 0.0151061949073975
+Number of more extreme values: 2778
+Imputation: none
+P-value: 0.2778
+Was imputed: FALSE
+
+Checked cluster 10 window 8
+
+Debug for cluster 10 window 9:
+OT_label_window: -0.00127870264678315
+Number of more extreme values: 4620
+Imputation: none
+P-value: 0.462
+Was imputed: FALSE
+
+Checked cluster 10 window 9
+
+Null distribution summary for cluster 11:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.1023783 -0.0224840 -0.0037694  0.0003764  0.0180655  0.2558595 
+
+
+Debug for cluster 11 window 1:
+OT_label_window: -0.0326486751819572
+Number of more extreme values: 8545
+Imputation: none
+P-value: 0.8545
+Was imputed: FALSE
+
+Checked cluster 11 window 1
+
+Debug for cluster 11 window 2:
+OT_label_window: -0.0271573499514151
+Number of more extreme values: 8039
+Imputation: none
+P-value: 0.8039
+Was imputed: FALSE
+
+Checked cluster 11 window 2
+
+Debug for cluster 11 window 3:
+OT_label_window: -0.00339908639410474
+Number of more extreme values: 4946
+Imputation: none
+P-value: 0.4946
+Was imputed: FALSE
+
+Checked cluster 11 window 3
+
+Debug for cluster 11 window 4:
+OT_label_window: 0.000281533162350855
+Number of more extreme values: 4448
+Imputation: none
+P-value: 0.4448
+Was imputed: FALSE
+
+Checked cluster 11 window 4
+
+Debug for cluster 11 window 5:
+OT_label_window: -0.00562835742133649
+Number of more extreme values: 5248
+Imputation: none
+P-value: 0.5248
+Was imputed: FALSE
+
+Checked cluster 11 window 5
+
+Debug for cluster 11 window 6:
+OT_label_window: -0.0129823238572759
+Number of more extreme values: 6278
+Imputation: none
+P-value: 0.6278
+Was imputed: FALSE
+
+Checked cluster 11 window 6
+
+Debug for cluster 11 window 7:
+OT_label_window: -0.0121262382577822
+Number of more extreme values: 6147
+Imputation: none
+P-value: 0.6147
+Was imputed: FALSE
+
+Checked cluster 11 window 7
+
+Debug for cluster 11 window 8:
+OT_label_window: -0.0196363909584881
+Number of more extreme values: 7146
+Imputation: none
+P-value: 0.7146
+Was imputed: FALSE
+
+Checked cluster 11 window 8
+
+Debug for cluster 11 window 9:
+OT_label_window: -0.0177156285197232
+Number of more extreme values: 6908
+Imputation: none
+P-value: 0.6908
+Was imputed: FALSE
+
+Checked cluster 11 window 9
+
+Null distribution summary for cluster 12:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-1.259e-01 -2.435e-02 -3.619e-03 -6.491e-05  1.966e-02  2.404e-01 
+
+
+Debug for cluster 12 window 1:
+OT_label_window: 0.0200418229675039
+Number of more extreme values: 2469
+Imputation: none
+P-value: 0.2469
+Was imputed: FALSE
+
+Checked cluster 12 window 1
+
+Debug for cluster 12 window 2:
+OT_label_window: 0.00915034145654126
+Number of more extreme values: 3487
+Imputation: none
+P-value: 0.3487
+Was imputed: FALSE
+
+Checked cluster 12 window 2
+
+Debug for cluster 12 window 3:
+OT_label_window: 0.0290958834679092
+Number of more extreme values: 1840
+Imputation: none
+P-value: 0.184
+Was imputed: FALSE
+
+Checked cluster 12 window 3
+
+Debug for cluster 12 window 4:
+OT_label_window: 0.0473051291985226
+Number of more extreme values: 965
+Imputation: none
+P-value: 0.0965
+Was imputed: FALSE
+
+Checked cluster 12 window 4
+
+Debug for cluster 12 window 5:
+OT_label_window: 0.0327292733253434
+Number of more extreme values: 1604
+Imputation: none
+P-value: 0.1604
+Was imputed: FALSE
+
+Checked cluster 12 window 5
+
+Debug for cluster 12 window 6:
+OT_label_window: 0.038889445268224
+Number of more extreme values: 1286
+Imputation: none
+P-value: 0.1286
+Was imputed: FALSE
+
+Checked cluster 12 window 6
+
+Debug for cluster 12 window 7:
+OT_label_window: 0.0371210122221481
+Number of more extreme values: 1365
+Imputation: none
+P-value: 0.1365
+Was imputed: FALSE
+
+Checked cluster 12 window 7
+
+Debug for cluster 12 window 8:
+OT_label_window: 0.0115908168381282
+Number of more extreme values: 3222
+Imputation: none
+P-value: 0.3222
+Was imputed: FALSE
+
+Checked cluster 12 window 8
+
+Debug for cluster 12 window 9:
+OT_label_window: -0.000948101046956612
+Number of more extreme values: 4684
+Imputation: none
+P-value: 0.4684
+Was imputed: FALSE
+
+Checked cluster 12 window 9
+
+Null distribution summary for cluster 13:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.0959522 -0.0243953 -0.0049342 -0.0003822  0.0185838  0.2606984 
+
+
+Debug for cluster 13 window 1:
+OT_label_window: -0.0257099001505402
+Number of more extreme values: 7650
+Imputation: none
+P-value: 0.765
+Was imputed: FALSE
+
+Checked cluster 13 window 1
+
+Debug for cluster 13 window 2:
+OT_label_window: -0.0181094971179521
+Number of more extreme values: 6723
+Imputation: none
+P-value: 0.6723
+Was imputed: FALSE
+
+Checked cluster 13 window 2
+
+Debug for cluster 13 window 3:
+OT_label_window: -0.00381419954229671
+Number of more extreme values: 4864
+Imputation: none
+P-value: 0.4864
+Was imputed: FALSE
+
+Checked cluster 13 window 3
+
+Debug for cluster 13 window 4:
+OT_label_window: -0.0271280631535361
+Number of more extreme values: 7813
+Imputation: none
+P-value: 0.7813
+Was imputed: FALSE
+
+Checked cluster 13 window 4
+
+Debug for cluster 13 window 5:
+OT_label_window: -0.0383191746311817
+Number of more extreme values: 8818
+Imputation: none
+P-value: 0.8818
+Was imputed: FALSE
+
+Checked cluster 13 window 5
+
+Debug for cluster 13 window 6:
+OT_label_window: -0.0705733942673284
+Number of more extreme values: 9936
+Imputation: none
+P-value: 0.9936
+Was imputed: FALSE
+
+Checked cluster 13 window 6
+
+Debug for cluster 13 window 7:
+OT_label_window: -0.0672300390770775
+Number of more extreme values: 9908
+Imputation: none
+P-value: 0.9908
+Was imputed: FALSE
+
+Checked cluster 13 window 7
+
+Debug for cluster 13 window 8:
+OT_label_window: -0.0563256751485368
+Number of more extreme values: 9706
+Imputation: none
+P-value: 0.9706
+Was imputed: FALSE
+
+Checked cluster 13 window 8
+
+Debug for cluster 13 window 9:
+OT_label_window: -0.0276391254869965
+Number of more extreme values: 7866
+Imputation: none
+P-value: 0.7866
+Was imputed: FALSE
+
+Checked cluster 13 window 9
+
+Null distribution summary for cluster 14:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.1057069 -0.0241712 -0.0041273  0.0001961  0.0196751  0.2446957 
+
+
+Debug for cluster 14 window 1:
+OT_label_window: -0.0890125157151447
+Number of more extreme values: 9998
+Imputation: none
+P-value: 0.9998
+Was imputed: FALSE
+
+Checked cluster 14 window 1
+
+Debug for cluster 14 window 2:
+OT_label_window: -0.0669700560005017
+Number of more extreme values: 9899
+Imputation: none
+P-value: 0.9899
+Was imputed: FALSE
+
+Checked cluster 14 window 2
+
+Debug for cluster 14 window 3:
+OT_label_window: -0.0380242283894427
+Number of more extreme values: 8758
+Imputation: none
+P-value: 0.8758
+Was imputed: FALSE
+
+Checked cluster 14 window 3
+
+Debug for cluster 14 window 4:
+OT_label_window: -0.0829491924384799
+Number of more extreme values: 9989
+Imputation: none
+P-value: 0.9989
+Was imputed: FALSE
+
+Checked cluster 14 window 4
+
+Debug for cluster 14 window 5:
+OT_label_window: -0.11983045745388
+Number of more extreme values: 10000
+Imputation: none
+P-value: 1
+Was imputed: FALSE
+
+Checked cluster 14 window 5
+
+Debug for cluster 14 window 6:
+OT_label_window: -0.130773232888875
+Number of more extreme values: 10000
+Imputation: none
+P-value: 1
+Was imputed: FALSE
+
+Checked cluster 14 window 6
+
+Debug for cluster 14 window 7:
+OT_label_window: -0.109697053200876
+Number of more extreme values: 10000
+Imputation: none
+P-value: 1
+Was imputed: FALSE
+
+Checked cluster 14 window 7
+
+Debug for cluster 14 window 8:
+OT_label_window: -0.071949659953686
+Number of more extreme values: 9942
+Imputation: none
+P-value: 0.9942
+Was imputed: FALSE
+
+Checked cluster 14 window 8
+
+Debug for cluster 14 window 9:
+OT_label_window: -0.0320897124613423
+Number of more extreme values: 8274
+Imputation: none
+P-value: 0.8274
+Was imputed: FALSE
+
+Checked cluster 14 window 9
+
+Null distribution summary for cluster 15:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.1761243 -0.0334552 -0.0018127  0.0002738  0.0304077  0.2381633 
+
+
+Debug for cluster 15 window 1:
+OT_label_window: -0.0496979482762732
+Number of more extreme values: 8527
+Imputation: none
+P-value: 0.8527
+Was imputed: FALSE
+
+Checked cluster 15 window 1
+
+Debug for cluster 15 window 2:
+OT_label_window: -0.0130461719260204
+Number of more extreme values: 5926
+Imputation: none
+P-value: 0.5926
+Was imputed: FALSE
+
+Checked cluster 15 window 2
+
+Debug for cluster 15 window 3:
+OT_label_window: 0.0230767631954345
+Number of more extreme values: 2977
+Imputation: none
+P-value: 0.2977
+Was imputed: FALSE
+
+Checked cluster 15 window 3
+
+Debug for cluster 15 window 4:
+OT_label_window: 0.000872398194127294
+Number of more extreme values: 4769
+Imputation: none
+P-value: 0.4769
+Was imputed: FALSE
+
+Checked cluster 15 window 4
+
+Debug for cluster 15 window 5:
+OT_label_window: 0.00674832859472008
+Number of more extreme values: 4288
+Imputation: none
+P-value: 0.4288
+Was imputed: FALSE
+
+Checked cluster 15 window 5
+
+Debug for cluster 15 window 6:
+OT_label_window: -0.00255069481502243
+Number of more extreme values: 5061
+Imputation: none
+P-value: 0.5061
+Was imputed: FALSE
+
+Checked cluster 15 window 6
+
+Debug for cluster 15 window 7:
+OT_label_window: -0.0199964855352476
+Number of more extreme values: 6482
+Imputation: none
+P-value: 0.6482
+Was imputed: FALSE
+
+Checked cluster 15 window 7
+
+Debug for cluster 15 window 8:
+OT_label_window: -0.0291324014282093
+Number of more extreme values: 7176
+Imputation: none
+P-value: 0.7176
+Was imputed: FALSE
+
+Checked cluster 15 window 8
+
+Debug for cluster 15 window 9:
+OT_label_window: -0.0212723174801764
+Number of more extreme values: 6575
+Imputation: none
+P-value: 0.6575
+Was imputed: FALSE
+
+Checked cluster 15 window 9
+
+Null distribution summary for cluster 16:
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+-0.199645 -0.037626 -0.002325  0.001272  0.035765  0.312486 
+
+
+Debug for cluster 16 window 1:
+OT_label_window: 0.0296404565605287
+Number of more extreme values: 2826
+Imputation: none
+P-value: 0.2826
+Was imputed: FALSE
+
+Checked cluster 16 window 1
+
+Debug for cluster 16 window 2:
+OT_label_window: 0.00575934912311227
+Number of more extreme values: 4378
+Imputation: none
+P-value: 0.4378
+Was imputed: FALSE
+
+Checked cluster 16 window 2
+
+Debug for cluster 16 window 3:
+OT_label_window: 0.0333019992202796
+Number of more extreme values: 2616
+Imputation: none
+P-value: 0.2616
+Was imputed: FALSE
+
+Checked cluster 16 window 3
+
+Debug for cluster 16 window 4:
+OT_label_window: 0.0542998325366046
+Number of more extreme values: 1665
+Imputation: none
+P-value: 0.1665
+Was imputed: FALSE
+
+Checked cluster 16 window 4
+
+Debug for cluster 16 window 5:
+OT_label_window: 0.0849780760075188
+Number of more extreme values: 764
+Imputation: none
+P-value: 0.0764
+Was imputed: FALSE
+
+Checked cluster 16 window 5
+
+Debug for cluster 16 window 6:
+OT_label_window: 0.0966353602953884
+Number of more extreme values: 563
+Imputation: none
+P-value: 0.0563
+Was imputed: FALSE
+
+Checked cluster 16 window 6
+
+Debug for cluster 16 window 7:
+OT_label_window: 0.0679278723635598
+Number of more extreme values: 1193
+Imputation: none
+P-value: 0.1193
+Was imputed: FALSE
+
+Checked cluster 16 window 7
+
+Debug for cluster 16 window 8:
+OT_label_window: 0.0442524200050124
+Number of more extreme values: 2064
+Imputation: none
+P-value: 0.2064
+Was imputed: FALSE
+
+Checked cluster 16 window 8
+
+Debug for cluster 16 window 9:
+OT_label_window: 0.0086700370186546
+Number of more extreme values: 4174
+Imputation: none
+P-value: 0.4174
+Was imputed: FALSE
+
+Checked cluster 16 window 9
+
+Null distribution summary for cluster 17:
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-0.1663487 -0.0314194 -0.0016060  0.0007922  0.0311987  0.2517629 
+
+
+Debug for cluster 17 window 1:
+OT_label_window: -0.045190620700479
+Number of more extreme values: 8366
+Imputation: none
+P-value: 0.8366
+Was imputed: FALSE
+
+Checked cluster 17 window 1
+
+Debug for cluster 17 window 2:
+OT_label_window: -0.0406871099530051
+Number of more extreme values: 8111
+Imputation: none
+P-value: 0.8111
+Was imputed: FALSE
+
+Checked cluster 17 window 2
+
+Debug for cluster 17 window 3:
+OT_label_window: -0.0031498591726597
+Number of more extreme values: 5121
+Imputation: none
+P-value: 0.5121
+Was imputed: FALSE
+
+Checked cluster 17 window 3
+
+Debug for cluster 17 window 4:
+OT_label_window: -0.00161057006736604
+Number of more extreme values: 5000
+Imputation: none
+P-value: 0.5
+Was imputed: FALSE
+
+Checked cluster 17 window 4
+
+Debug for cluster 17 window 5:
+OT_label_window: 0.0100041906868089
+Number of more extreme values: 4047
+Imputation: none
+P-value: 0.4047
+Was imputed: FALSE
+
+Checked cluster 17 window 5
+
+Debug for cluster 17 window 6:
+OT_label_window: 0.0184925293607112
+Number of more extreme values: 3341
+Imputation: none
+P-value: 0.3341
+Was imputed: FALSE
+
+Checked cluster 17 window 6
+
+Debug for cluster 17 window 7:
+OT_label_window: 0.0173643481012939
+Number of more extreme values: 3432
+Imputation: none
+P-value: 0.3432
+Was imputed: FALSE
+
+Checked cluster 17 window 7
+
+Debug for cluster 17 window 8:
+OT_label_window: 0.00115486558197486
+Number of more extreme values: 4783
+Imputation: none
+P-value: 0.4783
+Was imputed: FALSE
+
+Checked cluster 17 window 8
+
+Debug for cluster 17 window 9:
+OT_label_window: 0.00800929035248515
+Number of more extreme values: 4215
+Imputation: none
+P-value: 0.4215
+Was imputed: FALSE
+
+Checked cluster 17 window 9
