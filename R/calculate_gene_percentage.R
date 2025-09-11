@@ -14,6 +14,6 @@
 #' mito_pct <- calculate_gene_percentage(se, pattern = "^MT-")
 calculate_gene_percentage <- function(se, pattern) {
   genes <- grep(pattern, rownames(se), value = TRUE)
-  (Matrix::colSums(GetAssayData(se, slot = "counts")[genes, ]) /
-      Matrix::colSums(GetAssayData(se, slot = "counts"))) * 100
+  (Matrix::colSums(get_assay_data(se, what = "counts")[genes, ]) /
+      Matrix::colSums(get_assay_data(se, what = "counts"))) * 100
 }

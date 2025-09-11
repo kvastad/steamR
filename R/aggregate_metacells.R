@@ -21,8 +21,8 @@ aggregate_metacells <- function (cell_type_clusters, cluster_col = "cluster_anno
     for (cluster_id in clusters) {
       cluster_cells <- ct_subset[, ct_subset$seurat_clusters == 
         cluster_id]
-      summed_expression <- rowSums(as.matrix(GetAssayData(cluster_cells, assay = "RNA",
-        slot = "counts")))
+      summed_expression <- rowSums(as.matrix(get_assay_data(cluster_cells, assay = "RNA",
+        what = "counts")))
       meta_cell_data[[as.character(cluster_id)]] <- summed_expression
       subclass_label_values <- cluster_cells@meta.data[[cluster_col]]
       most_common_ident <- names(sort(table(subclass_label_values), 
