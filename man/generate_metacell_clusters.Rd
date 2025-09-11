@@ -11,7 +11,8 @@ generate_metacell_clusters(
   num_cells_per_metacell = 10,
   pca_dims = 10,
   initial_resolution = 0.1,
-  verbose = FALSE
+  verbose = FALSE,
+  parallel = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,11 @@ generate_metacell_clusters(
 \item{initial_resolution}{Starting resolution for clustering (default: 0.1). Will be adjusted to reach desired cluster number.}
 
 \item{verbose}{Logical, whether to print Seurat messages (default: \code{FALSE}).}
+
+\item{parallel}{Logical, whether to respect the user's active future plan and allow
+parallel execution. Defaults to \code{FALSE}, which temporarily enforces sequential execution
+for deterministic behavior and to avoid RNG warnings from Seurat internals when a
+global parallel plan is active.}
 }
 \value{
 A list of Seurat objects, each corresponding to a clustered cell type.

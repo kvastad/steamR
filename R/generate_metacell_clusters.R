@@ -10,6 +10,10 @@
 #' @param pca_dims Number of PCA dimensions to use for clustering (default: 10).
 #' @param initial_resolution Starting resolution for clustering (default: 0.1). Will be adjusted to reach desired cluster number.
 #' @param verbose Logical, whether to print Seurat messages (default: `FALSE`).
+#' @param parallel Logical, whether to respect the user's active future plan and allow
+#'   parallel execution. Defaults to `FALSE`, which temporarily enforces sequential execution
+#'   for deterministic behavior and to avoid RNG warnings from Seurat internals when a
+#'   global parallel plan is active.
 #'
 #' @returns A list of Seurat objects, each corresponding to a clustered cell type.
 #' @export
@@ -22,8 +26,14 @@
 #' )
 generate_metacell_clusters <- function(se, cluster_anno = "subclass_label", min_cells_per_type = 50, 
   num_cells_per_metacell = 10, pca_dims = 10, initial_resolution = 0.1, 
-  verbose = FALSE) 
+  verbose = FALSE, parallel = FALSE) 
 {
+  old_plan <- NULL
+  if (!parallel) {
+    old_plan <- future::plan()
+    on.exit({ if (!is.null(old_plan)) future::plan(old_plan) }, add = TRUE)
+    future::plan(future::sequential)
+  }
   label_counts <- table(se@meta.data[[cluster_anno]])
   valid_labels <- names(label_counts[label_counts >= min_cells_per_type])
   removed_labels <- setdiff(names(label_counts), valid_labels)
