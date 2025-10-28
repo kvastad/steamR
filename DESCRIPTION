@@ -1,5 +1,5 @@
-Package: steam
-Title: STEAM is a R package for Spatial Trait Enrichment Analysis with perMutation testing.
+Package: STEAM
+Title: STEAM is a R package for Spatial Trait Enrichment Analysis with perMutation testing
 Version: 0.0.0.9001
 Authors@R: 
     c(
@@ -29,3 +29,4 @@ Imports:
     SeuratObject,
     stats,
     viridis
+VignetteBuilder: knitr

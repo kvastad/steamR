@@ -7,7 +7,7 @@
 #'
 #' @param se A Seurat object containing enrichment scores in the metadata.
 #' @param perm.mat A null distribution permutation matrix of enrichment scores per cluster (global medians). 
-#' The permutation matrix is generated using the generatePermutationMatrix function and must be generated 
+#' The permutation matrix is generated using the generate_permutation_matrix function and must be generated 
 #' from a gene list of equal size as the gene list score given in 'enrichment_score_col'.
 #' @param cluster_anno The column in the Seurat metadata that contains cluster labels (default is "seurat_clusters").
 #' @param clusters_to_plot Optional vector of indices to subset and plot specific clusters only.

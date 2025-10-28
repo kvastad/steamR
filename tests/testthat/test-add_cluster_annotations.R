@@ -1,7 +1,7 @@
 test_that("add_cluster_annotations correctly adds annotations to Seurat object", {
   # Load required packages
   library(Seurat)
-  library(steam)
+  library(STEAM)
   
   #mock Seurat object
   mock_counts <- matrix(

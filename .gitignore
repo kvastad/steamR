@@ -1,4 +1,6 @@
-steam.Rproj
+steamR.Rproj
+data
+vignettes/
 /.Rproj.user/
 inst/*
 vignettes/data/

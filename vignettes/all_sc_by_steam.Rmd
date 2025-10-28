@@ -11,7 +11,7 @@ library(Seurat)
 library(SeuratObject)
 library(dplyr)
 library(tidyverse)
-library(steam)
+library(STEAM)
 library(ggplot2)
 library(viridis)
 ```
@@ -19,16 +19,16 @@ library(viridis)
 
 Load SC se object:
 ```{r}
-# se <- readRDS("data/Seurat_objects/se_allen_brain_atlas_random_250_subclass_label.rds")
+# se <- readRDS("data/single_cell/Seurat_objects/mock_data_single_nuclei_human_brain.rds")
 # se
-# table(se$subclass_label)
+# table(se$supercluster_term)
 ```
 
 
 Collect QC metrics
 ```{r}
-# se[["percent.mt"]] <- PercentageFeatureSet(se, pattern = "^mt-")
-# se[["percent.rb"]] <- PercentageFeatureSet(se, pattern = "^Rpl|^Rps")
+# se[["percent.mt"]] <- PercentageFeatureSet(se, pattern = "^MT-")
+# se[["percent.rb"]] <- PercentageFeatureSet(se, pattern = "^RPL|^RPS")
 ```
 
 Filtering cells
@@ -56,10 +56,10 @@ Filtering genes
 
 Save cluster annotations
 ```{r, eval=FALSE}
-# seurat_clusters <- as.data.frame(se$subclass_label)
+# seurat_clusters <- as.data.frame(se$supercluster_term)
 # seurat_clusters$Barcode <- colnames(se)
-# seurat_clusters$seurat_clusters <- seurat_clusters$`se$subclass_label`
-# seurat_clusters$`se$subclass_label` <- NULL
+# seurat_clusters$seurat_clusters <- seurat_clusters$`se$supercluster_term`
+# seurat_clusters$`se$supercluster_term` <- NULL
 # write.table(seurat_clusters,file="data/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
 ```
 
@@ -75,7 +75,7 @@ Normalize data: se <- SCTransform(se,return.only.var.genes = T) and Save filtere
 Generate metacell clusters
 
 ```{r}
-# clustered_metacells <- generate_metacell_clusters(se, cluster_anno = "subclass_label", verbose = FALSE)
+# clustered_metacells <- generate_metacell_clusters(se, cluster_anno = "supercluster_term", verbose = FALSE)
 ```
 
 Aggregate and save metacell clusters
@@ -94,42 +94,44 @@ Read saved aggregated MetaCell Seurat Object
 
 Save cluster annotations
 ```{r, eval=T}
-# seurat_clusters <- as.data.frame(meta_cell_seurat_all_sum_with_metadata$subclass_label)
+# seurat_clusters <- as.data.frame(meta_cell_seurat_all_sum_with_metadata$supercluster_term)
 # seurat_clusters$Barcode <- colnames(meta_cell_seurat_all_sum_with_metadata)
-# seurat_clusters$seurat_clusters <- seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$subclass_label`
-# seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$subclass_label` <- NULL
+# seurat_clusters$seurat_clusters <- seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$supercluster_term`
+# seurat_clusters$`meta_cell_seurat_all_sum_with_metadata$supercluster_term` <- NULL
 # write.table(seurat_clusters,file="data/Seurat_objects/seurat_clusters.csv", col.names = T, row.names = F,quote = FALSE,sep = ";")
 
-seurat_clusters <- read.table("/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Seurat_objects/seurat_clusters.csv",
-                               header = TRUE,
-                               sep = ";",
-                               stringsAsFactors = FALSE)
+#seurat_clusters <- read.table("data/single_cell/Seurat_objects/seurat_clusters.csv",
+#                               header = TRUE,
+#                               sep = ";",
+#                               stringsAsFactors = FALSE)
 
 ```
 
 
 ```{r, fig.width=35, fig.height=15}
-se <- readRDS("/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Seurat_objects/MetaCell_normalized.RDS")
+se <- readRDS("data/single_cell/Seurat_objects/se_Metacell_normalized.RDS")
 se <- SetIdent(se, value = "supercluster_term")
+se
 ```
 
 Load OpenTargets gene sets and make a list of gene sets
 
 ```{r class.source = 'fold-show'}
 
-OpenTargets_SCZ_Genetic_ <- as.character(t(read.table(file = "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/OpenTargets_gene_sets/Human_OpenTargets_SCZ_Genetic.csv")))
+OpenTargets_SCZ_Genetic_ <- as.character(t(read.table(file = "data/single_cell/OpenTargets_gene_sets/Human_OpenTargets_SCZ_Genetic.csv")))
 length(OpenTargets_SCZ_Genetic_)
 
-OpenTargets_SCZ_Drugs_ <- as.character(t(read.table(file = "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/OpenTargets_gene_sets/Human_OpenTargets_SCZ_Drugs.csv")))
+OpenTargets_SCZ_Drugs_ <- as.character(t(read.table(file = "data/single_cell/OpenTargets_gene_sets/Human_OpenTargets_SCZ_Drugs.csv")))
 length(OpenTargets_SCZ_Drugs_)
+
 all_gene_sets_OpenTargets <- list(OpenTargets_SCZ_Genetic_=OpenTargets_SCZ_Genetic_,OpenTargets_SCZ_Drugs_=OpenTargets_SCZ_Drugs_)
 
 ```
 
 Load window rank lists
 ```{r}
-window50_rank_list_SCZ_Genetic <- readRDS(file = "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/OpenTargets_windowLists/Human_window50_rank_list_SCZ_Genetic.RDS")
-window50_rank_list_SCZ_Drugs <- readRDS(file = "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/OpenTargets_windowLists/Human_window50_rank_list_SCZ_Drugs.RDS")
+window50_rank_list_SCZ_Genetic <- readRDS(file = "data/single_cell/OpenTargets_windowLists/Human_window50_rank_list_SCZ_Genetic.RDS")
+window50_rank_list_SCZ_Drugs <- readRDS(file = "data/single_cell/OpenTargets_windowLists/Human_window50_rank_list_SCZ_Drugs.RDS")
 ```
 
 Merge gene sets
@@ -197,9 +199,9 @@ Load perm.mat
 
 ```{r}
 perm_files <- c(
-  "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Permutation_matrices/perm.mat_p10000_g50.RDS",
-  "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Permutation_matrices/perm.mat_p10000_g1315.RDS",
-  "/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/Permutation_matrices/perm.mat_p10000_g218.RDS"
+  "data/single_cell/Permutation_matrices/perm.mat_p10000_g50.RDS",
+  "data/single_cell/Permutation_matrices/perm.mat_p10000_g1315.RDS",
+  "data/single_cell/Permutation_matrices/perm.mat_p10000_g218.RDS"
 )
 
 perm_matrices <- load_permutation_matrices(perm_files)
@@ -345,7 +347,7 @@ window_results.g <- window_rank_enrichment_analysis(
 rank_plot_for_clusters(
     window_results = window_results.g,
     perm.mat.window = perm.mat.window50.data,
-    ylim = c(-0.3, 0.3),
+    ylim = c(-0.3, 0.9),
     clusters_to_plot = NULL
 )
 ```
@@ -392,7 +394,7 @@ print(imputed_rows)
 rank_plot_for_clusters(
     window_results = window_results_drugs,
     perm.mat.window = perm.mat.window50.data,
-    ylim = c(-0.3, 0.3),
+    ylim = c(-0.3, 0.9),
     clusters_to_plot = NULL
 )
 ```
@@ -407,192 +409,7 @@ plot_score_dist(
 
 ```
 
-# Genetic p-value plot {.tabset}
 
-```{r}
-# Create empty vectors
-se$neg.log10.p.val.g <- NA
-se$neg.log10.p.val.g.adj <- NA
-
-# Loop over clusters and assign values from p.val.mat.g
-for (i in seq_along(clusters)) {
-  se$neg.log10.p.val.g[se$supercluster_term == clusters[i]] <- p.val.mat.g[1, i]
-  se$neg.log10.p.val.g.adj[se$supercluster_term == clusters[i]] <- p.val.mat.g[2, i]
-}
-```
-
-```{r}
-genetic_meta.data <- se@meta.data %>%
-  tibble::rownames_to_column("CellID") %>%
-  dplyr::select(CellID, supercluster_term, neg.log10.p.val.g, neg.log10.p.val.g.adj)
-
-# Convert to numeric (in case of factor/string)
-genetic_meta.data$neg.log10.p.val.g <- as.numeric(genetic_meta.data$neg.log10.p.val.g)
-genetic_meta.data$neg.log10.p.val.g.adj <- as.numeric(genetic_meta.data$neg.log10.p.val.g.adj)
-```
-
-```{r}
-genetic_meta.data <- genetic_meta.data %>%
-  mutate(
-    significance.level = case_when(
-      10^(-neg.log10.p.val.g.adj) < 0.001 ~ "***",
-      10^(-neg.log10.p.val.g.adj) < 0.01  ~ "**",
-      10^(-neg.log10.p.val.g.adj) < 0.05  ~ "*",
-      TRUE ~ ""
-    ),
-    significant = ifelse(10^(-neg.log10.p.val.g.adj) < 0.05, "TRUE", "FALSE"),
-    disease = "SCZ"
-  )
-
-```
-
-```{r, fig.width=20, fig.height=10}
-p <- genetic_meta.data %>%
-  ggplot(aes(x = supercluster_term, y = disease, fill = significant))+
-  geom_tile(colour = "grey20")+
-  scale_fill_manual(values = c("grey75","red"), breaks = c("FALSE", "TRUE"))+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
-        legend.key.width = unit(0.5, "cm"),
-        legend.key.height = unit(0.5, "cm"))+
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 22))+
-  coord_equal()+
-  labs(x = "cell type",
-       fill = "nominal p-value\n significant")
-
-
-p
-```
-
-```{r, fig.width=20, fig.height=10}
-
-#genetic_meta.data$p.val.g <- as.numeric(genetic_meta.data$p.val.g)
-
-p <- genetic_meta.data %>%
-  ggplot(aes(x = supercluster_term, y = disease)) +
-  geom_tile(aes(color = significance.level)) +
-  geom_tile(colour = "grey20", aes(fill = neg.log10.p.val.g)) +
-  geom_text(data = genetic_meta.data %>% filter(significant == TRUE),
-            aes(label = significance.level),
-            vjust = 0.75,
-            size = 5,
-            fontface = "bold") +
-  theme(
-    legend.key.width = unit(0.5, "cm"),
-    legend.key.height = unit(0.5, "cm"),
-    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, face = "bold", size = 10),
-    axis.text.y = element_text(face = "bold", size = 10)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 22)) +
-  coord_equal() +
-  labs(x = "cell type",
-       fill = "nominal p-value\n -log10(p-value)") +
-  scale_fill_viridis_c(begin = 0.2, option = "viridis") +
-  scale_color_manual(values = c("*" = "white", "**" = "white", "***" = "white"),  
-                     labels = c("***" = "***  p < 0.001", "**" = "**  p < 0.01", "*" = "*  p < 0.05"),
-                     guide = guide_legend(override.aes = list(shape = 21,  
-                                                              fill = "white",
-                                                              size = 4)))
-
-p
-
-```
-
-
-# Drugs p-value plot {.tabset}
-
-```{r}
-# Initialize metadata columns
-se$neg.log10.p.val.d <- NA
-se$neg.log10.p.val.d.adj <- NA
-
-# Get ordered cluster labels
-clusters <- names(table(unique(se$supercluster_term)))
-
-# Assign values from p.val.mat.d using a loop
-for (i in seq_along(clusters)) {
-  se$neg.log10.p.val.d[se$supercluster_term == clusters[i]] <- p.val.mat.d[1, i]
-  se$neg.log10.p.val.d.adj[se$supercluster_term == clusters[i]] <- p.val.mat.d[2, i]
-}
-```
-
-```{r}
-drugs_meta.data <- se@meta.data %>%
-  tibble::rownames_to_column("CellID") %>%
-  dplyr::select(CellID, supercluster_term, neg.log10.p.val.d, neg.log10.p.val.d.adj) %>%
-  mutate(
-    neg.log10.p.val.d = as.numeric(neg.log10.p.val.d),
-    neg.log10.p.val.d.adj = as.numeric(neg.log10.p.val.d.adj)
-  )
-
-```
-
-```{r}
-drugs_meta.data <- drugs_meta.data %>%
-  mutate(
-    significance.level = case_when(
-      10^(-neg.log10.p.val.d.adj) < 0.001 ~ "***",
-      10^(-neg.log10.p.val.d.adj) < 0.01  ~ "**",
-      10^(-neg.log10.p.val.d.adj) < 0.05  ~ "*",
-      TRUE ~ ""
-    ),
-    significant = ifelse(10^(-neg.log10.p.val.d.adj) < 0.05, "TRUE", "FALSE"),
-    disease = "SCZ"
-  )
-
-```
-
-```{r, fig.width=20, fig.height=10}
-p <- drugs_meta.data %>%
-  ggplot(aes(x = supercluster_term, y = disease, fill = significant))+
-  geom_tile(colour = "grey20")+
-  scale_fill_manual(values = c("grey75","red"), breaks = c("FALSE", "TRUE"))+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
-        legend.key.width = unit(0.5, "cm"),
-        legend.key.height = unit(0.5, "cm"))+
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 22))+
-  coord_equal()+
-  labs(x = "cell type",
-       fill = "nominal p-value\n significant")
-
-
-p
-```
-
-```{r, fig.width=20, fig.height=10}
-#drugs_meta.data$p.val.d <- as.numeric(drugs_meta.data$p.val.d)
-
-p <- drugs_meta.data %>%
-  ggplot(aes(x = supercluster_term, y = disease)) +
-  geom_tile(aes(color = significance.level)) +
-  geom_tile(colour = "grey20", aes(fill = neg.log10.p.val.d)) +
-  
-  geom_text(data = drugs_meta.data %>% filter(significant == TRUE),
-            aes(label = significance.level),
-            vjust = 0.75,
-            size = 5,
-            fontface = "bold") +
-
-  theme(
-    legend.key.width = unit(0.5, "cm"),
-    legend.key.height = unit(0.5, "cm"),
-    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, face = "bold", size = 10),
-    axis.text.y = element_text(face = "bold", size = 10)
-  ) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 22)) +
-  coord_equal() +
-  labs(x = "cell type",
-       fill = "nominal p-value\n -log10(p-value)") +
-  
-  scale_fill_viridis_c(begin = 0.2, option = "viridis") +
-  
-  scale_color_manual(values = c("*" = "white", "**" = "white", "***" = "white"),  
-                     labels = c("***" = "***  p < 0.001", "**" = "**  p < 0.01", "*" = "*  p < 0.05"),
-                     guide = guide_legend(override.aes = list(
-                       shape = 21,  
-                       fill = "white",
-                       size = 4)))
-p
-
-```
 
 ```{r}
 # DefaultAssay(se) <- "RNA"
@@ -606,7 +423,7 @@ p
 ```
 
 ```{r}
-DEG_genes <- read.csv("/Users/rasools/sdrive/projects/LTS_Lappalainen/nbis_lappalainen_2405/scripts/data/DEG_output/DE_genes.csv", 
+DEG_genes <- read.csv("data/single_cell/DEG_output/DE_genes_human_snRNAseq_Metacells.csv", 
                      stringsAsFactors = FALSE, 
                      sep = ";",
                      header = TRUE)
@@ -616,17 +433,6 @@ DEG_genes <- as.data.frame(DEG_genes)
 N.markers <- DEG_genes
 ```
 
-```{r}
-topN <- N.markers %>% 
-            group_by(cluster) %>% 
-            arrange(cluster,p_val_adj) %>%
-            slice_head(n=10)
-```
-
-```{r}
-DoHeatmap(se, features = topN$gene)
-
-```
 
 ```{r}
 OpenTargets_SCZ_Genetic <- OpenTargets_SCZ_Genetic_[1:290]

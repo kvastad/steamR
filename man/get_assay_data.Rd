@@ -4,13 +4,11 @@
 \alias{get_assay_data}
 \title{Internal helper for Seurat v4/v5 data access}
 \usage{
-get_assay_data(
-  se,
-  assay = SeuratObject::DefaultAssay(se),
-  what = c("counts", "data", "scale.data")
-)
+get_assay_data(se, what = c("counts", "data", "scale.data"))
 }
 \description{
-Uses \code{layer} for SeuratObject >= 5, else \code{slot}.
+Uses \code{layer} for SeuratObject >= 5, else \code{slot}. Always prefers "RNA" if it exists,
+otherwise falls back to "Spatial" (for v5) or the default assay (for v4).
+Prints which assay is being used.
 }
 \keyword{internal}
