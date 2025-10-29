@@ -1,5 +1,6 @@
 steamR.Rproj
 data
+vignettes
 vignettes/
 /.Rproj.user/
 inst/*
