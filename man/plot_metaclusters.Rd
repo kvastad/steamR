@@ -4,27 +4,31 @@
 \alias{plot_metaclusters}
 \title{Plot Cluster Distributions for MetaCells or MetaSpots}
 \usage{
-plot_metaclusters(metaspots)
+plot_metaclusters(metaspots, show_mean = TRUE, show_median = TRUE)
 }
 \arguments{
-\item{metaspots}{A list containing:
+\item{metaspots}{A list with elements:
 \describe{
-\item{cell_types}{Character vector of cell type names.}
+\item{cell_types}{Character or numeric vector of cell type names.}
 \item{metacells}{List of Seurat objects corresponding to each cell type.}
 }}
+
+\item{show_mean}{Logical; whether to display a red dashed line for the mean cluster size. Default is \code{TRUE}.}
+
+\item{show_median}{Logical; whether to display a blue dashed line for the median cluster size. Default is \code{TRUE}.}
 }
 \value{
-Invisible NULL. The function is called for its side effect of plotting
-and printing cluster summaries.
+Invisibly returns \code{NULL}. Generates plots as a side effect.
 }
 \description{
 This function takes a list containing \code{cell_types} and \code{metacells} (Seurat objects)
 and plots histograms of the number of units (cells or spots) per cluster
-for each type. It also prints summary information to the console.
+for each type and optionally adds mean and/or median reference lines.
+It also prints summary information to the console.
 }
 \examples{
 \dontrun{
-plot_metaclusters(sorted_metaspots)
+plot_metaclusters(sorted_metacells, show_mean = TRUE, show_median = FALSE)
 }
 
 }

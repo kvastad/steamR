@@ -4,12 +4,14 @@
 \alias{sort_metacells}
 \title{Sort MetaCells or MetaSpots by Type}
 \usage{
-sort_metacells(se, metacells)
+sort_metacells(se, metacells, cluster_anno = "cluster_anno")
 }
 \arguments{
 \item{se}{A Seurat object containing the \code{cluster_anno} column in its metadata.}
 
 \item{metacells}{A list of Seurat objects corresponding to the clusters in \code{se}.}
+
+\item{cluster_anno}{Character string specifying the metadata column to use for sorting.}
 }
 \value{
 A list with two elements:
