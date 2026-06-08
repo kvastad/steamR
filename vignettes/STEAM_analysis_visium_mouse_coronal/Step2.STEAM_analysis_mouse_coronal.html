@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Step2. STEAM analysis</title>
+
+<script src="Step2.STEAM_analysis_mouse_coronal_files/header-attrs-2.29/header-attrs.js"></script>
+<script src="Step2.STEAM_analysis_mouse_coronal_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="Step2.STEAM_analysis_mouse_coronal_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="Step2.STEAM_analysis_mouse_coronal_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="Step2.STEAM_analysis_mouse_coronal_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="Step2.STEAM_analysis_mouse_coronal_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="Step2.STEAM_analysis_mouse_coronal_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="Step2.STEAM_analysis_mouse_coronal_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="Step2.STEAM_analysis_mouse_coronal_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="Step2.STEAM_analysis_mouse_coronal_files/navigation-1.1/tabsets.js"></script>
+<link href="Step2.STEAM_analysis_mouse_coronal_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="Step2.STEAM_analysis_mouse_coronal_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Step2. STEAM analysis</h1>
+
+</div>
+
+
+<p>In this vignette we use Seurat v5 to create a Seurat object and then
+run STEAM.</p>
+<p>We show how to run STEAM on a Visium mouse coronal brain section from
+10X Genomics, which can be accessed here: <a
+href="https://www.10xgenomics.com/datasets/mouse-brain-section-coronal-1-standard-1-1-0"
+class="uri">https://www.10xgenomics.com/datasets/mouse-brain-section-coronal-1-standard-1-1-0</a>.</p>
+<p>We use ranked gene lists from Open Targets (v.25.06) for Alzheimer’s
+disease, ALZ, (MONDO_0004975).</p>
+<p>Please note that some steps have been pre-run in a separate vignette
+to generate the permutation matrices needed and to only keep genes in
+the gene lists that are present in the Seurat object after QC
+filtering.</p>
+<div id="load-libraries" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Load libraries</h1>
+<p>Load the necessary libraries.</p>
+<pre class="r"><code>library(Seurat)
+library(dplyr)
+library(MASS)
+library(ggplot2)
+library(STEAM)
+library(viridis)</code></pre>
+</div>
+<div id="load-and-filter-data" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Load and filter
+data</h1>
+<p>Load data</p>
+<pre class="r"><code>se &lt;- Load10X_Spatial(
+  data.dir = &quot;data/mouse_coronal/&quot;,
+  filename = &quot;V1_Adult_Mouse_Brain_filtered_feature_bc_matrix.h5&quot;,
+  assay = &quot;Spatial&quot;,
+  slice = &quot;slice1&quot;
+)
+
+se</code></pre>
+<pre><code>## An object of class Seurat 
+## 32285 features across 2702 samples within 1 assay 
+## Active assay: Spatial (32285 features, 0 variable features)
+##  1 layer present: counts
+##  1 spatial field of view present: slice1</code></pre>
+<p>Filter data</p>
+<pre class="r"><code># Get raw count matrix
+counts &lt;- GetAssayData(se, slot = &quot;counts&quot;)
+
+# Apply gene filters
+genes_to_keep &lt;- rownames(counts)[
+  Matrix::rowSums(counts) &gt;= 100 &amp;     # Total UMI count per gene
+  Matrix::rowSums(counts &gt; 0) &gt;= 5     # Expressed in ≥5 spots
+]
+
+# Apply spot (cell) filters
+spots_to_keep &lt;- colnames(counts)[
+  Matrix::colSums(counts) &gt;= 500       # Total UMIs per spot
+]
+
+# Subset the Seurat object with filtered genes and spots
+se &lt;- subset(se, features = genes_to_keep, cells = spots_to_keep)
+se</code></pre>
+<pre><code>## An object of class Seurat 
+## 13763 features across 2702 samples within 1 assay 
+## Active assay: Spatial (13763 features, 0 variable features)
+##  1 layer present: counts
+##  1 spatial field of view present: slice1</code></pre>
+<p>Normalize data with SCTransform.</p>
+<pre class="r"><code>options(future.globals.maxSize = 4 * 1024^3)
+se &lt;- SCTransform(se,assay = &quot;Spatial&quot;,return.only.var.genes = T)
+se</code></pre>
+<p>Save filtered and normalized Seurat object</p>
+<pre class="r"><code>saveRDS(se, file = &quot;data/mouse_coronal/mouse_coronal_filtered_normalized.rds&quot;)</code></pre>
+<p>Load Seurat object</p>
+<pre class="r"><code>se &lt;- readRDS(file = &quot;data/mouse_coronal/mouse_coronal_filtered_normalized.rds&quot;)
+se</code></pre>
+<pre><code>## An object of class Seurat 
+## 27526 features across 2702 samples within 2 assays 
+## Active assay: SCT (13763 features, 3000 variable features)
+##  3 layers present: counts, data, scale.data
+##  1 other assay present: Spatial
+##  1 spatial field of view present: slice1</code></pre>
+<p>Load cluster annotations.</p>
+<pre class="r"><code>seurat_clusters &lt;- read.csv(file = &quot;data/mouse_coronal/seurat_clusters.csv&quot;, sep = &quot;;&quot;)</code></pre>
+<p>Check names, we need to update barcode names to match the Seurat
+object metadata.</p>
+<pre class="r"><code>head(seurat_clusters)</code></pre>
+<pre><code>##                Barcode seurat_clusters
+## 1 CACATAAGGCGACCGT-1_1               7
+## 2 ATACGCCGATCTACCG-1_1               7
+## 3 ACTTATCTGATCTATA-1_1               7
+## 4 GTGTGAGCCGAGGTGC-1_1               7
+## 5 TCTGTGACTGACCGTT-1_1               5
+## 6 CTAGCAACTAATTTAC-1_1               7</code></pre>
+<pre class="r"><code>head(se[[]])</code></pre>
+<pre><code>##                       orig.ident nCount_Spatial nFeature_Spatial nCount_SCT
+## AAACAAGTATCTCCCA-1 SeuratProject          20935             5230      27907
+## AAACAATCTACTAGCA-1 SeuratProject          14789             3646      28923
+## AAACACCAATAACTGC-1 SeuratProject          34646             6272      29847
+## AAACAGAGCGACTCCT-1 SeuratProject          16833             4506      28235
+## AAACCGGGTAGGTACC-1 SeuratProject          33684             5971      29807
+## AAACCGTTCGTCCAGG-1 SeuratProject          32563             6097      29819
+##                    nFeature_SCT
+## AAACAAGTATCTCCCA-1         5206
+## AAACAATCTACTAGCA-1         4128
+## AAACACCAATAACTGC-1         6211
+## AAACAGAGCGACTCCT-1         4647
+## AAACCGGGTAGGTACC-1         5940
+## AAACCGTTCGTCCAGG-1         6051</code></pre>
+<p>Update Barcode names in the Barcode column to match the Seurat object
+metadata.</p>
+<pre class="r"><code>seurat_clusters$Barcode &lt;- sub(&quot;_1$&quot;, &quot;&quot;, seurat_clusters$Barcode)
+head(seurat_clusters)</code></pre>
+<pre><code>##              Barcode seurat_clusters
+## 1 CACATAAGGCGACCGT-1               7
+## 2 ATACGCCGATCTACCG-1               7
+## 3 ACTTATCTGATCTATA-1               7
+## 4 GTGTGAGCCGAGGTGC-1               7
+## 5 TCTGTGACTGACCGTT-1               5
+## 6 CTAGCAACTAATTTAC-1               7</code></pre>
+<p>Add cluster annotations for running STEAM.</p>
+<pre class="r"><code>se &lt;- add_cluster_annotations(se, AnnoDataframe = seurat_clusters, BarcodeName = &quot;Barcode&quot;, AnnoName = &quot;seurat_clusters&quot;)
+
+head(se[[]])</code></pre>
+<pre><code>##                       orig.ident nCount_Spatial nFeature_Spatial nCount_SCT
+## AAACAAGTATCTCCCA-1 SeuratProject          20935             5230      27907
+## AAACAATCTACTAGCA-1 SeuratProject          14789             3646      28923
+## AAACACCAATAACTGC-1 SeuratProject          34646             6272      29847
+## AAACAGAGCGACTCCT-1 SeuratProject          16833             4506      28235
+## AAACCGGGTAGGTACC-1 SeuratProject          33684             5971      29807
+## AAACCGTTCGTCCAGG-1 SeuratProject          32563             6097      29819
+##                    nFeature_SCT cluster_anno
+## AAACAAGTATCTCCCA-1         5206            1
+## AAACAATCTACTAGCA-1         4128            7
+## AAACACCAATAACTGC-1         6211            4
+## AAACAGAGCGACTCCT-1         4647            7
+## AAACCGGGTAGGTACC-1         5940           10
+## AAACCGTTCGTCCAGG-1         6051            4</code></pre>
+<p>Visually inspect that the cluster look correctly added.</p>
+<pre class="r"><code>SpatialDimPlot(se,group.by = &quot;cluster_anno&quot;)</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-11-1.png" width="480" /></p>
+<p>Load ranked gene lists (here from Open Targets). Please note that it
+is essential for downstream analysis that the gene lists are ranked from
+this point forward to do empirical selection of top genetic genes.</p>
+<pre class="r fold-show"><code>OpenTargets_ALZ_Genetic_ &lt;- as.character(t(read.table(file = &quot;data/OpenTargets/ranked_gene_sets/OT-MONDO_0004975-associated-targets-8_25_2025-v25_06_ALZ_genetic_mouse.csv&quot;)))
+length(OpenTargets_ALZ_Genetic_)</code></pre>
+<pre><code>## [1] 819</code></pre>
+</div>
+<div id="prepare-data-for-steam-analysis" class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> Prepare data for STEAM
+analysis</h1>
+<p>Filter out genes not present in the Seurat object.</p>
+<pre class="r"><code># Extract gene names from the Seurat object
+gene_names &lt;- rownames(se)
+length(gene_names)</code></pre>
+<pre><code>## [1] 13763</code></pre>
+<pre class="r"><code># Check gene list size before filtering
+length(OpenTargets_ALZ_Genetic_)</code></pre>
+<pre><code>## [1] 819</code></pre>
+<pre class="r"><code># Remove genes not present in the Seurat object from the gene lists
+OpenTargets_ALZ_Genetic_ &lt;- unique(OpenTargets_ALZ_Genetic_[OpenTargets_ALZ_Genetic_ %in% gene_names])
+
+# Check gene list size after filtering
+length(OpenTargets_ALZ_Genetic_)</code></pre>
+<pre><code>## [1] 609</code></pre>
+<p>Generate sliding window gene sets from gene lists. Select your choice
+of trait abbreviation (disease_abbr) and a gene list descriptive term
+(ot_gene_set_label). We select a window size of 50 genes, moving by 10
+genes for each window.</p>
+<pre class="r"><code>window_rank_list_ALZ_Genetic &lt;- generate_sliding_windows(OpenTargets_ALZ_Genetic_, window_size = 50, step_size = 10, disease_abbr = &quot;ALZ&quot;, ot_gene_set_label = &quot;Genetic&quot;)</code></pre>
+<p>Add gene sets to a list.</p>
+<pre class="r"><code>all_gene_sets_OpenTargets &lt;- list(OpenTargets_ALZ_Genetic_=OpenTargets_ALZ_Genetic_)</code></pre>
+<p>Merge all gene sets into one list.</p>
+<pre class="r"><code>all_gene_sets &lt;- all_gene_sets_OpenTargets
+all_gene_sets &lt;- append(all_gene_sets,window_rank_list_ALZ_Genetic)</code></pre>
+<p>Calculate the average gene expression per gene list and check the
+percentage of genes present in the Seurat object. It is important that
+all genes used are present in the Seurat object, otherwise the
+downstream statistic assumptions will be invalid.</p>
+<pre class="r"><code>score.mat &lt;- matrix(data = NA, nrow = length(all_gene_sets), ncol = 1, dimnames = list(names(all_gene_sets), &quot;% of genes present&quot;))
+
+for (i in 1:length(all_gene_sets)) {
+  genes &lt;- unlist(all_gene_sets[i]) 
+  score.mat[i] &lt;- mean(genes %in% rownames(se))
+  se &lt;- AddModuleScore(se,list(genes), ctrl = 100, name = list(names(all_gene_sets[i])))
+}
+
+score.mat*100</code></pre>
+<pre><code>##                          % of genes present
+## OpenTargets_ALZ_Genetic_                100
+## ALZ_Genetic_Rank1_                      100
+## ALZ_Genetic_Rank2_                      100
+## ALZ_Genetic_Rank3_                      100
+## ALZ_Genetic_Rank4_                      100
+## ALZ_Genetic_Rank5_                      100
+## ALZ_Genetic_Rank6_                      100
+## ALZ_Genetic_Rank7_                      100
+## ALZ_Genetic_Rank8_                      100
+## ALZ_Genetic_Rank9_                      100
+## ALZ_Genetic_Rank10_                     100
+## ALZ_Genetic_Rank11_                     100
+## ALZ_Genetic_Rank12_                     100
+## ALZ_Genetic_Rank13_                     100
+## ALZ_Genetic_Rank14_                     100
+## ALZ_Genetic_Rank15_                     100
+## ALZ_Genetic_Rank16_                     100
+## ALZ_Genetic_Rank17_                     100
+## ALZ_Genetic_Rank18_                     100
+## ALZ_Genetic_Rank19_                     100
+## ALZ_Genetic_Rank20_                     100
+## ALZ_Genetic_Rank21_                     100
+## ALZ_Genetic_Rank22_                     100
+## ALZ_Genetic_Rank23_                     100
+## ALZ_Genetic_Rank24_                     100
+## ALZ_Genetic_Rank25_                     100
+## ALZ_Genetic_Rank26_                     100
+## ALZ_Genetic_Rank27_                     100
+## ALZ_Genetic_Rank28_                     100
+## ALZ_Genetic_Rank29_                     100
+## ALZ_Genetic_Rank30_                     100
+## ALZ_Genetic_Rank31_                     100
+## ALZ_Genetic_Rank32_                     100
+## ALZ_Genetic_Rank33_                     100
+## ALZ_Genetic_Rank34_                     100
+## ALZ_Genetic_Rank35_                     100
+## ALZ_Genetic_Rank36_                     100
+## ALZ_Genetic_Rank37_                     100
+## ALZ_Genetic_Rank38_                     100
+## ALZ_Genetic_Rank39_                     100
+## ALZ_Genetic_Rank40_                     100
+## ALZ_Genetic_Rank41_                     100
+## ALZ_Genetic_Rank42_                     100
+## ALZ_Genetic_Rank43_                     100
+## ALZ_Genetic_Rank44_                     100
+## ALZ_Genetic_Rank45_                     100
+## ALZ_Genetic_Rank46_                     100
+## ALZ_Genetic_Rank47_                     100
+## ALZ_Genetic_Rank48_                     100
+## ALZ_Genetic_Rank49_                     100
+## ALZ_Genetic_Rank50_                     100
+## ALZ_Genetic_Rank51_                     100
+## ALZ_Genetic_Rank52_                     100
+## ALZ_Genetic_Rank53_                     100
+## ALZ_Genetic_Rank54_                     100
+## ALZ_Genetic_Rank55_                     100
+## ALZ_Genetic_Rank56_                     100</code></pre>
+<p>Load permutation matrices for your selected window size and genetic
+gene list (see separate vignette on how to generate these). OBS! Make
+sure that you create the Seurat object in the same way (package and
+filtering) when generating permutation matrices as when you run
+STEAM.</p>
+<pre class="r"><code>perm_files &lt;- c(
+  &quot;data/mouse_coronal/permutation_matrices/perm.mat.par_p10000_g50.RDS&quot;,
+  &quot;data/mouse_coronal/permutation_matrices/perm.mat.par_p10000_g609.RDS&quot;
+)
+
+perm_matrices &lt;- load_permutation_matrices(perm_files)
+perm.mat.window.data &lt;- as.data.frame(perm_matrices[[1]])
+perm.mat.genetic.data &lt;- as.data.frame(perm_matrices[[2]])
+
+perm.mat.window.data[1:5,1:5]</code></pre>
+<pre><code>##                    0            1             2           3            4
+## Perm_nr1 -0.01515526 -0.020812577  0.0003181516 -0.04083034 -0.027737094
+## Perm_nr2  0.01634719  0.040452079  0.0226238392  0.03145037  0.007901796
+## Perm_nr3  0.04024574  0.030903241  0.0168719370  0.03060976  0.028525209
+## Perm_nr4 -0.01097678  0.001129471 -0.0126706373 -0.01033242 -0.028753922
+## Perm_nr5 -0.01582967 -0.001925023 -0.0267549210 -0.01775468 -0.011249735</code></pre>
+<pre class="r"><code>perm.mat.genetic.data[1:5,1:5]</code></pre>
+<pre><code>##                     0             1            2             3            4
+## Perm_nr1 -0.009483702 -0.0002963690  0.005120739 -0.0165775071 -0.013356341
+## Perm_nr2  0.003146505  0.0005536816  0.012361316  0.0034727758  0.002899310
+## Perm_nr3  0.001673843 -0.0002913880 -0.003374181 -0.0001489689  0.001516430
+## Perm_nr4  0.022667517  0.0220850232  0.017053487  0.0313442975  0.025703395
+## Perm_nr5 -0.012064004 -0.0070631346 -0.007760126 -0.0099291472 -0.009718403</code></pre>
+<p>If needed, update cluster names in the permutation matrices to match
+metadata in Seurat object (needed for downstream analysis). For STEAM
+generated permutation matrices with the generate_permutation_matrix
+function this should not be needed.</p>
+<pre class="r"><code>#Example code on how to update cluster names if needed
+cluster_names &lt;- rep(&quot;&quot;, length(table(se$cluster_anno)))
+cluster_names &lt;- paste0(cluster_names,as.character(0:(length(table(se$cluster_anno))-1)))
+
+colnames(perm.mat.window.data) &lt;- cluster_names
+colnames(perm.mat.genetic.data) &lt;- cluster_names
+
+perm.mat.window.data[1:5,1:5]
+perm.mat.genetic.data[1:5,1:5]</code></pre>
+</div>
+<div id="enrichment-of-all-genetic-genes" class="section level1"
+number="4">
+<h1><span class="header-section-number">4</span> Enrichment of all
+genetic genes</h1>
+<p>Run spatial_trait_enrichment_analysis, and write output to a log file
+for cases where imputation was needed to calculate a p-value.</p>
+<pre class="r"><code>pval_mat.g &lt;- spatial_trait_enrichment_analysis(
+   se = se,
+   perm.mat.label.data = perm.mat.genetic.data,
+   perm.mat.window.data = perm.mat.window.data,
+   window_rank_list_abr_label = window_rank_list_ALZ_Genetic,
+   gene_list = &quot;OpenTargets_ALZ_Genetic_1&quot;,
+   cluster_anno = &quot;cluster_anno&quot;,
+   imputation = &quot;dynamic&quot;#,
+   #log_file = &quot;data/mouse_coronal/log_files/log_file_pval_mat_genetic_all.txt&quot;
+ )
+
+head(pval_mat.g)</code></pre>
+<pre><code>## $p_val_mat
+##       cluster_0 cluster_1 cluster_2 cluster_3 cluster_4 cluster_5 cluster_6
+## p.val    0.1882    0.0345    0.2581    0.1025    0.2102    0.0606      0.09
+##       cluster_7 cluster_8 cluster_9 cluster_10 cluster_11 cluster_12 cluster_13
+## p.val    0.0236    0.0525     0.036     0.1002     0.0274     0.1405     0.0343
+##       cluster_14 cluster_15 cluster_16 cluster_17 cluster_18
+## p.val     0.0975     0.1276     0.1392      0.313     0.0889
+## 
+## $impute
+##         cluster_0 cluster_1 cluster_2 cluster_3 cluster_4 cluster_5 cluster_6
+## imputed     FALSE     FALSE     FALSE     FALSE     FALSE     FALSE     FALSE
+##         cluster_7 cluster_8 cluster_9 cluster_10 cluster_11 cluster_12
+## imputed     FALSE     FALSE     FALSE      FALSE      FALSE      FALSE
+##         cluster_13 cluster_14 cluster_15 cluster_16 cluster_17 cluster_18
+## imputed      FALSE      FALSE      FALSE      FALSE      FALSE      FALSE
+## 
+## $imputation_details
+##               cluster p_value was_imputed imputation_type
+## cluster_0   cluster_0  0.1882       FALSE            none
+## cluster_1   cluster_1  0.0345       FALSE            none
+## cluster_2   cluster_2  0.2581       FALSE            none
+## cluster_3   cluster_3  0.1025       FALSE            none
+## cluster_4   cluster_4  0.2102       FALSE            none
+## cluster_5   cluster_5  0.0606       FALSE            none
+## cluster_6   cluster_6  0.0900       FALSE            none
+## cluster_7   cluster_7  0.0236       FALSE            none
+## cluster_8   cluster_8  0.0525       FALSE            none
+## cluster_9   cluster_9  0.0360       FALSE            none
+## cluster_10 cluster_10  0.1002       FALSE            none
+## cluster_11 cluster_11  0.0274       FALSE            none
+## cluster_12 cluster_12  0.1405       FALSE            none
+## cluster_13 cluster_13  0.0343       FALSE            none
+## cluster_14 cluster_14  0.0975       FALSE            none
+## cluster_15 cluster_15  0.1276       FALSE            none
+## cluster_16 cluster_16  0.1392       FALSE            none
+## cluster_17 cluster_17  0.3130       FALSE            none
+## cluster_18 cluster_18  0.0889       FALSE            none</code></pre>
+<p>Apply multiple testing correction per cluster.</p>
+<pre class="r"><code>pval_mat.g &lt;- as.data.frame(t(pval_mat.g$p_val_mat))
+pval_mat.g$p.val.adj &lt;- p.adjust(pval_mat.g$p.val, method = &quot;bonferroni&quot;)
+pval_mat.g &lt;- t(pval_mat.g)
+
+head(pval_mat.g)</code></pre>
+<pre><code>##           cluster_0 cluster_1 cluster_2 cluster_3 cluster_4 cluster_5 cluster_6
+## p.val        0.1882    0.0345    0.2581    0.1025    0.2102    0.0606      0.09
+## p.val.adj    1.0000    0.6555    1.0000    1.0000    1.0000    1.0000      1.00
+##           cluster_7 cluster_8 cluster_9 cluster_10 cluster_11 cluster_12
+## p.val        0.0236    0.0525     0.036     0.1002     0.0274     0.1405
+## p.val.adj    0.4484    0.9975     0.684     1.0000     0.5206     1.0000
+##           cluster_13 cluster_14 cluster_15 cluster_16 cluster_17 cluster_18
+## p.val         0.0343     0.0975     0.1276     0.1392      0.313     0.0889
+## p.val.adj     0.6517     1.0000     1.0000     1.0000      1.000     1.0000</code></pre>
+<p>Add p-values to the Seurat object metadata.</p>
+<pre class="r"><code>se$cluster_anno &lt;- as.numeric(as.character(se$cluster_anno))
+se$p.val.g &lt;- se$cluster_anno
+se$p.val.adj.g &lt;- se$cluster_anno
+
+clusters &lt;- sort(unique(se$cluster_anno))
+
+for (i in clusters) {
+  idx &lt;- as.integer(i) + 1
+  se$p.val.g[se$cluster_anno == i] &lt;- as.numeric(pval_mat.g[1, idx])
+  se$p.val.adj.g[se$cluster_anno == i] &lt;- as.numeric(pval_mat.g[2, idx])
+}</code></pre>
+<p>Add -log10(p-values) to the Seurat object metadata, used for
+plotting.</p>
+<pre class="r"><code>se$cluster_anno &lt;- as.numeric(as.character(se$cluster_anno))
+se$neg.log10.p.val.g &lt;- se$cluster_anno
+se$neg.log10.p.val.adj.g &lt;- se$cluster_anno
+
+clusters &lt;- sort(unique(se$cluster_anno))
+
+for (i in clusters) {
+  idx &lt;- as.integer(i) + 1
+  se$neg.log10.p.val.g[se$cluster_anno == i] &lt;- -log10(as.numeric(pval_mat.g[1, idx]))
+  se$neg.log10.p.val.adj.g[se$cluster_anno == i] &lt;- -log10(as.numeric(pval_mat.g[2, idx]))
+}</code></pre>
+<p>Plot spatial -log10(p-values).</p>
+<pre class="r"><code>SpatialFeaturePlot(
+  object = se,
+  features = &quot;neg.log10.p.val.adj.g&quot;,
+  pt.size.factor = 2
+) + scale_fill_viridis_c()</code></pre>
+<pre><code>## Scale for fill is already present.
+## Adding another scale for fill, which will replace the existing scale.</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-24-1.png" width="480" /></p>
+<pre class="r"><code>SpatialFeaturePlot(
+  object = se,
+  features = &quot;neg.log10.p.val.adj.g&quot;,
+  pt.size.factor = 2,
+  image.alpha = 0   # hide the HE image
+) + scale_fill_viridis_c()</code></pre>
+<pre><code>## Scale for fill is already present.
+## Adding another scale for fill, which will replace the existing scale.</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-24-2.png" width="480" /></p>
+</div>
+<div id="empirical-selection-of-top-genetic-genes"
+class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Empirical selection of
+top genetic genes</h1>
+<p>Derive an empirical threshold for top genes of a ranked gene list by
+comparing the ranked window gene set signal to a null gene set of equal
+size.</p>
+<pre class="r"><code> window_results.g &lt;- window_rank_enrichment_analysis(
+   se = se,
+   perm.mat.window.data = perm.mat.window.data,
+   window_rank_list = window_rank_list_ALZ_Genetic,
+   ot_gene_set_label = &quot;Genetic&quot;,
+   disease_abbr = &quot;ALZ&quot;,
+   cluster_anno = &quot;cluster_anno&quot;,
+   imputation = &quot;dynamic&quot;#,
+   #log_file = &quot;data/mouse_coronal/log_files/log_file_pval_mat_genetic_windows.txt&quot;
+ )
+
+head(window_results.g)</code></pre>
+<pre><code>##                               cluster window median_score p_value         q05
+## ALZ_Genetic_cluster_0_Rank1 cluster_0      1   0.13915300  0.0028 -0.05122674
+## ALZ_Genetic_cluster_0_Rank2 cluster_0      2   0.05365509  0.0845 -0.05122674
+## ALZ_Genetic_cluster_0_Rank3 cluster_0      3   0.05169925  0.0900 -0.05122674
+## ALZ_Genetic_cluster_0_Rank4 cluster_0      4   0.02297755  0.2299 -0.05122674
+## ALZ_Genetic_cluster_0_Rank5 cluster_0      5   0.00152499  0.4462 -0.05122674
+## ALZ_Genetic_cluster_0_Rank6 cluster_0      6  -0.05285478  0.9569 -0.05122674
+##                                    q95 is_significant was_imputed
+## ALZ_Genetic_cluster_0_Rank1 0.06849044           TRUE       FALSE
+## ALZ_Genetic_cluster_0_Rank2 0.06849044          FALSE       FALSE
+## ALZ_Genetic_cluster_0_Rank3 0.06849044          FALSE       FALSE
+## ALZ_Genetic_cluster_0_Rank4 0.06849044          FALSE       FALSE
+## ALZ_Genetic_cluster_0_Rank5 0.06849044          FALSE       FALSE
+## ALZ_Genetic_cluster_0_Rank6 0.06849044           TRUE       FALSE
+##                             imputation_type
+## ALZ_Genetic_cluster_0_Rank1            none
+## ALZ_Genetic_cluster_0_Rank2            none
+## ALZ_Genetic_cluster_0_Rank3            none
+## ALZ_Genetic_cluster_0_Rank4            none
+## ALZ_Genetic_cluster_0_Rank5            none
+## ALZ_Genetic_cluster_0_Rank6            none</code></pre>
+<p>Plot median scores for each window in each cluster. Use these to
+identify sets of top genes. The lines represent the null distribution
+where, blue line = median, bright red = 95-quantile, dark red = max
+value. Here we see that for several clusters the top windows are above
+the 95-quantile, and we know the window size is 50 and moves by 10. We
+select the top 90 genes in this list to be our top set of genes.</p>
+<pre class="r"><code> rank_plot_for_clusters(
+   window_results = window_results.g,
+   perm.mat.window = perm.mat.window.data,
+   ylim = c(-0.3, 0.3)
+ )</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-1.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-2.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-3.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-4.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-5.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-6.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-7.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-8.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-9.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-10.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-11.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-12.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-13.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-14.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-15.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-16.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-17.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-18.png" width="672" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-26-19.png" width="672" /></p>
+<p>Plot the average gene expression for the selected list of ranked
+window gene sets.</p>
+<pre class="r"><code>feature_plot_for_ranks(se = se,
+                     window_rank_list = window_rank_list_ALZ_Genetic,
+                     ot_gene_set_label = &quot;Genetic&quot;,
+                     disease_abbr = &quot;ALZ&quot;,
+                     ranks_per_plot = 8,
+                     spot_alpha = 1, 
+                     point_size = 2,
+                     all_clusters = TRUE,
+                     cluster_anno = &quot;cluster_anno&quot;)</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-27-1.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-27-2.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-27-3.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-27-4.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-27-5.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-27-6.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-27-7.png" width="1440" /></p>
+<p>You can also select to only plot one cluster at a time.</p>
+<pre class="r"><code>feature_plot_for_ranks(se = se,
+                     window_rank_list = window_rank_list_ALZ_Genetic,
+                     ot_gene_set_label = &quot;Genetic&quot;,
+                     disease_abbr = &quot;ALZ&quot;,
+                     ranks_per_plot = 8,
+                     spot_alpha = 1, 
+                     point_size = 4,
+                     all_clusters = FALSE,
+                     cluster_anno = &quot;cluster_anno&quot;,
+                     cluster_number = 3,
+                     seurat_type = &quot;seurat&quot;)</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-28-1.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-28-2.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-28-3.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-28-4.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-28-5.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-28-6.png" width="1440" /><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-28-7.png" width="1440" /></p>
+<p>We can used the SpatialFeaturePlot function to plot the average gene
+expression for the top ranked window gene sets from the genetic
+list.</p>
+<pre class="r"><code>SpatialFeaturePlot(object = se, features = &quot;ALZ_Genetic_Rank1_1&quot;, pt.size.factor = 1.5)</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-29-1.png" width="480" /></p>
+</div>
+<div id="enrichment-of-top-genetic-genes" class="section level1"
+number="6">
+<h1><span class="header-section-number">6</span> Enrichment of top
+genetic genes</h1>
+<p>Subset to select the top ranked 90 genes.</p>
+<pre class="r"><code>OpenTargets_ALZ_Genetic_topGenes_ &lt;- OpenTargets_ALZ_Genetic_[1:90]</code></pre>
+<p>Add the top gene set to a list.</p>
+<pre class="r"><code>all_gene_sets_OpenTargets_top &lt;- list(OpenTargets_ALZ_Genetic_topGenes_=OpenTargets_ALZ_Genetic_topGenes_)</code></pre>
+<p>Calculate the average gene expression in the top gene list and check
+the percentage of genes present in the Seurat object. It is important
+that all genes used are present in the Seurat object, otherwise the
+downstream statistic assumptions will be invalid.</p>
+<pre class="r"><code>score.mat.top &lt;- matrix(data = NA, nrow = length(all_gene_sets_OpenTargets_top), ncol = 1, dimnames = list(names(all_gene_sets_OpenTargets_top), &quot;% of genes present&quot;))
+
+for (i in 1:length(all_gene_sets_OpenTargets_top)) {
+  genes &lt;- unlist(all_gene_sets_OpenTargets_top[i]) 
+  score.mat.top[i] &lt;- mean(genes %in% rownames(se))
+  se &lt;- AddModuleScore(se,list(genes), ctrl = 100, name = list(names(all_gene_sets_OpenTargets_top[i])))
+}
+
+score.mat.top*100</code></pre>
+<pre><code>##                                   % of genes present
+## OpenTargets_ALZ_Genetic_topGenes_                100</code></pre>
+<p>Load permutation matrix for your selected set of top genes to be
+investigated.</p>
+<pre class="r"><code>perm_files &lt;- c(
+  &quot;data/mouse_coronal/permutation_matrices/perm.mat.par_p10000_g90.RDS&quot;
+)
+
+perm_matrices &lt;- load_permutation_matrices(perm_files)
+perm.mat.genetic.top.data &lt;- as.data.frame(perm_matrices[[1]])
+
+perm.mat.genetic.top.data[1:5,1:5]</code></pre>
+<pre><code>##                    0           1            2            3            4
+## Perm_nr1 -0.06188064 -0.04293348 -0.020034084 -0.045471432 -0.058316113
+## Perm_nr2  0.01151826  0.02233934  0.006329548  0.011486453  0.013530573
+## Perm_nr3  0.04555783  0.03466215  0.024550687  0.048919732  0.035806599
+## Perm_nr4 -0.02600438 -0.00354960 -0.032693031  0.003720201 -0.027277350
+## Perm_nr5 -0.01582942 -0.02640374 -0.020599500 -0.021586602 -0.006980624</code></pre>
+<p>If needed, update cluster names in the permutation matrix to match
+metadata in Seurat object (needed for downstream analysis). For STEAM
+generated permutation matrices with the generate_permutation_matrix
+function this should not be needed.</p>
+<pre class="r"><code>#Example code on how to update cluster names if needed
+cluster_names &lt;- rep(&quot;&quot;, length(table(se$cluster_anno)))
+cluster_names &lt;- paste0(cluster_names,as.character(0:(length(table(se$cluster_anno))-1)))
+
+colnames(perm.mat.genetic.top.data) &lt;- cluster_names
+
+perm.mat.genetic.top.data[1:5,1:5]</code></pre>
+<p>Run spatial_trait_enrichment_analysis, and write output to a log file
+for cases where imputation was needed to calculate a p-value.</p>
+<pre class="r"><code>pval_mat.top &lt;- spatial_trait_enrichment_analysis(
+   se = se,
+   perm.mat.label.data = perm.mat.genetic.top.data,
+   perm.mat.window.data = perm.mat.window.data,
+   window_rank_list_abr_label = window_rank_list_ALZ_Genetic,
+   gene_list = &quot;OpenTargets_ALZ_Genetic_topGenes_1&quot;,
+   cluster_anno = &quot;cluster_anno&quot;,
+   imputation = &quot;dynamic&quot;#,
+   #log_file = &quot;data/mouse_coronal/log_files/log_file_pval_mat_genetic_top.txt&quot;
+ )
+
+head(pval_mat.top)</code></pre>
+<pre><code>## $p_val_mat
+##       cluster_0 cluster_1 cluster_2 cluster_3 cluster_4 cluster_5 cluster_6
+## p.val    0.0428    0.0012    0.0025    0.0019     0.009    0.0092    0.0024
+##       cluster_7 cluster_8 cluster_9 cluster_10 cluster_11 cluster_12 cluster_13
+## p.val    0.0021    0.0134    0.0035      0.007      0.003     0.1138      0.006
+##       cluster_14 cluster_15 cluster_16 cluster_17 cluster_18
+## p.val      6e-04     0.0633     0.0183     0.0217     0.0849
+## 
+## $impute
+##         cluster_0 cluster_1 cluster_2 cluster_3 cluster_4 cluster_5 cluster_6
+## imputed     FALSE     FALSE     FALSE     FALSE     FALSE     FALSE     FALSE
+##         cluster_7 cluster_8 cluster_9 cluster_10 cluster_11 cluster_12
+## imputed     FALSE     FALSE     FALSE      FALSE      FALSE      FALSE
+##         cluster_13 cluster_14 cluster_15 cluster_16 cluster_17 cluster_18
+## imputed      FALSE      FALSE      FALSE      FALSE      FALSE      FALSE
+## 
+## $imputation_details
+##               cluster p_value was_imputed imputation_type
+## cluster_0   cluster_0  0.0428       FALSE            none
+## cluster_1   cluster_1  0.0012       FALSE            none
+## cluster_2   cluster_2  0.0025       FALSE            none
+## cluster_3   cluster_3  0.0019       FALSE            none
+## cluster_4   cluster_4  0.0090       FALSE            none
+## cluster_5   cluster_5  0.0092       FALSE            none
+## cluster_6   cluster_6  0.0024       FALSE            none
+## cluster_7   cluster_7  0.0021       FALSE            none
+## cluster_8   cluster_8  0.0134       FALSE            none
+## cluster_9   cluster_9  0.0035       FALSE            none
+## cluster_10 cluster_10  0.0070       FALSE            none
+## cluster_11 cluster_11  0.0030       FALSE            none
+## cluster_12 cluster_12  0.1138       FALSE            none
+## cluster_13 cluster_13  0.0060       FALSE            none
+## cluster_14 cluster_14  0.0006       FALSE            none
+## cluster_15 cluster_15  0.0633       FALSE            none
+## cluster_16 cluster_16  0.0183       FALSE            none
+## cluster_17 cluster_17  0.0217       FALSE            none
+## cluster_18 cluster_18  0.0849       FALSE            none</code></pre>
+<p>Apply multiple testing correction.</p>
+<pre class="r"><code>pval_mat.top &lt;- as.data.frame(t(pval_mat.top$p_val_mat))
+pval_mat.top$p.val.adj &lt;- p.adjust(pval_mat.top$p.val, method = &quot;bonferroni&quot;)
+pval_mat.top &lt;- t(pval_mat.top)
+
+head(pval_mat.top)</code></pre>
+<pre><code>##           cluster_0 cluster_1 cluster_2 cluster_3 cluster_4 cluster_5 cluster_6
+## p.val        0.0428    0.0012    0.0025    0.0019     0.009    0.0092    0.0024
+## p.val.adj    0.8132    0.0228    0.0475    0.0361     0.171    0.1748    0.0456
+##           cluster_7 cluster_8 cluster_9 cluster_10 cluster_11 cluster_12
+## p.val        0.0021    0.0134    0.0035      0.007      0.003     0.1138
+## p.val.adj    0.0399    0.2546    0.0665      0.133      0.057     1.0000
+##           cluster_13 cluster_14 cluster_15 cluster_16 cluster_17 cluster_18
+## p.val          0.006     0.0006     0.0633     0.0183     0.0217     0.0849
+## p.val.adj      0.114     0.0114     1.0000     0.3477     0.4123     1.0000</code></pre>
+<p>Add p-values to Seurat metadata.</p>
+<pre class="r"><code>se$cluster_anno &lt;- as.numeric(as.character(se$cluster_anno))
+se$p.val.g.top &lt;- se$cluster_anno
+se$p.val.adj.g.top &lt;- se$cluster_anno
+
+clusters &lt;- sort(unique(se$cluster_anno))
+
+for (i in clusters) {
+  idx &lt;- as.integer(i) + 1
+  se$p.val.g.top[se$cluster_anno == i] &lt;- as.numeric(pval_mat.top[1, idx])
+  se$p.val.adj.g.top[se$cluster_anno == i] &lt;- as.numeric(pval_mat.top[2, idx])
+}</code></pre>
+<p>Add -log10(p-values) to Seurat metadata.</p>
+<pre class="r"><code>se$cluster_anno &lt;- as.numeric(as.character(se$cluster_anno))
+se$neg.log10.p.val.g.top &lt;- se$cluster_anno
+se$neg.log10.p.val.adj.g.top &lt;- se$cluster_anno
+
+clusters &lt;- sort(unique(se$cluster_anno))
+
+for (i in clusters) {
+  idx &lt;- as.integer(i) + 1
+  se$neg.log10.p.val.g.top[se$cluster_anno == i] &lt;- -log10(as.numeric(pval_mat.top[1, idx]))
+  se$neg.log10.p.val.adj.g.top[se$cluster_anno == i] &lt;- -log10(as.numeric(pval_mat.top[2, idx]))
+}</code></pre>
+<p>Plot spatial -log10(p-values).</p>
+<pre class="r"><code>SpatialFeaturePlot(
+  object = se,
+  features = &quot;neg.log10.p.val.adj.g.top&quot;,
+  pt.size.factor = 2
+) + scale_fill_viridis_c()</code></pre>
+<pre><code>## Scale for fill is already present.
+## Adding another scale for fill, which will replace the existing scale.</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-39-1.png" width="480" /></p>
+<pre class="r"><code>SpatialFeaturePlot(
+  object = se,
+  features = &quot;neg.log10.p.val.adj.g.top&quot;,
+  pt.size.factor = 2,
+  image.alpha = 0   # hide the HE image
+) + scale_fill_viridis_c()</code></pre>
+<pre><code>## Scale for fill is already present.
+## Adding another scale for fill, which will replace the existing scale.</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-39-2.png" width="480" /></p>
+<p>Generates density plots of null distribution scores for each cluster
+and marks the gene list median score as a vertical line.</p>
+<pre class="r"><code>plot_score_dist(
+   se = se,
+   perm.mat = perm.mat.genetic.top.data, 
+   cluster_anno = &quot;cluster_anno&quot;,
+   clusters_to_plot = 1:19,
+   enrichment_score_col = &quot;OpenTargets_ALZ_Genetic_topGenes_1&quot;
+ )</code></pre>
+<pre><code>## 
+## Processing cluster: 0</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 1</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-2.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 2</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-3.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 3</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-4.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 4</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-5.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 5</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-6.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 6</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-7.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 7</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-8.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 8</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-9.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 9</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-10.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 10</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-11.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 11</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-12.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 12</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-13.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 13</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-14.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 14</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-15.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 15</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-16.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 16</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-17.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 17</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-18.png" width="672" /></p>
+<pre><code>## 
+## Processing cluster: 18</code></pre>
+<p><img src="Step2.STEAM_analysis_mouse_coronal_files/figure-html/unnamed-chunk-40-19.png" width="672" /></p>
+<details>
+<summary>
+Click to show Session Info
+</summary>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 4.5.0 (2025-04-11)
+## Platform: aarch64-apple-darwin20
+## Running under: macOS Sequoia 15.6
+## 
+## Matrix products: default
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## time zone: Europe/Stockholm
+## tzcode source: internal
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices datasets  utils     methods   base     
+## 
+## other attached packages:
+## [1] viridis_0.6.5      viridisLite_0.4.2  STEAM_0.1.0        ggplot2_3.5.2     
+## [5] MASS_7.3-65        dplyr_1.1.4        Seurat_5.3.0       SeuratObject_5.1.0
+## [9] sp_2.2-0          
+## 
+## loaded via a namespace (and not attached):
+##   [1] deldir_2.0-4           pbapply_1.7-4          gridExtra_2.3         
+##   [4] rlang_1.1.6            magrittr_2.0.3         RcppAnnoy_0.0.22      
+##   [7] spatstat.geom_3.5-0    matrixStats_1.5.0      ggridges_0.5.6        
+##  [10] compiler_4.5.0         png_0.1-8              vctrs_0.6.5           
+##  [13] reshape2_1.4.4         hdf5r_1.3.12           stringr_1.5.1         
+##  [16] pkgconfig_2.0.3        fastmap_1.2.0          labeling_0.4.3        
+##  [19] promises_1.3.3         rmarkdown_2.29         bit_4.6.0             
+##  [22] purrr_1.1.0            xfun_0.52              cachem_1.1.0          
+##  [25] jsonlite_2.0.0         goftest_1.2-3          later_1.4.3           
+##  [28] spatstat.utils_3.1-5   irlba_2.3.5.1          parallel_4.5.0        
+##  [31] cluster_2.1.8.1        R6_2.6.1               ica_1.0-3             
+##  [34] spatstat.data_3.1-8    bslib_0.9.0            stringi_1.8.7         
+##  [37] RColorBrewer_1.1-3     reticulate_1.43.0      spatstat.univar_3.1-4 
+##  [40] parallelly_1.45.1      lmtest_0.9-40          jquerylib_0.1.4       
+##  [43] scattermore_1.2        Rcpp_1.1.0             knitr_1.50            
+##  [46] tensor_1.5.1           future.apply_1.20.0    zoo_1.8-14            
+##  [49] sctransform_0.4.2      httpuv_1.6.16          Matrix_1.7-3          
+##  [52] splines_4.5.0          igraph_2.1.4           tidyselect_1.2.1      
+##  [55] abind_1.4-8            rstudioapi_0.17.1      yaml_2.3.10           
+##  [58] spatstat.random_3.4-1  codetools_0.2-20       miniUI_0.1.2          
+##  [61] spatstat.explore_3.5-2 listenv_0.9.1          lattice_0.22-7        
+##  [64] tibble_3.3.0           plyr_1.8.9             withr_3.0.2           
+##  [67] shiny_1.11.1           ROCR_1.0-11            evaluate_1.0.3        
+##  [70] Rtsne_0.17             future_1.67.0          fastDummies_1.7.5     
+##  [73] survival_3.8-3         polyclip_1.10-7        fitdistrplus_1.2-4    
+##  [76] pillar_1.10.2          BiocManager_1.30.26    KernSmooth_2.23-26    
+##  [79] renv_1.1.5             plotly_4.11.0          generics_0.1.4        
+##  [82] RcppHNSW_0.6.0         scales_1.4.0           globals_0.18.0        
+##  [85] xtable_1.8-4           glue_1.8.0             lazyeval_0.2.2        
+##  [88] tools_4.5.0            data.table_1.17.8      RSpectra_0.16-2       
+##  [91] RANN_2.6.2             dotCall64_1.2          cowplot_1.2.0         
+##  [94] grid_4.5.0             tidyr_1.3.1            nlme_3.1-168          
+##  [97] patchwork_1.3.1        cli_3.6.5              spatstat.sparse_3.1-0 
+## [100] spam_2.11-1            uwot_0.2.3             gtable_0.3.6          
+## [103] sass_0.4.10            digest_0.6.37          progressr_0.15.1      
+## [106] ggrepel_0.9.6          htmlwidgets_1.6.4      farver_2.1.2          
+## [109] htmltools_0.5.8.1      lifecycle_1.0.4        httr_1.4.7            
+## [112] mime_0.13              bit64_4.6.0-1</code></pre>
+</details>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
