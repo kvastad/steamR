@@ -1,7 +1,7 @@
 steamR.Rproj
 data
-vignettes
-vignettes/
+vignettes_old
+vignettes_old/
 /.Rproj.user/
 inst/*
 vignettes/data/
