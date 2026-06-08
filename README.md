@@ -32,4 +32,9 @@ devtools::install_github("kvastad/steamR@v0.1.0")
 
 ## Vignettes
 
-Vignettes can be found here [link](https://github.com/kvastad/STEAM).
+For STEAM R-package vignettes, visit: https://kvastad.github.io/STEAM/
+
+## Trait gene lists
+
+For ranked genetically associated gene lists, visit the Open Targets platform: https://platform.opentargets.org/
+
