@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STEAM R-Package</title>
+    <link rel="icon" href="images/STEAM_logo_favicon_96x106.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>
+            STEAM: R-Package
+           <!-- <img src="images/STEAM_logo.png" alt="STEAM Logo" class="logo"> -->
+        </h1> 
+        <nav>
+            <ul>
+               <!-- <li><a href="index.html">STEAM</a></li> -->
+                <li><a href="https://github.com/kvastad/steamR" 
+                        target="_blank" rel="noopener noreferrer">
+                        GitHub Repo</a>
+                </li>
+            
+
+            <li class="dropdown">
+                    <a href="#">Open Targets gene lists ▼</a>
+                    <ul class="dropdown-menu">
+                        
+                        <!-- Subheading section 1 -->
+                        <li class="dropdown-header">Mouse preprocessing</li>
+                        <li><a href="vignettes/Open_Targets_gene_list_mouse/Step1.OpenTargets_preprocess_gene_list_ALZ.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 1: Preprocess gene list</a></li>
+                        <li><a href="vignettes/Open_Targets_gene_list_mouse/Step2.human_to_mouse_gene_converter.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 2: Human-to-Mouse file</a></li>
+                        <li><a href="vignettes/Open_Targets_gene_list_mouse/Step3.human_to_mouse_gene_list.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 3: Human-to-Mouse gene list</a></li>
+
+                        <!-- Subheading section 2 -->
+                        <li class="dropdown-header">Human preprocessing</li>
+                        <li><a href="vignettes/Open_Targets_gene_list_human/Step1.OpenTargets_preprocess_gene_list_SCZ.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 1: Preprocess gene list</a></li>
+
+                        
+                    </ul>
+                </li>
+                
+
+                <li class="dropdown">
+                    <a href="#">Visium Mouse (Coronal) ▼</a>
+                    <ul class="dropdown-menu">
+                        
+                        <!-- Subheading section 1 -->
+                        <li class="dropdown-header">STEAM</li>
+                        <li><a href="vignettes/STEAM_analysis_visium_mouse_coronal/Step1.Null_distributions.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 1: Null distributions</a></li>
+                        <li><a href="vignettes/STEAM_analysis_visium_mouse_coronal/Step2.STEAM_analysis_mouse_coronal.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 2: STEAM analysis</a></li>
+
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#">Visium Human (Cortex) ▼</a>
+                    <ul class="dropdown-menu">
+                        
+                        <!-- Subheading section 1 -->
+                        <li class="dropdown-header">STEAM</li>
+                        <li><a href="vignettes/STEAM_analysis_visium_human_cortex/Step1.Generate_MetaSpots_with_STEAM.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 1: MetaSpots</a></li>
+                        <li><a href="vignettes/STEAM_analysis_visium_human_cortex/Step2.Generate_permutation_matrices_from_MetaSpots_with_STEAM.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 2: Null distribution</a></li>
+                        <li><a href="vignettes/STEAM_analysis_visium_human_cortex/Step3.Calculate_DEGs_MetaSpots.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 3: Calculate DEGs</a></li>
+                        <li><a href="vignettes/STEAM_analysis_visium_human_cortex/Step4.Run_STEAM_MetaSpots_SCZ.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 4: STEAM analysis</a></li>
+
+                    </ul>
+                </li>
+
+                
+                <li class="dropdown">
+                    <a href="#">scRNAseq Mouse ▼</a>
+                    <ul class="dropdown-menu">
+                        
+                        <!-- Subheading section 1 -->
+                        <li class="dropdown-header">Preprocess mouse scRNAseq</li>
+                        <li><a href="vignettes/prep.scsnRNAseq/Mouse_scRNAseq/Step1.Downsample_Allen_Brain_Atlas_Mouse_CTX_HPF_dataset_to_random_250_cells_per_subclass_label_hdf5.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 1: Downsample CTX-HPF</a></li>
+                        <li><a href="vignettes/prep.scsnRNAseq/Mouse_scRNAseq/Step2.Filter_Allen_Brain_Atlas_Mouse_CTX_HPF.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 2: Filter CTX-HPF</a></li>
+
+                        <!-- Subheading section 2 -->
+                        <li class="dropdown-header">STEAM mouse scRNAseq</li>
+                        <li><a href="vignettes/STEAM_analysis_scRNAseq_mouse_CTX_HPF/Step1.Generate_Metacell_with_STEAM_mouse.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 1: MetaCells CTX-HPF</a></li>
+                        <li><a href="vignettes/STEAM_analysis_scRNAseq_mouse_CTX_HPF/Step2.Null_distributions_mouse.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 2: Null distributions CTX-HPF</a></li>
+                         <li><a href="vignettes/STEAM_analysis_scRNAseq_mouse_CTX_HPF/Step3.Calculate_DEGs_mouse.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 3: Calculate DEGs CTX-HPF</a></li>
+                         <li><a href="vignettes/STEAM_analysis_scRNAseq_mouse_CTX_HPF/Step4.Run_STEAM_ALZ_mouse.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 4: STEAM analysis CTX-HPF</a></li>
+
+                    </ul>
+                </li>
+    
+
+                
+                <li class="dropdown">
+                    <a href="#">snRNAseq Human ▼</a>
+                    <ul class="dropdown-menu">
+                
+                        <!-- Subheading section 1 -->
+                        <li class="dropdown-header">Preprocess human snRNAseq</li>
+                        <li><a href="vignettes/prep.scsnRNAseq/Human_snRNAseq/Step1.Downsample_AllNeurons_to_random_250_cells_per_Supercluster_h5ad.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 1: Downsample AllNeurons</a></li>
+                        <li><a href="vignettes/prep.scsnRNAseq/Human_snRNAseq/Step2.Downsample_AllNonNeurons_to_random_250_cells_per_Supercluster_h5ad.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 2: Downsample AllNonNeurons</a></li>
+                        <li><a href="vignettes/prep.scsnRNAseq/Human_snRNAseq/Step3.Merge_and_filter_AllNeurons_and_AllNonNeurons.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 3: Merge and Filter</a></li>
+
+                        !-- Subheading section 2 -->
+                        <li class="dropdown-header">STEAM human snRNAseq</li>
+                        <li><a href="vignettes/STEAM_analysis_snRNAseq_human_brain/Step1.Generate_Metacell_with_STEAM.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 1: MetaCells</a></li>
+                        <li><a href="vignettes/STEAM_analysis_snRNAseq_human_brain/Step2.Null_distributions.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 2: Null distribution</a></li>
+                        <li><a href="vignettes/STEAM_analysis_snRNAseq_human_brain/Step3.Calculate_DEGs.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 3: Calculate DEGs</a></li>
+                        <li><a href="vignettes/STEAM_analysis_snRNAseq_human_brain/Step4.Run_STEAM_SCZ.html"
+                                target="_blank" rel="noopener noreferrer">
+                                Step 4: STEAM analysis</a></li>
+
+
+                    </ul>
+                </li>
+             </ul>   
+        </nav>
+    </header>
+
+    <main>
+        <p> </p>
+        <p>
+            STEAM is a framework for <strong>S</strong>patial <strong>T</strong>rait <strong>E</strong>nrichment <strong>A</strong>nalysis with per<strong>M</strong>utation testing, 
+            a robust computational approach for measuring the enrichment of average gene expression across clusters in a dataset from a given gene list.
+            It calculates a permutation p-value and performs multiple-testing corrections based on the number of clusters. For ranked gene lists, STEAM enables interrogation of 
+            the topmost relevant sets of genes based on their combined average enrichment. The STEAM framework also includes an approach using MetaSpots (or MetaCells or MetaBins) within 
+            assigned clusters for sparse and high-resolution data. Using permutations to guide the selection of topmost relevant ranked genes and then testing for trait gene set enrichment 
+            among differentially expressed genes.
+            
+        </p>
+        <p>
+            We applied STEAM to spatially resolved transcriptomics (SRT) datasets to elucidate the genetic basis of complex traits and diseases. 
+            We analyzed 31 SRT datasets from humans and mice spanning 8 organs and 32 complex traits. We also applied STEAM to single-cell and single-nuclei RNA-seq datasets from 
+            the mouse and human brains, highlighting complementary insights from the two data types and a high-resolution mouse brain dataset. 
+        </p>
+
+<p>
+<strong>Vignette Overview</strong>
+</p>
+
+<p>
+<i>Open Targets gene lists:</i> Formatting of .tsv gene lists, extracting data with genetic association scores.
+</p>
+
+<p>
+<i>Visium Mouse (Coronal):</i> Standard STEAM workflow for Visium data (55 µm resolution).
+</p>
+
+<p>
+<i>Visium Human (Cortex):</i> STEAM workflow using MetaSpots for Visium data (55 µm resolution). Helpful when data is extra sparse and/or to increase data power.
+</p>
+
+<p>
+<i>Visium HD Mouse (Coronal):</i> STEAM workflow using MetaSpots (or MetaBins) for Visium HD data (16 µm resolution). Helpful when data is extra sparse and/or to increase data power. <strong><i>(Vignette TBD, will be published here once our manuscript has been accepted for publication)</i></strong>
+</p>
+
+<p>
+<i>scRNAseq Mouse:</i> STEAM workflow using MetaCells on single-cell RNA-seq data. Helpful when data is extra sparse and/or to increase data power.
+</p>
+
+<p>
+<i>snRNAseq Human:</i> STEAM workflow using MetaCells on single-nucleus RNA-seq data. Helpful when data is extra sparse and/or to increase data power.
+</p>
+<p>
+<strong>Graphic Summary</strong>
+</p>
+        
+            <p>
+            Below we showcase analysis examples from the STEAM R-package, using one spatial dataset of a mouse brain coronal section (10X Genomics) and one single cell RNA-seq dataset of mouse cortex and hippocampus (Yao et al. Cell 2021).
+            </p>
+        
+        <p> </p>
+        <div class="logo-in-text">
+        <img src="images/STEAM_logo.png" alt="STEAM Logo">
+        </div>
+        
+        <body>
+          <img src="images/STEAM_Rpackage.png" alt="STEAM R-package" class="center-img">
+        </body>
+
+        <body>
+          <img src="images/STEAM_Rpackage_spatial_header.png" alt="STEAM R-package" class="center-img">
+        </body>
+
+        <body>
+          <img src="images/STEAM_Rpackage_spatial_1.png" alt="STEAM R-package" class="center-img">
+        </body>
+
+        <body>
+          <img src="images/STEAM_Rpackage_spatial_2.png" alt="STEAM R-package" class="center-img">
+        </body>
+
+        <body>
+          <img src="images/STEAM_Rpackage_single_cell_header.png" alt="STEAM R-package" class="center-img">
+        </body>
+
+        <body>
+          <img src="images/STEAM_Rpackage_single_cell.png" alt="STEAM R-package" class="center-img">
+        </body>
+        
+        <p> <strong>MIT License</strong></p>
+            <p> </p>
+            <p>Copyright (c) 2026 STEAM authors</p>
+            <p> </p>
+        <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), 
+            to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+            and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+        <p> </p>
+        <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+        <p> </p>
+        <p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+            WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+        <p> </p>
+        <p>Developed by Linda Kvastad and Rasool Saghaleyni</p>
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

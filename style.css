@@ -1,0 +1,106 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: left;
+    background-color: white;
+    margin: 10px;
+    padding: 10px;
+}
+header {
+    background: #333;
+    color: white;
+    padding: 10px;
+    position: relative;
+}
+header h1 {
+    position: relative;
+    z-index: 1; /* Ensures the text stays above the image */
+}
+
+/* Logo class to position the logo */
+/*.logo { */
+/*    position: absolute;*/
+/*    top: -15px;*/  /* Adjust up/down */
+/*    left: 50%;*/  /* Adjust to center the logo or move it left/right, left: 350px looks good */
+/*    transform: translateX(-50%);*/ /* Shift it back by half its width */
+/*    height: 120px;*/  /* Change logo size */
+/*    z-index: 2;*/    /* Make sure the logo appears above the header */
+/* } */
+
+.logo-in-text {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+.logo-in-text img {
+    max-height: 160px;
+    width: auto;
+}
+
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+nav ul li {
+    display: inline-block;
+    position: relative;
+}
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+}
+/* Dropdown menu styles */
+nav ul .dropdown-menu {
+    display: none; /* Hide by default */
+    position: absolute;
+    background: white;
+    list-style: none;
+    padding: 0;
+    top: 100%;
+    left: 0;
+    min-width: 300px; /* Adjust the width of the dropdown */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Optional: add shadow for better visibility */
+}
+
+/* Dropdown items styles */
+nav ul .dropdown-menu li {
+    display: block;
+    border-bottom: 1px solid #ddd; /* Adds a bottom border for separation */
+}
+
+/* Links inside the dropdown */
+nav ul .dropdown-menu li a {
+    color: black;
+    padding: 10px;
+    display: block;
+    text-decoration: none; /* Remove underline from links */
+}
+
+/* Hover effect for dropdown */
+.dropdown:hover .dropdown-menu {
+    display: block; /* Show the dropdown when hovering */
+}
+
+/* Styling for dropdown headers (subheadings) */
+nav ul .dropdown-menu .dropdown-header {
+    font-weight: bold;
+    padding: 10px;
+    background-color: #f0f0f0; /* Light grey background for subheadings */
+    color: #555; /* Text color for subheadings */
+    margin: 0; /* Remove margin between header and next item */
+}
+
+/* Optional: Adjusting link hover effect */
+nav ul .dropdown-menu li a:hover {
+    background-color: #ddd; /* Adds a hover effect for links */
+}
+
+.center-img {
+  display: block;
+  margin: 0 auto;
+  max-width: 80%;   /* scales nicely on smaller screens */
+  height: auto;     /* keep aspect ratio */
+}
