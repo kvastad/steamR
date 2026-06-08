@@ -36,7 +36,7 @@ devtools::install_github("kvastad/steamR@v0.1.0")
 
 ## Vignettes
 
-For STEAM R-package vignettes, visit: https://kvastad.github.io/STEAM/
+For STEAM R-package vignettes, visit: https://kvastad.github.io/steamR/
 
 ## Trait gene lists
 
