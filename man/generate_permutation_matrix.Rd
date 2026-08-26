@@ -9,7 +9,9 @@ generate_permutation_matrix(
   gnum = 50,
   permutation_nr = 1000,
   cluster_anno = "seurat_clusters",
-  workers = NULL
+  workers = NULL,
+  ctrl_nr = 100,
+  nbin_nr = 24
 )
 }
 \arguments{
@@ -19,23 +21,42 @@ generate_permutation_matrix(
 
 \item{permutation_nr}{Number of permutations to perform (default: 1000).}
 
-\item{cluster_anno}{The name of the column in the metadata with cluster identities (default: \code{"seurat_clusters"}).}
+\item{cluster_anno}{The name of the column in the metadata with cluster
+identities (default: \code{"seurat_clusters"}).}
 
-\item{workers}{Optional. Number of parallel workers. If \code{NULL} or \code{workers <= 1}, runs sequentially.}
+\item{workers}{Optional. Number of parallel workers. If \code{NULL} or
+\code{workers <= 1}, runs sequentially.}
+
+\item{ctrl_nr}{Number of control genes used by \code{AddModuleScore()}
+for each gene in the input gene set (default: 100).}
+
+\item{nbin_nr}{Number of expression-level bins used by
+\code{AddModuleScore()} (default: 24).}
 }
 \value{
-A data frame where rows represent permutations and columns represent clusters.
-Each entry is the median module score of a randomly sampled gene set for that cluster.
+A data frame where rows represent permutations and columns
+represent clusters. Each entry is the median module score of a randomly
+sampled gene set for that cluster.
 }
 \description{
-This function computes a permutation matrix by generating random gene sets and scoring them
-using Seurat's \code{AddModuleScore()}. Results are aggregated as median scores per cluster.
-Supports both sequential and parallel computation for reproducibility and speed.
+This function computes a permutation matrix by generating random gene sets
+and scoring them using Seurat's \code{AddModuleScore()}. Results are aggregated
+as median scores per cluster. Supports both sequential and parallel
+computation, with reproducible random gene-set generation.
 }
 \examples{
 # Run sequentially
-perm.mat <- generate_permutation_matrix(se, gnum = 50, permutation_nr = 100)
+perm.mat <- generate_permutation_matrix(
+  se,
+  gnum = 50,
+  permutation_nr = 100
+)
 
 # Run in parallel
-perm.mat <- generate_permutation_matrix(se, gnum = 50, permutation_nr = 100, workers = 4)
+perm.mat <- generate_permutation_matrix(
+  se,
+  gnum = 50,
+  permutation_nr = 100,
+  workers = 4
+)
 }

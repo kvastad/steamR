@@ -26,12 +26,12 @@ test_that("add_cluster_annotations correctly adds annotations to Seurat object",
     AnnoName = "seurat_clusters"
   )
   
-  #chck if metadata column was added
-  expect_true("seurat_clusters" %in% colnames(se_annotated@meta.data))
+  #check if metadata column was added
+  expect_true("cluster_anno" %in% colnames(se_annotated@meta.data))
   
   #check that cluster values match
   expect_equal(
-    se_annotated$seurat_clusters,
+    se_annotated$cluster_anno,
     setNames(annotations$seurat_clusters, annotations$Barcode)[colnames(se_annotated)]
   )
 })
