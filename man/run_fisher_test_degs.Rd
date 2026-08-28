@@ -15,21 +15,46 @@ run_fisher_test_degs(
 \arguments{
 \item{se}{A Seurat object containing the full gene expression dataset.}
 
-\item{DEG_genes}{A data frame of differentially expressed genes with at least columns \code{gene} and \code{cluster}.}
+\item{DEG_genes}{A data frame of differentially expressed genes with
+columns \code{gene} and \code{cluster}.}
 
-\item{OT_genes}{A character vector of genes of interest (e.g., OpenTargets genetic hits).}
+\item{OT_genes}{A character vector of genes of interest
+(e.g., OpenTargets genetic hits).}
 
-\item{adjust_method}{Method for p-value adjustment (default: \code{"bonferroni"}). Passed to \code{p.adjust()}.}
+\item{adjust_method}{Method for p-value adjustment (default:
+\code{"bonferroni"}). Passed to \code{p.adjust()}.}
 
-\item{test_alternative}{Alternative hypothesis for Fisher's test (default: \code{"greater"}).}
+\item{test_alternative}{Alternative hypothesis for Fisher's exact test
+(default: \code{"greater"}). Passed to \code{fisher.test()}.}
 }
 \value{
-A data frame with columns: \code{cluster}, \code{p_value}, \code{odds_ratio}, and \code{adj_p_value}.
+A data frame containing the following columns:
+\describe{
+\item{cluster}{Cluster identifier.}
+\item{A}{Number of DEGs that are also in \code{OT_genes}.}
+\item{B}{Number of DEGs that are not in \code{OT_genes}.}
+\item{C}{Number of non-DEGs that are in \code{OT_genes}.}
+\item{D}{Number of non-DEGs that are not in \code{OT_genes}.}
+\item{prop_DEG}{Proportion of DEGs that are in \code{OT_genes}.}
+\item{prop_background}{Proportion of non-DEGs that are in
+\code{OT_genes}.}
+\item{odds_ratio}{Odds ratio estimated by Fisher's exact test.}
+\item{log2_OR}{Base-2 logarithm of the odds ratio.}
+\item{CI_lower}{Lower limit of the 95 percent confidence interval for the odds ratio.}
+\item{CI_upper}{Upper limit of the 95 percent confidence interval for the odds ratio.}
+\item{p_value}{Nominal p-value from Fisher's exact test.}
+\item{adj_p_value}{P-value adjusted using \code{adjust_method}.}
+}
 }
 \description{
-Performs Fisher's exact test to evaluate enrichment of a gene set (e.g., genetically associated genes)
-among differentially expressed genes (DEGs) for each cluster.
+Performs Fisher's exact test to evaluate enrichment of a gene set
+(e.g., genetically associated genes) among differentially expressed
+genes (DEGs) for each cluster.
 }
 \examples{
-fisher_results <- run_fisher_test_degs(se, DEG_genes = N.markers, OT_genes = OpenTargets_SCZ_Genetic)
+fisher_results <- run_fisher_test_degs(
+  se,
+  DEG_genes = N.markers,
+  OT_genes = OpenTargets_SCZ_Genetic
+)
 }
