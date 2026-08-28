@@ -7,71 +7,80 @@
 spatial_trait_enrichment_analysis(
   se,
   perm.mat.label.data,
-  perm.mat.window.data,
-  window_rank_list_abr_label,
   gene_list_score,
   cluster_anno = "seurat_clusters",
   imputation = "all",
-  log_file = NULL
+  perm.mat.window.data = NULL,
+  window_rank_list_abr_label = NULL
 )
 }
 \arguments{
 \item{se}{A Seurat object containing gene scores and clustering metadata.}
 
-\item{perm.mat.label.data}{A data frame of null median scores generated from random gene lists of the same size as the gene list being tested, where columns correspond to cluster names.}
+\item{perm.mat.label.data}{A data frame of null median scores generated
+from random gene lists of the same size as the gene list being tested.
+Columns should correspond to cluster names.}
 
-\item{perm.mat.window.data}{A data frame of null median scores for ranked gene sets (e.g., sliding windows), with columns corresponding to cluster names.}
+\item{gene_list_score}{A character string matching the name of the gene
+score column in \code{se@meta.data} to test for enrichment.}
 
-\item{window_rank_list_abr_label}{A list or vector of window rank identifiers
-used to reference the rank-specific gene sets.}
+\item{cluster_anno}{Column name in \code{se@meta.data} specifying the clustering
+to use (default: \code{"seurat_clusters"}).}
 
-\item{gene_list_score}{A character string matching the name of the gene score column in \code{se@meta.data} to test for enrichment (e.g., "OpenTargets_SCZ_Genetic_1").}
-
-\item{cluster_anno}{Column name in \code{se@meta.data} specifying the clustering to use
-(e.g., "seurat_clusters" or "supercluster_term").}
-
-\item{imputation}{Strategy for handling p-value calculation when no permutations exceed the observed value.
+\item{imputation}{Strategy for handling p-value calculation when no
+permutations are equal to or more extreme than the observed value.
 Options are:
-- "all": Always add 1 to numerator and denominator (default)
-- "none": No imputation, can result in p=0
-- "dynamic": Only impute when no permutations exceed observed value}
+\itemize{
+\item \code{"all"}: Always add 1 to the numerator and denominator.
+\item \code{"none"}: No imputation; p-values can be 0.
+\item \code{"dynamic"}: Add 1 to the numerator and denominator only when no
+permutations are equal to or more extreme than the observed value.
+}}
 
-\item{log_file}{Path to the log file for imputed p-values}
+\item{perm.mat.window.data}{Deprecated. Previously used for window-level
+enrichment analysis. Retained for backward compatibility but ignored.
+Use \code{window_rank_enrichment_analysis()} for window-level analysis.}
+
+\item{window_rank_list_abr_label}{Deprecated. Previously used to specify
+window rank identifiers. Retained for backward compatibility but ignored.
+Use \code{window_rank_enrichment_analysis()} for window-level analysis.}
 }
 \value{
 A list containing three data frames:
-- "p_val_mat": Nominal (unadjusted) p-values for each cluster
-- "impute": Information about imputed p-values
-- "imputation_details": A list of data frames, one per cluster, containing detailed imputation metrics:
-- n_more_extreme: Number of null median scores that are as extreme or more extreme than the observed median score
-- n_more_extreme_full: Total number of null median scores (used for p-value calculation)
-- imputed: Logical indicating whether the p-value was imputed
-- p-value: The calculated nominal p-value
+\describe{
+\item{p_val_mat}{Nominal (unadjusted) p-values for each cluster.}
+\item{impute}{Logical matrix indicating whether the p-value was
+imputed.}
+\item{imputation_details}{Data frame containing cluster, p-value,
+imputation status, and imputation type.}
+}
 }
 \description{
-Performs permutation-based enrichment analysis of a trait-specific gene score
-(e.g. from OpenTargets) across spatial or single-cell clusters, comparing
-observed medians to a null distribution.
+Performs permutation-based enrichment analysis of a trait-specific gene
+score across spatial or single-cell clusters by comparing observed median
+scores to a null distribution generated from random gene sets.
 }
-\section{Debug Log}{
+\section{Permutation p-value}{
 
-The log file (if provided) contains detailed debug information for each cluster and window:
-\itemize{
-\item OT_label_window: The observed median score for the window
-\item Null distribution summary: Summary statistics (Min, 1st Qu, Median, Mean, 3rd Qu, Max) of the null distribution
-\item n_more_extreme: Number of null median scores that are as extreme or more extreme than the observed median score
-\item n_more_extreme_full: Total number of null median scores (used for p-value calculation)
-\item imputed: Logical indicating whether the p-value was imputed
-\item p-value: The calculated nominal p-value
+For the one-sided enrichment test, null scores equal to or greater than
+the observed score are considered as extreme or more extreme. The
+permutation p-value is calculated according to the selected imputation
+strategy.
 }
+
+\section{Deprecated arguments}{
+
+\code{perm.mat.window.data} and \code{window_rank_list_abr_label} are retained for
+backward compatibility with versions <= 0.1.0 but are no longer used.
+Window-level enrichment analysis is now performed separately with
+\code{window_rank_enrichment_analysis()}. These arguments may be removed in
+a future release.
 }
 
 \examples{
-pval_mat <- spatial_trait_enrichment_analysis(
+result <- spatial_trait_enrichment_analysis(
   se = se,
   perm.mat.label.data = perm.mat.genetic.data,
-  perm.mat.window.data = perm.mat.window.data,
-  window_rank_list_abr_label = window_rank_list_SCZ_Genetic,
   gene_list_score = "OpenTargets_SCZ_Genetic_1",
   cluster_anno = "supercluster_term",
   imputation = "dynamic"

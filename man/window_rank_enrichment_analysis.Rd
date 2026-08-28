@@ -11,45 +11,50 @@ window_rank_enrichment_analysis(
   ot_gene_set_label,
   disease_abbr,
   cluster_anno = "seurat_clusters",
-  imputation = "all",
-  log_file = NULL
+  imputation = "all"
 )
 }
 \arguments{
 \item{se}{A Seurat object containing gene scores and clustering metadata.}
 
-\item{perm.mat.window.data}{A data frame of null median scores for ranked gene sets
-(e.g., sliding windows), with columns corresponding to cluster names.}
+\item{perm.mat.window.data}{A data frame of null median scores for ranked
+gene sets, with columns corresponding to cluster names.}
 
-\item{window_rank_list}{A list or vector of window rank identifiers
-used to reference the rank-specific gene sets.}
+\item{window_rank_list}{A list or vector of window rank identifiers used
+to define the number and order of rank-specific gene sets.}
 
-\item{ot_gene_set_label}{A string identifying the gene set type (e.g., "Genetic" or "Drugs").}
+\item{ot_gene_set_label}{A string identifying the gene set type
+(e.g., "Genetic" or "Drugs").}
 
-\item{disease_abbr}{A short abbreviation for the disease/trait (e.g., "SCZ" or "ALZ").}
+\item{disease_abbr}{A short abbreviation for the disease/trait
+(e.g., "SCZ" or "ALZ").}
 
-\item{cluster_anno}{Column name in metadata specifying clusters (default: "seurat_clusters").}
+\item{cluster_anno}{Column name in metadata specifying clusters
+(default: "seurat_clusters").}
 
-\item{imputation}{Strategy for handling p-value calculation when no permutations exceed the observed value.
+\item{imputation}{Strategy for handling p-value calculation when no
+permutations are equal to or more extreme than the observed value.
 Options are:
-- "all": Always add 1 to numerator and denominator (default)
-- "none": No imputation, can result in p=0
-- "dynamic": Only impute when no permutations exceed observed value}
-
-\item{log_file}{Path to the log file for imputed p-values}
+\itemize{
+\item \code{"all"}: Always add 1 to the numerator and denominator.
+\item \code{"none"}: No imputation; p-values can be 0.
+\item \code{"dynamic"}: Add 1 to the numerator and denominator only when no
+permutations are equal to or more extreme than the observed value.
+}}
 }
 \value{
 A data frame containing for each cluster and window:
 \describe{
-\item{cluster}{Cluster identifier}
-\item{window}{Window rank number}
-\item{median_score}{Observed median score for the window}
-\item{p_value}{Nominal p-value for the window}
-\item{q05}{5\% quantile from null distribution}
-\item{q95}{95\% quantile from null distribution}
-\item{is_significant}{Logical indicating if score is outside 5-95\% quantiles}
-\item{was_imputed}{Logical indicating if p-value was imputed}
-\item{imputation_type}{Type of imputation used}
+\item{cluster}{Cluster identifier.}
+\item{window}{Window rank number.}
+\item{median_score}{Observed median score for the window.}
+\item{p_value}{Nominal p-value for the window.}
+\item{q05}{5\% quantile from null distribution.}
+\item{q95}{95\% quantile from null distribution.}
+\item{is_significant}{Logical indicating if score is outside
+5-95\% quantiles.}
+\item{was_imputed}{Logical indicating if p-value was imputed.}
+\item{imputation_type}{Type of imputation used.}
 }
 }
 \description{
@@ -58,19 +63,21 @@ comparing observed median scores to a null distribution from permutations.
 }
 \section{Imputation Behavior}{
 
-\itemize{
-\item For imputation = "none", if no median scores in the null distribution are equal to or larger than the queried median score, the p-value is set to 0 to avoid infinite values. This is useful for identifying cases where no imputation is needed.
-}
+For imputation = "none", if no median scores in the null distribution
+are equal to or larger than the queried median score, the p-value is
+set to 0. For imputation = "all", one is always added to the numerator
+and denominator. For imputation = "dynamic", one is added only when
+no null scores are equal to or larger than the observed score.
 }
 
 \examples{
 window_results <- window_rank_enrichment_analysis(
   se = se,
   perm.mat.window.data = perm.mat.window.data,
-  window_rank_list = window_rank_list_ALZ_Drugs,
-  ot_gene_set_label = "Drugs",
+  window_rank_list = window_rank_list_ALZ_Genetic,
+  ot_gene_set_label = "Genetic",
   disease_abbr = "ALZ",
-  imputation = "dynamic",
-  log_file = "window_analysis_log.txt"
+  cluster_anno = "cluster_anno",
+  imputation = "dynamic"
 )
 }
