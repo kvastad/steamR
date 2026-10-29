@@ -534,12 +534,9 @@ for cases where imputation was needed to calculate a p-value.</p>
 <pre class="r"><code>pval_mat.g &lt;- spatial_trait_enrichment_analysis(
    se = se,
    perm.mat.label.data = perm.mat.genetic.data,
-   perm.mat.window.data = perm.mat.window.data,
-   window_rank_list_abr_label = window_rank_list_ALZ_Genetic,
    gene_list = &quot;OpenTargets_ALZ_Genetic_1&quot;,
    cluster_anno = &quot;cluster_anno&quot;,
-   imputation = &quot;dynamic&quot;#,
-   #log_file = &quot;data/mouse_coronal/log_files/log_file_pval_mat_genetic_all.txt&quot;
+   imputation = &quot;dynamic&quot;
  )
 
 head(pval_mat.g)</code></pre>
@@ -653,8 +650,7 @@ size.</p>
    ot_gene_set_label = &quot;Genetic&quot;,
    disease_abbr = &quot;ALZ&quot;,
    cluster_anno = &quot;cluster_anno&quot;,
-   imputation = &quot;dynamic&quot;#,
-   #log_file = &quot;data/mouse_coronal/log_files/log_file_pval_mat_genetic_windows.txt&quot;
+   imputation = &quot;dynamic&quot;
  )
 
 head(window_results.g)</code></pre>
@@ -777,12 +773,9 @@ for cases where imputation was needed to calculate a p-value.</p>
 <pre class="r"><code>pval_mat.top &lt;- spatial_trait_enrichment_analysis(
    se = se,
    perm.mat.label.data = perm.mat.genetic.top.data,
-   perm.mat.window.data = perm.mat.window.data,
-   window_rank_list_abr_label = window_rank_list_ALZ_Genetic,
    gene_list = &quot;OpenTargets_ALZ_Genetic_topGenes_1&quot;,
    cluster_anno = &quot;cluster_anno&quot;,
-   imputation = &quot;dynamic&quot;#,
-   #log_file = &quot;data/mouse_coronal/log_files/log_file_pval_mat_genetic_top.txt&quot;
+   imputation = &quot;dynamic&quot;
  )
 
 head(pval_mat.top)</code></pre>
@@ -953,7 +946,7 @@ Click to show Session Info
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.5.0 (2025-04-11)
 ## Platform: aarch64-apple-darwin20
-## Running under: macOS Sequoia 15.6
+## Running under: macOS Sequoia 15.7.9
 ## 
 ## Matrix products: default
 ## BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
@@ -969,7 +962,7 @@ Click to show Session Info
 ## [1] stats     graphics  grDevices datasets  utils     methods   base     
 ## 
 ## other attached packages:
-## [1] viridis_0.6.5      viridisLite_0.4.2  STEAM_0.1.0        ggplot2_3.5.2     
+## [1] viridis_0.6.5      viridisLite_0.4.2  STEAM_0.1.1        ggplot2_3.5.2     
 ## [5] MASS_7.3-65        dplyr_1.1.4        Seurat_5.3.0       SeuratObject_5.1.0
 ## [9] sp_2.2-0          
 ## 

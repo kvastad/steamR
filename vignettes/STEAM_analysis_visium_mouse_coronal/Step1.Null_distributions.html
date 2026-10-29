@@ -1655,7 +1655,7 @@ assumptions will not be valid.</p>
 <pre class="r"><code># Run sequentially
 perm.mat &lt;- generate_permutation_matrix(se, gnum = 50, permutation_nr = 1000, cluster_anno = &quot;cluster_anno&quot;)</code></pre>
 <pre><code>##    user  system elapsed 
-## 146.815  12.710 159.791</code></pre>
+## 150.127  11.455 161.596</code></pre>
 <pre class="r"><code>perm.mat[1:5,1:5]</code></pre>
 <pre><code>##                    0            1           2           3           4
 ## Perm_nr1 -0.02000329 -0.016870869  0.00110196 -0.04019910 -0.03153062
@@ -1689,18 +1689,18 @@ different number of workers using a gene list of 50 genes and 100
 permutations.</p>
 <pre class="r"><code>perm.mat.par &lt;- generate_permutation_matrix(se, gnum = 50, permutation_nr = 100, cluster_anno = &quot;cluster_anno&quot;, workers = 7)</code></pre>
 <pre><code>##    user  system elapsed 
-##   6.416   8.935  27.183</code></pre>
+##  10.866  13.827  37.022</code></pre>
 <pre class="r"><code>perm.mat.par &lt;- generate_permutation_matrix(se, gnum = 50, permutation_nr = 100, cluster_anno = &quot;cluster_anno&quot;, workers = 5)</code></pre>
 <pre><code>##    user  system elapsed 
-##   3.055   5.724  15.494</code></pre>
+##   5.995   8.682  27.668</code></pre>
 <pre class="r"><code>perm.mat.par &lt;- generate_permutation_matrix(se, gnum = 50, permutation_nr = 100, cluster_anno = &quot;cluster_anno&quot;, workers = 3)</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.998   3.185  13.868</code></pre>
+##   2.759   5.409  26.700</code></pre>
 <p>In this case, we select workers = 3 to generate our permutation
 matrix.</p>
 <pre class="r"><code>perm.mat.par &lt;- generate_permutation_matrix(se, gnum = 50, permutation_nr = 10000, cluster_anno = &quot;cluster_anno&quot;, workers = 3)</code></pre>
 <pre><code>##    user  system elapsed 
-##  13.109   1.386 569.878</code></pre>
+##  13.554   1.876 570.926</code></pre>
 <pre class="r"><code>perm.mat.par[1:5,1:5]</code></pre>
 <pre><code>##                    0            1             2           3            4
 ## Perm_nr1 -0.01515526 -0.020812577  0.0003181516 -0.04083034 -0.027737094
@@ -1719,7 +1719,7 @@ Click to show Session Info
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.5.0 (2025-04-11)
 ## Platform: aarch64-apple-darwin20
-## Running under: macOS Sequoia 15.6
+## Running under: macOS Sequoia 15.7.9
 ## 
 ## Matrix products: default
 ## BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
@@ -1736,7 +1736,7 @@ Click to show Session Info
 ## [8] base     
 ## 
 ## other attached packages:
-## [1] STEAM_0.1.0        future_1.67.0      MASS_7.3-65        dplyr_1.1.4       
+## [1] STEAM_0.1.1        future_1.67.0      MASS_7.3-65        dplyr_1.1.4       
 ## [5] ggplot2_3.5.2      hdf5r_1.3.12       Seurat_5.3.0       SeuratObject_5.1.0
 ## [9] sp_2.2-0          
 ## 
