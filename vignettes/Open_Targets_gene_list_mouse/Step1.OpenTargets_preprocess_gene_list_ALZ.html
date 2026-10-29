@@ -1503,39 +1503,40 @@ ranked genes with genetic associations to Alzheimer’s disease
 <pre class="r"><code>library(readr)
 library(dplyr)</code></pre>
 <p>Load data.</p>
-<pre class="r"><code>data &lt;- read_tsv(&quot;data/OpenTargets/OT-MONDO_0004975-associated-targets-8_25_2025-v25_06.tsv&quot;)</code></pre>
+<pre class="r"><code>data &lt;- read_tsv(&quot;data/OpenTargets/OT-MONDO_0004975-associated-targets-10_26_2026-v26_09.tsv&quot;)</code></pre>
 </div>
 <div id="filter-gene-list" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Filter gene list</h1>
 <p>Select data columns and subset.</p>
 <pre class="r"><code># Here, gene names, Open Targets association scores, and  all columns containing genetic association scores from different databases
-columns_genetic &lt;- colnames(data[1:11])
+columns_genetic &lt;- colnames(data[1:12])
 columns_genetic</code></pre>
-<pre><code>##  [1] &quot;symbol&quot;            &quot;globalScore&quot;       &quot;gwasCredibleSets&quot; 
-##  [4] &quot;geneBurden&quot;        &quot;eva&quot;               &quot;genomicsEngland&quot;  
-##  [7] &quot;gene2Phenotype&quot;    &quot;uniprotLiterature&quot; &quot;uniprotVariants&quot;  
-## [10] &quot;orphanet&quot;          &quot;clingen&quot;</code></pre>
+<pre><code>##  [1] &quot;symbol&quot;             &quot;globalScore&quot;        &quot;clinicalPrecedence&quot;
+##  [4] &quot;gwasCredibleSets&quot;   &quot;geneBurden&quot;         &quot;eva&quot;               
+##  [7] &quot;genomicsEngland&quot;    &quot;gene2Phenotype&quot;     &quot;uniprotLiterature&quot; 
+## [10] &quot;uniprotVariants&quot;    &quot;orphanet&quot;           &quot;clingen&quot;</code></pre>
 <pre class="r"><code>data_sub &lt;- subset(data, select = columns_genetic)</code></pre>
 <p>Remove rows containing ‘No data’ for genetic associations</p>
 <pre class="r"><code># Define the columns to check, here all columns containing genetic association scores from different databases
-columns_to_check &lt;- colnames(data_sub[3:11])
+columns_to_check &lt;- colnames(data_sub[4:12])
 
 # Filter the data frame
 data_sub_filtered &lt;- data_sub %&gt;%
   filter(!if_all(all_of(columns_to_check), ~ .x == &quot;No data&quot;))
 
 head(data_sub_filtered)</code></pre>
-<pre><code>## # A tibble: 6 × 11
-##   symbol globalScore gwasCredibleSets   geneBurden         eva   genomicsEngland
-##   &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;              &lt;chr&gt;              &lt;chr&gt; &lt;chr&gt;          
-## 1 PSEN1        0.869 No data            No data            0.94… 0.954994719693…
-## 2 APP          0.861 0.909345880675615  No data            0.93… 0.607930797611…
-## 3 PSEN2        0.809 No data            No data            0.89… 0.683922147313…
-## 4 APOE         0.793 0.9728178410136082 No data            0.83… No data        
-## 5 SORL1        0.716 0.9204964587088683 0.393149611209019… 0.31… 0.303965398805…
-## 6 ABCA7        0.707 0.8878049989913129 No data            0.64… No data        
-## # ℹ 5 more variables: gene2Phenotype &lt;chr&gt;, uniprotLiterature &lt;chr&gt;,
-## #   uniprotVariants &lt;chr&gt;, orphanet &lt;chr&gt;, clingen &lt;chr&gt;</code></pre>
+<pre><code>## # A tibble: 6 × 12
+##   symbol globalScore clinicalPrecedence gwasCredibleSets   geneBurden      eva  
+##   &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;              &lt;chr&gt;              &lt;chr&gt;           &lt;chr&gt;
+## 1 APP          0.874 0.9775231241955992 0.8165642183880495 No data         0.93…
+## 2 PSEN1        0.868 0.6426855212816258 No data            No data         0.94…
+## 3 PSEN2        0.819 0.6426855212816258 No data            No data         0.89…
+## 4 APOE         0.788 No data            0.9731317920411764 No data         0.80…
+## 5 ABCA7        0.741 No data            0.8938383162134467 No data         0.84…
+## 6 SORL1        0.715 No data            0.9151121492069797 0.398574204592… 0.31…
+## # ℹ 6 more variables: genomicsEngland &lt;chr&gt;, gene2Phenotype &lt;chr&gt;,
+## #   uniprotLiterature &lt;chr&gt;, uniprotVariants &lt;chr&gt;, orphanet &lt;chr&gt;,
+## #   clingen &lt;chr&gt;</code></pre>
 </div>
 <div id="save-gene-list" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Save gene list</h1>
@@ -1543,7 +1544,7 @@ head(data_sub_filtered)</code></pre>
 globalScore.</p>
 <pre class="r"><code>ranked_gene_set &lt;- data_sub_filtered$symbol
 
-write.table(ranked_gene_set, file = &quot;data/OpenTargets/ranked_gene_sets/OT-MONDO_0004975-associated-targets-8_25_2025-v25_06_ALZ_genetic.csv&quot;, row.names = FALSE, col.names = FALSE, quote = FALSE, sep = &quot;,&quot;)</code></pre>
+write.table(ranked_gene_set, file = &quot;data/OpenTargets/ranked_gene_sets/OT-MONDO_0004975-associated-targets-10_26_2026-v26_09_ALZ_genetic.csv&quot;, row.names = FALSE, col.names = FALSE, quote = FALSE, sep = &quot;,&quot;)</code></pre>
 <details>
 <summary>
 Click to show Session Info
@@ -1551,7 +1552,7 @@ Click to show Session Info
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.5.0 (2025-04-11)
 ## Platform: aarch64-apple-darwin20
-## Running under: macOS Sequoia 15.6
+## Running under: macOS Sequoia 15.7.9
 ## 
 ## Matrix products: default
 ## BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
