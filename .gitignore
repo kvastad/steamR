@@ -1,5 +1,8 @@
 steamR.Rproj
 data
+renv.lock
+renv
+renv/
 vignettes_old
 vignettes_old/
 /.Rproj.user/
