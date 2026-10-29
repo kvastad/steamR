@@ -1579,18 +1579,18 @@ different number of workers using a gene list of 50 genes and 100
 permutations.</p>
 <pre class="r"><code>perm.mat.par &lt;- generate_permutation_matrix(se, gnum = 50, permutation_nr = 100, cluster_anno = &quot;supercluster_term&quot;, workers = 7)</code></pre>
 <pre><code>##    user  system elapsed 
-##   7.188   4.076  24.359</code></pre>
+##   8.907   6.276  28.853</code></pre>
 <pre class="r"><code>perm.mat.par &lt;- generate_permutation_matrix(se, gnum = 50, permutation_nr = 100, cluster_anno = &quot;supercluster_term&quot;, workers = 5)</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.480   2.772  20.521</code></pre>
+##   3.029   3.865  14.638</code></pre>
 <pre class="r"><code>perm.mat.par &lt;- generate_permutation_matrix(se, gnum = 50, permutation_nr = 100, cluster_anno = &quot;supercluster_term&quot;, workers = 3)</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.771   2.034  11.512</code></pre>
+##   2.576   2.036  13.042</code></pre>
 <p>In this case, we select workers = 3 to generate our permutation
 matrix.</p>
 <pre class="r"><code>perm.mat.par &lt;- generate_permutation_matrix(se, gnum = 50, permutation_nr = 10000, cluster_anno = &quot;supercluster_term&quot;, workers = 3)</code></pre>
 <pre><code>##    user  system elapsed 
-##   6.888   0.747 297.251</code></pre>
+##   7.360   0.930 296.432</code></pre>
 <pre class="r"><code>perm.mat.par[1:5,1:5]</code></pre>
 <pre><code>##          Amygdala excitatory   Astrocyte Bergmann glia Cerebellar inhibitory
 ## Perm_nr1         -0.02221994 -0.02121103   -0.05978827           0.010421139
@@ -1615,7 +1615,7 @@ Click to show Session Info
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.5.0 (2025-04-11)
 ## Platform: aarch64-apple-darwin20
-## Running under: macOS Sequoia 15.6
+## Running under: macOS Sequoia 15.7.9
 ## 
 ## Matrix products: default
 ## BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
@@ -1632,7 +1632,7 @@ Click to show Session Info
 ## [8] base     
 ## 
 ## other attached packages:
-## [1] STEAM_0.1.0        future_1.67.0      MASS_7.3-65        dplyr_1.1.4       
+## [1] STEAM_0.1.1        future_1.67.0      MASS_7.3-65        dplyr_1.1.4       
 ## [5] ggplot2_3.5.2      hdf5r_1.3.12       Seurat_5.3.0       SeuratObject_5.1.0
 ## [9] sp_2.2-0          
 ## 

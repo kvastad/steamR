@@ -1909,38 +1909,102 @@ length(OpenTargets_SCZ_Genetic_top)</code></pre>
 <p>Run Fisher’s exact test.</p>
 <pre class="r"><code>fisher_results &lt;- run_fisher_test_degs(se, DEG_genes = DEG_genes, OT_genes = OpenTargets_SCZ_Genetic_top)
 fisher_results</code></pre>
-<pre><code>##                                cluster      p_value odds_ratio  adj_p_value
-## 1                  Amygdala excitatory 4.246311e-06   2.401866 1.316356e-04
-## 2                            Astrocyte 8.404888e-08   2.609296 2.605515e-06
-## 3                        Bergmann glia 8.027235e-11   3.087738 2.488443e-09
-## 4                Cerebellar inhibitory 1.222417e-08   3.407412 3.789494e-07
-## 5                      CGE interneuron 7.530232e-04   2.354822 2.334372e-02
-## 6                       Choroid plexus 2.104751e-02   1.365365 6.524729e-01
-## 7  Committed oligodendrocyte precursor 2.070361e-06   3.078051 6.418120e-05
-## 8    Deep-layer corticothalamic and 6b 5.340805e-08   2.830981 1.655650e-06
-## 9        Deep-layer intratelencephalic 3.259366e-06   2.496654 1.010404e-04
-## 10          Deep-layer near-projecting 2.652875e-06   2.273627 8.223912e-05
-## 11       Eccentric medium spiny neuron 7.282900e-15   4.338114 2.257699e-13
-## 12                           Ependymal 2.376432e-02   1.480026 7.366939e-01
-## 13                          Fibroblast 9.658072e-03   1.672300 2.994002e-01
-## 14                   Hippocampal CA1-3 7.704617e-08   2.379546 2.388431e-06
-## 15                     Hippocampal CA4 7.277274e-15   3.554991 2.255955e-13
-## 16           Hippocampal dentate gyrus 9.893305e-10   3.027809 3.066925e-08
-## 17           LAMP5-LHX6 and Chandelier 1.415737e-02   1.777059 4.388785e-01
-## 18                   Lower rhombic lip 9.498087e-02   1.273752 1.000000e+00
-## 19                     Mammillary body 1.590743e-07   2.399902 4.931302e-06
-## 20                 Medium spiny neuron 2.129787e-03   1.664809 6.602340e-02
-## 21                     MGE interneuron 1.255420e-06   3.091691 3.891804e-05
-## 22                           Microglia 8.495973e-04   1.867786 2.633752e-02
-## 23         Midbrain-derived inhibitory 1.039784e-09   3.106184 3.223330e-08
-## 24                       Miscellaneous 9.147104e-02   2.423076 1.000000e+00
-## 25                     Oligodendrocyte 1.328120e-06   2.414489 4.117171e-05
-## 26           Oligodendrocyte precursor 5.122178e-12   3.498995 1.587875e-10
-## 27                            Splatter 2.581652e-01   1.275591 1.000000e+00
-## 28                 Thalamic excitatory 4.519348e-03   1.780897 1.400998e-01
-## 29                   Upper rhombic lip 2.041385e-11   4.157533 6.328295e-10
-## 30      Upper-layer intratelencephalic 1.386637e-04   2.079608 4.298575e-03
-## 31                            Vascular 1.056124e-02   1.804534 3.273985e-01</code></pre>
+<pre><code>##                                cluster  A    B   C     D   prop_DEG
+## 1                  Amygdala excitatory 38  899 352 20003 0.04055496
+## 2                            Astrocyte 45  995 345 19907 0.04326923
+## 3                        Bergmann glia 51  971 339 19931 0.04990215
+## 4                Cerebellar inhibitory 33  552 357 20350 0.05641026
+## 5                      CGE interneuron 20  469 370 20433 0.04089980
+## 6                       Choroid plexus 58 2371 332 18531 0.02387814
+## 7  Committed oligodendrocyte precursor 26  474 364 20428 0.05200000
+## 8    Deep-layer corticothalamic and 6b 40  811 350 20091 0.04700353
+## 9        Deep-layer intratelencephalic 36  818 354 20084 0.04215457
+## 10          Deep-layer near-projecting 45 1134 345 19768 0.03816794
+## 11       Eccentric medium spiny neuron 47  640 343 20262 0.06841339
+## 12                           Ependymal 34 1267 356 19635 0.02613374
+## 13                          Fibroblast 28  924 362 19978 0.02941176
+## 14                   Hippocampal CA1-3 55 1349 335 19553 0.03917379
+## 15                     Hippocampal CA4 61 1036 329 19866 0.05560620
+## 16           Hippocampal dentate gyrus 46  884 344 20018 0.04946237
+## 17           LAMP5-LHX6 and Chandelier 20  617 370 20285 0.03139717
+## 18                   Lower rhombic lip 39 1677 351 19225 0.02272727
+## 19                     Mammillary body 51 1233 339 19669 0.03971963
+## 20                 Medium spiny neuron 43 1448 347 19454 0.02883970
+## 21                     MGE interneuron 27  491 363 20411 0.05212355
+## 22                           Microglia 35 1048 355 19854 0.03231764
+## 23         Midbrain-derived inhibitory 44  822 346 20080 0.05080831
+## 24                       Miscellaneous  4   89 386 20813 0.04301075
+## 25                     Oligodendrocyte 42  995 348 19907 0.04050145
+## 26           Oligodendrocyte precursor 48  806 342 20096 0.05620609
+## 27                            Splatter 11  465 379 20437 0.02310924
+## 28                 Thalamic excitatory 28  870 362 20032 0.03118040
+## 29                   Upper rhombic lip 36  499 354 20403 0.06728972
+## 30      Upper-layer intratelencephalic 35  946 355 19956 0.03567788
+## 31                            Vascular 21  639 369 20263 0.03181818
+##    prop_background odds_ratio   log2_OR  CI_lower CI_upper      p_value
+## 1       0.01729305   2.401866 1.2641555 1.7625908      Inf 4.246311e-06
+## 2       0.01703535   2.609296 1.3836609 1.9610168      Inf 8.404888e-08
+## 3       0.01672422   3.087738 1.6265502 2.3567804      Inf 8.027235e-11
+## 4       0.01724055   3.407412 1.7686763 2.4392262      Inf 1.222417e-08
+## 5       0.01778590   2.354822 1.2356179 1.5319810      Inf 7.530232e-04
+## 6       0.01760059   1.365365 0.4492870 1.0613654      Inf 2.104751e-02
+## 7       0.01750673   3.078051 1.6220169 2.1121590      Inf 2.070361e-06
+## 8       0.01712245   2.830981 1.5013019 2.0916140      Inf 5.340805e-08
+## 9       0.01732068   2.496654 1.3199958 1.8165907      Inf 3.259366e-06
+## 10      0.01715309   2.273627 1.1849956 1.7098876      Inf 2.652875e-06
+## 11      0.01664645   4.338114 2.1170681 3.2681454      Inf 7.282900e-15
+## 12      0.01780801   1.480026 0.5656227 1.0696029      Inf 2.376432e-02
+## 13      0.01779744   1.672300 0.7418340 1.1681995      Inf 9.658072e-03
+## 14      0.01684433   2.379546 1.2506861 1.8351871      Inf 7.704617e-08
+## 15      0.01629116   3.554991 1.8298459 2.7696452      Inf 7.277274e-15
+## 16      0.01689421   3.027809 1.5982740 2.2806146      Inf 9.893305e-10
+## 17      0.01791334   1.777059 0.8294916 1.1582929      Inf 1.415737e-02
+## 18      0.01793012   1.273752 0.3490846 0.9406548      Inf 9.498087e-02
+## 19      0.01694322   2.399902 1.2629757 1.8338173      Inf 1.590743e-07
+## 20      0.01752437   1.664809 0.7353567 1.2457407      Inf 2.129787e-03
+## 21      0.01747377   3.091691 1.6283962 2.1369370      Inf 1.255420e-06
+## 22      0.01756643   1.867786 0.9013292 1.3547904      Inf 8.495973e-04
+## 23      0.01693920   3.106184 1.6351432 2.3250926      Inf 1.039784e-09
+## 24      0.01820841   2.423076 1.2768399 0.8074376      Inf 9.147104e-02
+## 25      0.01718094   2.414489 1.2717180 1.7980763      Inf 1.328120e-06
+## 26      0.01673354   3.498995 1.8069406 2.6479722      Inf 5.122178e-12
+## 27      0.01820715   1.275591 0.3511657 0.7054787      Inf 2.581652e-01
+## 28      0.01775032   1.780897 0.8326041 1.2437001      Inf 4.519348e-03
+## 29      0.01705449   4.157533 2.0557278 3.0134322      Inf 2.041385e-11
+## 30      0.01747821   2.079608 1.0563114 1.5078271      Inf 1.386637e-04
+## 31      0.01788484   1.804534 0.8516265 1.1890807      Inf 1.056124e-02
+##     adj_p_value
+## 1  1.316356e-04
+## 2  2.605515e-06
+## 3  2.488443e-09
+## 4  3.789494e-07
+## 5  2.334372e-02
+## 6  6.524729e-01
+## 7  6.418120e-05
+## 8  1.655650e-06
+## 9  1.010404e-04
+## 10 8.223912e-05
+## 11 2.257699e-13
+## 12 7.366939e-01
+## 13 2.994002e-01
+## 14 2.388431e-06
+## 15 2.255955e-13
+## 16 3.066925e-08
+## 17 4.388785e-01
+## 18 1.000000e+00
+## 19 4.931302e-06
+## 20 6.602340e-02
+## 21 3.891804e-05
+## 22 2.633752e-02
+## 23 3.223330e-08
+## 24 1.000000e+00
+## 25 4.117171e-05
+## 26 1.587875e-10
+## 27 1.000000e+00
+## 28 1.400998e-01
+## 29 6.328295e-10
+## 30 4.298575e-03
+## 31 3.273985e-01</code></pre>
 <p>Plot results.</p>
 <pre class="r"><code># Ensure clusters are ordered by significance
 fisher_results$cluster &lt;- factor(fisher_results$cluster, 
@@ -1972,38 +2036,102 @@ dev.off()</code></pre>
 <p>Run Fisher’s exact test.</p>
 <pre class="r"><code>fisher_results &lt;- run_fisher_test_degs(se, DEG_genes = DEG_genes, OT_genes = OpenTargets_SCZ_Genetic_)
 fisher_results</code></pre>
-<pre><code>##                                cluster      p_value odds_ratio  adj_p_value
-## 1                  Amygdala excitatory 3.287377e-02  1.2896389 1.000000e+00
-## 2                            Astrocyte 1.285151e-04  1.5700634 3.983968e-03
-## 3                        Bergmann glia 1.334724e-09  2.0012143 4.137644e-08
-## 4                Cerebellar inhibitory 3.710112e-11  2.5262867 1.150135e-09
-## 5                      CGE interneuron 1.916898e-03  1.6591227 5.942384e-02
-## 6                       Choroid plexus 1.199274e-06  1.4982791 3.717750e-05
-## 7  Committed oligodendrocyte precursor 1.595563e-04  1.8302587 4.946246e-03
-## 8    Deep-layer corticothalamic and 6b 1.950357e-04  1.6123940 6.046106e-03
-## 9        Deep-layer intratelencephalic 2.209937e-03  1.4810192 6.850804e-02
-## 10          Deep-layer near-projecting 7.906718e-03  1.3421395 2.451083e-01
-## 11       Eccentric medium spiny neuron 1.659239e-10  2.3314197 5.143640e-09
-## 12                           Ependymal 2.754256e-03  1.3777607 8.538194e-02
-## 13                          Fibroblast 1.225732e-03  1.4862038 3.799768e-02
-## 14                   Hippocampal CA1-3 3.457940e-03  1.3533426 1.071961e-01
-## 15                     Hippocampal CA4 1.074207e-07  1.8214717 3.330040e-06
-## 16           Hippocampal dentate gyrus 1.915738e-05  1.6898201 5.938787e-04
-## 17           LAMP5-LHX6 and Chandelier 8.105568e-02  1.2670484 1.000000e+00
-## 18                   Lower rhombic lip 7.858662e-01  0.9201789 1.000000e+00
-## 19                     Mammillary body 1.711892e-04  1.5004849 5.306865e-03
-## 20                 Medium spiny neuron 3.045173e-02  1.2341679 9.440037e-01
-## 21                     MGE interneuron 6.846079e-06  2.0103342 2.122284e-04
-## 22                           Microglia 3.615402e-03  1.4000319 1.120775e-01
-## 23         Midbrain-derived inhibitory 9.110272e-08  1.9386920 2.824184e-06
-## 24                       Miscellaneous 4.385870e-01  1.1412910 1.000000e+00
-## 25                     Oligodendrocyte 3.007002e-06  1.7245635 9.321705e-05
-## 26           Oligodendrocyte precursor 2.403869e-08  1.9971382 7.451994e-07
-## 27                            Splatter 3.828870e-01  1.0747288 1.000000e+00
-## 28                 Thalamic excitatory 5.151263e-02  1.2613799 1.000000e+00
-## 29                   Upper rhombic lip 2.797395e-09  2.4034452 8.671924e-08
-## 30      Upper-layer intratelencephalic 2.141300e-01  1.1219910 1.000000e+00
-## 31                            Vascular 3.565558e-02  1.3400437 1.000000e+00</code></pre>
+<pre><code>##                                cluster   A    B    C     D   prop_DEG
+## 1                  Amygdala excitatory  67  870 1147 19208 0.07150480
+## 2                            Astrocyte  88  952 1126 19126 0.08461538
+## 3                        Bergmann glia 106  916 1108 19162 0.10371820
+## 4                Cerebellar inhibitory  75  510 1139 19568 0.12820513
+## 5                      CGE interneuron  44  445 1170 19633 0.08997955
+## 6                       Choroid plexus 192 2237 1022 17841 0.07904487
+## 7  Committed oligodendrocyte precursor  49  451 1165 19627 0.09800000
+## 8    Deep-layer corticothalamic and 6b  74  777 1140 19301 0.08695652
+## 9        Deep-layer intratelencephalic  69  785 1145 19293 0.08079625
+## 10          Deep-layer near-projecting  87 1092 1127 18986 0.07379135
+## 11       Eccentric medium spiny neuron  82  605 1132 19473 0.11935953
+## 12                           Ependymal  98 1203 1116 18875 0.07532667
+## 13                          Fibroblast  77  875 1137 19203 0.08088235
+## 14                   Hippocampal CA1-3 104 1300 1110 18778 0.07407407
+## 15                     Hippocampal CA4 105  992 1109 19086 0.09571559
+## 16           Hippocampal dentate gyrus  84  846 1130 19232 0.09032258
+## 17           LAMP5-LHX6 and Chandelier  45  592 1169 19486 0.07064364
+## 18                   Lower rhombic lip  91 1625 1123 18453 0.05303030
+## 19                     Mammillary body 104 1180 1110 18898 0.08099688
+## 20                 Medium spiny neuron 102 1389 1112 18689 0.06841046
+## 21                     MGE interneuron  55  463 1159 19615 0.10617761
+## 22                           Microglia  83 1000 1131 19078 0.07663897
+## 23         Midbrain-derived inhibitory  88  778 1126 19300 0.10161663
+## 24                       Miscellaneous   6   87 1208 19991 0.06451613
+## 25                     Oligodendrocyte  95  942 1119 19136 0.09161041
+## 26           Oligodendrocyte precursor  89  765 1125 19313 0.10421546
+## 27                            Splatter  29  447 1185 19631 0.06092437
+## 28                 Thalamic excitatory  63  835 1151 19243 0.07015590
+## 29                   Upper rhombic lip  66  469 1148 19609 0.12336449
+## 30      Upper-layer intratelencephalic  62  919 1152 19159 0.06320082
+## 31                            Vascular  49  611 1165 19467 0.07424242
+##    prop_background odds_ratio    log2_OR  CI_lower CI_upper      p_value
+## 1       0.05634979  1.2896389  0.3669672 1.0274567      Inf 3.287377e-02
+## 2       0.05559945  1.5700634  0.6508228 1.2856568      Inf 1.285151e-04
+## 3       0.05466206  2.0012143  1.0008757 1.6641785      Inf 1.334724e-09
+## 4       0.05500555  2.5262867  1.3370183 2.0251099      Inf 3.710112e-11
+## 5       0.05624189  1.6591227  0.7304206 1.2484694      Inf 1.916898e-03
+## 6       0.05418014  1.4982791  0.5833064 1.3037187      Inf 1.199274e-06
+## 7       0.05603117  1.8302587  0.8720476 1.3971317      Inf 1.595563e-04
+## 8       0.05577027  1.6123940  0.6892043 1.2966603      Inf 1.950357e-04
+## 9       0.05602309  1.4810192  0.5665904 1.1826325      Inf 2.209937e-03
+## 10      0.05603341  1.3421395  0.4245346 1.0989339      Inf 7.906718e-03
+## 11      0.05493812  2.3314197  1.2212087 1.8886720      Inf 1.659239e-10
+## 12      0.05582512  1.3777607  0.4623253 1.1406683      Inf 2.754256e-03
+## 13      0.05589971  1.4862038  0.5716319 1.2010228      Inf 1.225732e-03
+## 14      0.05581255  1.3533426  0.4365271 1.1265409      Inf 3.457940e-03
+## 15      0.05491458  1.8214717  0.8651046 1.5146219      Inf 1.074207e-07
+## 16      0.05549553  1.6898201  0.7568697 1.3764780      Inf 1.915738e-05
+## 17      0.05659647  1.2670484  0.3414716 0.9592027      Inf 8.105568e-02
+## 18      0.05736616  0.9201789 -0.1200137 0.7581921      Inf 7.858662e-01
+## 19      0.05547781  1.5004849  0.5854288 1.2482594      Inf 1.711892e-04
+## 20      0.05615878  1.2341679  0.3035386 1.0261154      Inf 3.045173e-02
+## 21      0.05579089  2.0103342  1.0074354 1.5568668      Inf 6.846079e-06
+## 22      0.05596516  1.4000319  0.4854597 1.1406758      Inf 3.615402e-03
+## 23      0.05512582  1.9386920  0.9550836 1.5847293      Inf 9.110272e-08
+## 24      0.05698382  1.1412910  0.1906667 0.4839949      Inf 4.385870e-01
+## 25      0.05524562  1.7245635  0.7862313 1.4214900      Inf 3.007002e-06
+## 26      0.05504452  1.9971382  0.9979341 1.6338697      Inf 2.403869e-08
+## 27      0.05692736  1.0747288  0.1039726 0.7580272      Inf 3.828870e-01
+## 28      0.05643817  1.2613799  0.3350028 0.9979336      Inf 5.151263e-02
+## 29      0.05530664  2.4034452  1.2651039 1.8998938      Inf 2.797395e-09
+## 30      0.05671803  1.1219910  0.1660611 0.8867141      Inf 2.141300e-01
+## 31      0.05646568  1.3400437  0.4222800 1.0262093      Inf 3.565558e-02
+##     adj_p_value
+## 1  1.000000e+00
+## 2  3.983968e-03
+## 3  4.137644e-08
+## 4  1.150135e-09
+## 5  5.942384e-02
+## 6  3.717750e-05
+## 7  4.946246e-03
+## 8  6.046106e-03
+## 9  6.850804e-02
+## 10 2.451083e-01
+## 11 5.143640e-09
+## 12 8.538194e-02
+## 13 3.799768e-02
+## 14 1.071961e-01
+## 15 3.330040e-06
+## 16 5.938787e-04
+## 17 1.000000e+00
+## 18 1.000000e+00
+## 19 5.306865e-03
+## 20 9.440037e-01
+## 21 2.122284e-04
+## 22 1.120775e-01
+## 23 2.824184e-06
+## 24 1.000000e+00
+## 25 9.321705e-05
+## 26 7.451994e-07
+## 27 1.000000e+00
+## 28 1.000000e+00
+## 29 8.671924e-08
+## 30 1.000000e+00
+## 31 1.000000e+00</code></pre>
 <p>Plot results.</p>
 <pre class="r"><code># Ensure clusters are ordered by significance
 fisher_results$cluster &lt;- factor(fisher_results$cluster, 
@@ -2039,7 +2167,7 @@ Click to show Session Info
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.5.0 (2025-04-11)
 ## Platform: aarch64-apple-darwin20
-## Running under: macOS Sequoia 15.6
+## Running under: macOS Sequoia 15.7.9
 ## 
 ## Matrix products: default
 ## BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
@@ -2055,7 +2183,7 @@ Click to show Session Info
 ## [1] stats     graphics  grDevices datasets  utils     methods   base     
 ## 
 ## other attached packages:
-##  [1] STEAM_0.1.0        readr_2.1.5        ggplot2_3.5.2      stringr_1.5.1     
+##  [1] STEAM_0.1.1        readr_2.1.5        ggplot2_3.5.2      stringr_1.5.1     
 ##  [5] viridis_0.6.5      viridisLite_0.4.2  MASS_7.3-65        dplyr_1.1.4       
 ##  [9] Seurat_5.3.0       SeuratObject_5.1.0 sp_2.2-0          
 ## 
