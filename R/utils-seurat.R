@@ -1,7 +1,9 @@
 #' Internal helper for Seurat v4/v5 data access
 #'
-#' Uses `layer` for SeuratObject >= 5, else `slot`. Always prefers "RNA" if it exists,
-#' otherwise falls back to "Spatial" (for v5) or the default assay (for v4).
+#' Uses `layer` for SeuratObject >= 5 and `slot` for earlier versions.
+#' For SeuratObject v5, prefers "Spatial" if available, followed by
+#' "RNA", and otherwise uses the default assay. For SeuratObject v4,
+#' prefers "RNA" if available, and otherwise uses the default assay.
 #' Prints which assay is being used.
 #' @keywords internal
 get_assay_data <- function(se, what = c("counts", "data", "scale.data")) {

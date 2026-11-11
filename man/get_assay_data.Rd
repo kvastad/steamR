@@ -7,8 +7,10 @@
 get_assay_data(se, what = c("counts", "data", "scale.data"))
 }
 \description{
-Uses \code{layer} for SeuratObject >= 5, else \code{slot}. Always prefers "RNA" if it exists,
-otherwise falls back to "Spatial" (for v5) or the default assay (for v4).
+Uses \code{layer} for SeuratObject >= 5 and \code{slot} for earlier versions.
+For SeuratObject v5, prefers "Spatial" if available, followed by
+"RNA", and otherwise uses the default assay. For SeuratObject v4,
+prefers "RNA" if available, and otherwise uses the default assay.
 Prints which assay is being used.
 }
 \keyword{internal}
